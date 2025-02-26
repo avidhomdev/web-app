@@ -77,6 +77,7 @@ export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
     }
   } else if (fields.inviting_new) {
     const supabaseAdmin = await createSupabaseServerClient({ admin: true });
+    console.log({ supabaseAdmin });
     const origin = (await headers()).get("origin");
 
     const { data, error: inviteError } =
