@@ -143,13 +143,13 @@ const FormFields = ({ data }: { data: IFormData }) => {
           required
         >
           <option value="">Select a status</option>
-          <option value="new">New</option>
-          <option value="no_show">No Show</option>
-          <option value="cancelled_at_door">Cancelled At Door</option>
-          <option value="no_sale">No Close</option>
-          <option value="pending">Pending</option>
-          <option value="sold">Sold</option>
-          <option value="follow_up">Follow Up</option>
+          <option value="NEW">New</option>
+          <option value="NO_SHOW">No Show</option>
+          <option value="CANCELLED_AT_DOOR">Cancelled At Door</option>
+          <option value="NO_SALE">No Close</option>
+          <option value="PENDING">Pending</option>
+          <option value="SOLD">Sold</option>
+          <option value="FOLLOW_UP">Follow Up</option>
         </Select>
       </div>
       <div>
@@ -184,7 +184,7 @@ export default function ManageCustomerDrawer({
       data: {
         address: customer?.address ?? "",
         city: customer?.city ?? "",
-        disposition_status: customer?.disposition_status ?? "new",
+        disposition_status: customer?.disposition_status ?? "NEW",
         email: customer?.email ?? "",
         full_name: customer?.full_name ?? "",
         lead_source: customer?.lead_source ?? "setter",
