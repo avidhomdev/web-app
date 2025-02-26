@@ -17,7 +17,7 @@ export default async function Page() {
   const { data: timesheets, error } = await supabase
     .from("business_location_job_timesheets")
     .select("*, profile: profile_id(*)")
-    .returns<ITimesheet[]>();
+    .overrideTypes<ITimesheet[]>();
   if (error) throw error;
 
   const employeeTimesheetDictionary = timesheets.reduce<{

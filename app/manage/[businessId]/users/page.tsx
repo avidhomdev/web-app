@@ -47,13 +47,13 @@ export default async function Page(props: {
     })
     .range(startRange, endRange)
     .order("created_at", { ascending: false })
-    .returns<IUser[]>();
+    .overrideTypes<IUser[], { merge: false }>();
 
   const fetchAllBusinessUsers = supabase
     .from("business_profiles")
     .select("*, profile: profile_id(*)")
     .eq("business_id", businessId)
-    .returns<IUser[]>();
+    .overrideTypes<IUser[], { merge: false }>();
 
   const [{ data, error: fetchAllError }, { data: filteredData, error, count }] =
     await Promise.all([fetchAllBusinessUsers, fetchFilteredBusinessUsers]);

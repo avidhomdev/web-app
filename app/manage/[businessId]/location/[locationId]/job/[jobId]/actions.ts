@@ -44,7 +44,7 @@ export async function UpdateJobCustomer<T>(...args: ServerActionWithState<T>) {
   const { error } = await supabase
     .from("business_location_jobs")
     .update(updates)
-    .eq("id", fields.job_id);
+    .eq("id", Number(fields.job_id));
 
   if (error) return formStateResponse({ ...state, error: error.message });
 
@@ -87,7 +87,7 @@ export async function UpdateJobAdditionalInformation<T>(
   const { error } = await supabase
     .from("business_location_jobs")
     .update(updates)
-    .eq("id", fields.job_id);
+    .eq("id", Number(fields.job_id));
 
   if (error) return formStateResponse({ ...state, error: error.message });
 
@@ -122,7 +122,7 @@ export async function UpdateJobEstimatedTimeline<T>(
   const { error } = await supabase
     .from("business_location_jobs")
     .update(updates)
-    .eq("id", fields.job_id);
+    .eq("id", Number(fields.job_id));
 
   if (error) return formStateResponse({ ...state, error: error.message });
 
@@ -186,7 +186,7 @@ export async function UpdateJobProfile<T>(...args: ServerActionWithState<T>) {
   const { error } = await supabase
     .from("business_location_job_profiles")
     .update(update)
-    .eq("id", fields.id);
+    .eq("id", Number(fields.id));
 
   if (error) return formStateResponse({ ...state, error: error.message });
 
@@ -217,7 +217,7 @@ export async function UpdateJobLocation<T>(...args: ServerActionWithState<T>) {
   const { error } = await supabase
     .from("business_location_jobs")
     .update(updates)
-    .eq("id", fields.job_id);
+    .eq("id", Number(fields.job_id));
 
   if (error) return formStateResponse({ ...state, error: error.message });
 
@@ -293,7 +293,7 @@ export async function UpdateJobMedia<T>(...args: ServerActionWithState<T>) {
   const { error } = await supabase
     .from("business_location_job_media")
     .update(updates)
-    .eq("id", fields.id);
+    .eq("id", Number(fields.id));
 
   if (error) return formStateResponse({ ...state, error: error.message });
 
@@ -348,7 +348,7 @@ export async function DeleteJobProduct(id: number) {
   return;
 }
 
-export async function DeleteJobProducts(ids: string[]) {
+export async function DeleteJobProducts(ids: number[]) {
   const supabase = await createSupabaseServerClient();
 
   const { error } = await supabase
@@ -365,7 +365,9 @@ export async function UpdateJobProducts<T>(...args: ServerActionWithState<T>) {
   const supabase = await createSupabaseServerClient();
   const [state, formData] = args;
   const fields = Object.fromEntries(formData);
-  const startingJobIds = (fields.job_product_ids as string).split(",");
+  const startingJobIds = (fields.job_product_ids as string)
+    .split(",")
+    .map((string) => Number(string));
 
   const productsDictionary = Object.entries(fields).reduce<{
     [key: string]: {

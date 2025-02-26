@@ -78,7 +78,7 @@ export async function UpdateBusinessLocation<T>(
       state: fields.state as string,
       postal_code: fields.postal_code as string,
     })
-    .eq("id", fields.id);
+    .eq("id", Number(fields.id));
 
   if (error) {
     return {

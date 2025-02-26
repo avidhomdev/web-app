@@ -22,7 +22,7 @@ export default async function Page(props: {
     .select("*, profile: profile_id(*)")
     .match({ record_table_name: "business_location_jobs", record_id: jobId })
     .order("created_at", { ascending: false })
-    .returns<TLog[]>();
+    .overrideTypes<TLog[]>();
 
   if (error) throw error;
   if (!data) notFound();

@@ -18,14 +18,16 @@ export default async function Layout(
     .select(
       "*, profiles: business_location_profiles!id(*, profile: profile_id(id, full_name))",
     )
-    .eq("id", locationId)
+    .eq("id", Number(locationId))
     .limit(1)
-    .maybeSingle();
+    .maybeSingle()
+    .overrideTypes<ILocation>();
+
   if (error) throw error;
   if (!data) notFound();
 
   return (
-    <LocationContextProvider location={data as ILocation}>
+    <LocationContextProvider location={data}>
       {children}
     </LocationContextProvider>
   );

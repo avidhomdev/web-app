@@ -30,8 +30,8 @@ export default async function Layout(
     )
     .eq("id", businessId)
     .limit(1)
-    .returns<IBusiness>()
-    .maybeSingle();
+    .maybeSingle()
+    .overrideTypes<IBusiness>();
 
   if (error) throw error;
   if (!data) notFound();

@@ -31,7 +31,7 @@ export default async function Page(props: TPageProps) {
       startOfWeek ? startOfWeek : dayjs().startOf("week").toISOString(),
     )
     .lte("end_datetime", dayjs(startOfWeek).endOf("week").toISOString())
-    .returns<TSchedulingAppointment[]>();
+    .overrideTypes<TSchedulingAppointment[], { merge: false }>();
 
   return <JobWeekView appointments={data ?? []} />;
 }

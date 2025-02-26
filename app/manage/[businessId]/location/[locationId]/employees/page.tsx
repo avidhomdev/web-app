@@ -37,13 +37,13 @@ export default async function Page(props: TPageProps) {
     })
     .range(startRange, endRange)
     .order("created_at", { ascending: false })
-    .returns<IEmployee[]>();
+    .overrideTypes<IEmployee[]>();
 
   const fetchAllLocationEmployees = supabase
     .from("business_location_profiles")
     .select("*, profile: profile_id(*)")
     .eq("location_id", Number(locationId))
-    .returns<IEmployee[]>();
+    .overrideTypes<IEmployee[]>();
 
   const [{ data, error: fetchAllError }, { data: filteredData, error, count }] =
     await Promise.all([

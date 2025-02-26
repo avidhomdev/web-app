@@ -25,7 +25,7 @@ export async function UpdateProduct<T>(...args: ServerActionWithState<T>) {
   const { data: product, error } = await supabase
     .from("business_products")
     .update(updates)
-    .eq("id", fields.id as string)
+    .eq("id", Number(fields.id))
     .select("id")
     .single();
 

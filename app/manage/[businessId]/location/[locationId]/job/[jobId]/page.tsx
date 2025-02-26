@@ -26,18 +26,18 @@ export default async function Page(props: TProps) {
     .select(
       "*,  media: business_location_job_media(*), profiles: business_location_job_profiles(*, profile: profile_id(*)), products: business_location_job_products(*, product: business_products(*))",
     )
-    .eq("id", jobId)
+    .eq("id", Number(jobId))
     .limit(1)
-    .returns<IJob>()
-    .single();
+    .single()
+    .overrideTypes<IJob>();
 
   const fetchMessages = supabase
     .from("business_location_job_messages")
     .select("*, author: author_id(*)")
-    .eq("job_id", jobId)
+    .eq("job_id", Number(jobId))
     .order("created_at", { ascending: false })
     .limit(50)
-    .returns<IJobMessage[]>();
+    .overrideTypes<IJobMessage[]>();
 
   const [{ data, error }, { data: messages }] = await Promise.all([
     fetchJob,

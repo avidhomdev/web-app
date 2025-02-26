@@ -20,7 +20,7 @@ export async function UpdateJob<T>(...args: ServerActionWithState<T>) {
   const { error } = await supabase
     .from("business_location_jobs")
     .update(updates)
-    .eq("id", fields.id as string);
+    .eq("id", Number(fields.id));
 
   if (error) {
     return formStateResponse({ ...state, error: error.message });

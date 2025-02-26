@@ -22,7 +22,7 @@ export default function JobHeader({ job }: { job: IJob }) {
       await supabase
         .from("business_location_jobs")
         .update({ status })
-        .eq("id", jobId as string);
+        .eq("id", Number(jobId));
 
       router.refresh();
     };

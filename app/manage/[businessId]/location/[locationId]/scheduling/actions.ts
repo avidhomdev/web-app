@@ -25,7 +25,7 @@ export async function addJobAppointment(
     )
     .gte("appointment.start_datetime", fields.start_datetime as string)
     .lte("appointment.end_datetime", fields.end_datetime as string)
-    .in("profile_id", formData.getAll("profiles"));
+    .in("profile_id", formData.getAll("profiles") as string[]);
 
   if (fetchProfileTimeCheckError)
     return formStateResponse({

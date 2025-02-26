@@ -33,7 +33,7 @@ export async function AddJobAppointment(
     )
     .gte("appointment.start_datetime", fields.start_datetime as string)
     .lte("appointment.end_datetime", fields.end_datetime as string)
-    .in("profile_id", formData.getAll("profiles"));
+    .in("profile_id", formData.getAll("profiles") as string[]);
 
   if (fetchProfileTimeCheckError)
     return formStateResponse({
@@ -122,7 +122,7 @@ export async function UpdateJobAppointment(
     .select("*, appointment: appointment_id!inner(*)")
     .gte("appointment.start_datetime", fields.start_datetime as string)
     .lte("appointment.end_datetime", fields.end_datetime as string)
-    .in("profile_id", formData.getAll("profiles"));
+    .in("profile_id", formData.getAll("profiles") as string[]);
 
   if (fetchProfileTimeCheckError)
     return formStateResponse({
@@ -144,7 +144,7 @@ export async function UpdateJobAppointment(
   const { error } = await supabase
     .from("business_location_job_appointments")
     .update(update)
-    .eq("id", fields.id)
+    .eq("id", Number(fields.id))
     .select("id")
     .single();
 

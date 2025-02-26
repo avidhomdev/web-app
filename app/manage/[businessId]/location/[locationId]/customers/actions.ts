@@ -74,7 +74,7 @@ export async function UpdateLocationCustomer<T>(
   const { error } = await supabase
     .from("business_location_customers")
     .update(updates)
-    .eq("id", fields.id);
+    .eq("id", Number(fields.id));
 
   if (error) return formStateResponse({ ...state, error: error.message });
 

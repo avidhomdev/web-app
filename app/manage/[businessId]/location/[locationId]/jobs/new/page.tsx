@@ -27,8 +27,8 @@ export default async function Page(props: TPage) {
     supabase
       .from("business_location_profiles")
       .select("*, profile: profile_id(id,full_name)")
-      .eq("location_id", locationId)
-      .returns<ILocationEmployee[]>(),
+      .eq("location_id", Number(locationId))
+      .overrideTypes<ILocationEmployee[]>(),
     supabase
       .from("business_products")
       .select("*, business_product_locations!inner(*)")

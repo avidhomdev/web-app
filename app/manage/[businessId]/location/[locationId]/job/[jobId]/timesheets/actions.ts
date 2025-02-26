@@ -39,7 +39,7 @@ export async function UpdateTimesheet<T>(...args: ServerActionWithState<T>) {
     const { error } = await supabase
       .from("business_location_job_timesheets")
       .update(update)
-      .eq("id", fields.id);
+      .eq("id", Number(fields.id));
 
     if (error) return formStateResponse({ ...state, error: error.message });
     await supabase.from("business_logs").insert({

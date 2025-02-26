@@ -22,7 +22,7 @@ export default async function Scheduling(props: TSchedulingProps) {
     .select(
       "*, job: job_id(*),profiles: business_location_job_appointment_profiles(*,profile: profile_id(*)) ",
     )
-    .eq("location_id", locationId)
+    .eq("location_id", Number(locationId))
     .gte(
       "start_datetime",
       dayjs(selectedDate ?? undefined)
@@ -35,13 +35,13 @@ export default async function Scheduling(props: TSchedulingProps) {
         .endOf("day")
         .format("YYYY-MM-DDTHH:mm"),
     )
-    .returns<TAppointment[]>();
+    .overrideTypes<TAppointment[]>();
 
   const { data: jobs } = await supabase
     .from("business_location_jobs")
     .select("*, appointments: business_location_job_appointments(*)")
-    .eq("business_location_id", locationId)
-    .returns<IJob[]>();
+    .eq("business_location_id", Number(locationId))
+    .overrideTypes<IJob[]>();
 
   return (
     <>

@@ -36,7 +36,7 @@ export default async function Page(props: TPageProps) {
     })
     .range(startRange, endRange)
     .order("created_at", { ascending: false })
-    .returns<ILocationCustomer[]>();
+    .overrideTypes<ILocationCustomer[]>();
 
   const fetchAllLocationEmployees = supabase
     .from("business_location_customers")

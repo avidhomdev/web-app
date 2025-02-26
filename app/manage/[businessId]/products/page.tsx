@@ -14,7 +14,7 @@ export default async function Page() {
     .from("business_products")
     .select("*, locations: business_product_locations(*)")
     .order("name")
-    .returns<IBusinessProductWithLocation[]>();
+    .overrideTypes<IBusinessProductWithLocation[]>();
 
   if (error) throw error;
 

@@ -22,10 +22,10 @@ export default async function Layout(props: TLayout) {
   const { data, error } = await supabase
     .from("business_location_jobs")
     .select("*")
-    .eq("id", jobId)
+    .eq("id", Number(jobId))
     .limit(1)
-    .returns<IJob>()
-    .maybeSingle();
+    .maybeSingle()
+    .overrideTypes<IJob, { merge: false }>();
 
   if (error) throw error;
   if (!data) notFound();

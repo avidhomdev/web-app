@@ -227,13 +227,13 @@ export default async function Page(props: {
   const fetchAllJobs = supabase
     .from("business_location_jobs")
     .select("status", { count: "exact" })
-    .eq("business_location_id", locationId);
+    .eq("business_location_id", Number(locationId));
 
   const lastWeekDate = new Date(new Date().setDate(new Date().getDate() - 5));
   const fetchAllPreviousWeekJobs = supabase
     .from("business_location_jobs")
     .select("id,status")
-    .eq("business_location_id", locationId)
+    .eq("business_location_id", Number(locationId))
     .lte("created_at", lastWeekDate.toISOString());
 
   const fetchTableData = supabase
@@ -255,7 +255,7 @@ export default async function Page(props: {
     .order(sortKey || "estimated_end_date", {
       ascending: sortDirection === "ascending",
     })
-    .returns<IJob[]>();
+    .overrideTypes<IJob[], { merge: false }>();
 
   const [
     { data: all, count },
