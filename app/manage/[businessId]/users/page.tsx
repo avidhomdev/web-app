@@ -38,7 +38,7 @@ export default async function Page(props: {
   const fetchFilteredBusinessUsers = await supabase
     .from("business_profiles")
     .select(
-      "*, profile: profile_id(*,locations: business_location_profiles(*, location: location_id(*)))",
+      "*, profile: profile_id(*,locations: business_location_profiles!profile_id(*, location: location_id(*)))",
       { count: "exact" },
     )
     .match({
