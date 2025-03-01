@@ -105,22 +105,19 @@ export default function JobProductsFormFields({
                       setJobProducts((prevState) =>
                         prevState.map((old, idx) => {
                           if (idx !== index) return old;
-                          const selectedProduct =
+                          const { min_units, lead_price, unit_price } =
                             productDictionary[e.target.value];
 
                           return {
                             ...old,
+                            lead_price: Number(includeLeadPrice && lead_price),
+                            number_of_units: min_units,
                             product_id: Number(e.target.value),
-                            number_of_units: 1,
-                            lead_price: Number(
-                              includeLeadPrice && selectedProduct.lead_price,
-                            ),
-                            unit_price: selectedProduct.unit_price,
                             total_price:
-                              Number(selectedProduct.unit_price) +
-                              Number(
-                                includeLeadPrice && selectedProduct.lead_price,
-                              ),
+                              (Number(unit_price) +
+                                Number(includeLeadPrice && lead_price)) *
+                              min_units,
+                            unit_price: unit_price,
                           };
                         }),
                       );

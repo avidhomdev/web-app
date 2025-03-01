@@ -128,6 +128,12 @@ export default function ProductsTable({
       render: (row) => formatAsCurrency(row.lead_price),
     },
     {
+      cellClassNames: "text-right hidden sm:table-cell",
+      field: "min_units",
+      header: "Min Units",
+      render: (row) => row.min_units,
+    },
+    {
       cellClassNames: "w-0",
       field: "actions",
       header: "",

@@ -24,10 +24,11 @@ function FormFields({
   defaultValues,
 }: {
   defaultValues: {
-    name: string;
-    unit: string;
-    unit_price: string;
     lead_price: string;
+    min_units: string;
+    name: string;
+    unit_price: string;
+    unit: string;
     units_in_stock: string;
   };
 }) {
@@ -133,6 +134,19 @@ function FormFields({
               placeholder="10000"
             />
           </div>
+          <div>
+            <Label htmlFor="min_units" className="mb-2 block">
+              Min Units
+            </Label>
+            <TextInput
+              autoComplete="off"
+              defaultValue={defaultValues.min_units}
+              helperText={<>Minimum units that can be ordered at a time.</>}
+              id="min_units"
+              name="min_units"
+              placeholder="1"
+            />
+          </div>
         </fieldset>
       </Card>
       <Card>
@@ -167,10 +181,11 @@ export default function Page() {
   const [state, action] = useActionState(AddProduct<TInitialFormState>, {
     ...initialFormState,
     data: {
-      name: "",
-      unit: "",
-      unit_price: "",
       lead_price: "",
+      min_units: "",
+      name: "",
+      unit_price: "",
+      unit: "",
       units_in_stock: "",
     },
   });

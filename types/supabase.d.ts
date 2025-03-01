@@ -183,6 +183,215 @@ export type Database = {
           },
         ]
       }
+      business_location_customer_bid_media: {
+        Row: {
+          bid_id: number
+          business_id: string
+          created_at: string
+          creator_id: string
+          customer_id: number
+          id: number
+          location_id: number
+          name: string
+          path: string
+        }
+        Insert: {
+          bid_id: number
+          business_id: string
+          created_at?: string
+          creator_id: string
+          customer_id: number
+          id?: number
+          location_id: number
+          name: string
+          path: string
+        }
+        Update: {
+          bid_id?: number
+          business_id?: string
+          created_at?: string
+          creator_id?: string
+          customer_id?: number
+          id?: number
+          location_id?: number
+          name?: string
+          path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_location_customer_bid_media_bid_id_fkey"
+            columns: ["bid_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_customer_bids"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bid_media_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bid_media_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bid_media_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bid_media_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "business_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      business_location_customer_bid_products: {
+        Row: {
+          bid_id: number
+          business_id: string
+          created_at: string
+          customer_id: number | null
+          id: number
+          location_id: number
+          product_id: number
+          unit_price: number
+          units: number
+        }
+        Insert: {
+          bid_id: number
+          business_id: string
+          created_at?: string
+          customer_id?: number | null
+          id?: number
+          location_id: number
+          product_id: number
+          unit_price: number
+          units?: number
+        }
+        Update: {
+          bid_id?: number
+          business_id?: string
+          created_at?: string
+          customer_id?: number | null
+          id?: number
+          location_id?: number
+          product_id?: number
+          unit_price?: number
+          units?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_location_customer_bid_products_bid_id_fkey"
+            columns: ["bid_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_customer_bids"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bid_products_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bid_products_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bid_products_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "business_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bid_products_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "business_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      business_location_customer_bids: {
+        Row: {
+          business_id: string
+          commission: number
+          created_at: string
+          creator_id: string
+          customer_id: number
+          id: number
+          location_id: number
+          name: string
+          notes: string | null
+        }
+        Insert: {
+          business_id: string
+          commission?: number
+          created_at?: string
+          creator_id: string
+          customer_id: number
+          id?: number
+          location_id: number
+          name: string
+          notes?: string | null
+        }
+        Update: {
+          business_id?: string
+          commission?: number
+          created_at?: string
+          creator_id?: string
+          customer_id?: number
+          id?: number
+          location_id?: number
+          name?: string
+          notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_location_customer_bids_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bids_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bids_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_customer_bids_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "business_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_location_customers: {
         Row: {
           address: string
@@ -696,6 +905,7 @@ export type Database = {
       business_location_jobs: {
         Row: {
           address: string | null
+          bid_id: number | null
           business_id: string
           business_location_id: number
           city: string | null
@@ -724,6 +934,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          bid_id?: number | null
           business_id: string
           business_location_id: number
           city?: string | null
@@ -752,6 +963,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          bid_id?: number | null
           business_id?: string
           business_location_id?: number
           city?: string | null
@@ -779,6 +991,13 @@ export type Database = {
           water_rebate_company?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "business_location_jobs_bid_id_fkey"
+            columns: ["bid_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_customer_bids"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "business_location_jobs_business_id_fkey"
             columns: ["business_id"]
@@ -1022,6 +1241,7 @@ export type Database = {
           id: number
           image: string | null
           lead_price: number
+          min_units: number
           name: string
           unit: string | null
           unit_price: number | null
@@ -1033,6 +1253,7 @@ export type Database = {
           id?: number
           image?: string | null
           lead_price?: number
+          min_units?: number
           name: string
           unit?: string | null
           unit_price?: number | null
@@ -1044,6 +1265,7 @@ export type Database = {
           id?: number
           image?: string | null
           lead_price?: number
+          min_units?: number
           name?: string
           unit?: string | null
           unit_price?: number | null

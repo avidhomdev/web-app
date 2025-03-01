@@ -20,6 +20,7 @@ export async function UpdateProduct<T>(...args: ServerActionWithState<T>) {
     unit_price: Number(fields.unit_price),
     lead_price: Number(fields.lead_price),
     units_in_stock: Number(fields.units_in_stock),
+    min_units: Number(fields.min_units),
   };
 
   const { data: product, error } = await supabase

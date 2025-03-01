@@ -102,6 +102,16 @@ const FormFields = ({
           defaultValue={defaultValues.units_in_stock ?? ""}
         />
       </div>
+      <div>
+        <Label htmlFor="units_in_stock" className="mb-2 block">
+          Minimum Units
+        </Label>
+        <TextInput
+          id="min_units"
+          name="min_units"
+          defaultValue={defaultValues.min_units ?? ""}
+        />
+      </div>
       <div className="space-y-2">
         <h2 className="text-xl font-medium text-gray-400">Locations</h2>
         {business.locations.map((location) => (
