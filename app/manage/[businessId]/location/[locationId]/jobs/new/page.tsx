@@ -40,6 +40,7 @@ export default async function Page(props: TPage) {
     supabase
       .from("business_location_customers")
       .select("*")
+      .eq("location_id", Number(locationId))
       .or(
         `full_name.ilike.%${searchParams.customerSearch}%, email.ilike.%${searchParams.customerSearch}%`,
       )
