@@ -18,7 +18,6 @@ import { JOB_LEAD_TYPES } from "@/constants/job-lead-types";
 import { JOB_PAYMENT_TYPES } from "@/constants/job-payment-types";
 import { JOB_PROFILE_ROLES } from "@/constants/job-profile-roles";
 import { US_STATES } from "@/constants/us-states";
-import { useLocationContext } from "@/contexts/location";
 import { ILocationEmployee } from "@/types/location";
 import { Database, Tables } from "@/types/supabase";
 import { useActionState, useEffect, useState } from "react";
@@ -586,13 +585,12 @@ const FormFields = ({
 };
 
 export default function PageForm({ customer, profiles, products }: TPageForm) {
-  const { location } = useLocationContext();
   const { user } = useUserContext();
   const [state, action] = useActionState(AddJob<TInitialFormState>, {
     ...initialFormState,
     data: {
-      address: "",
-      city: "",
+      address: customer?.address ?? "",
+      city: customer?.city ?? "",
       commission: "",
       down_payment_collected: 500,
       email: "",
@@ -615,12 +613,12 @@ export default function PageForm({ customer, profiles, products }: TPageForm) {
       hoa_contact_email: "",
       hoa_contact_name: "",
       hoa_contact_phone: "",
-      lead_type: customer?.creator_id ? "setter" : "",
+      lead_type: customer?.creator_id ? "setter" : "self",
       payment_type: "",
-      phone: "",
-      postal_code: "",
+      phone: customer?.phone ?? "",
+      postal_code: customer?.postal_code ?? "",
       products: [],
-      state: location.state ?? "",
+      state: customer?.state ?? "",
       water_rebate_company: "",
     },
   });
