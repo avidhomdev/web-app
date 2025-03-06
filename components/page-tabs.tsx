@@ -15,8 +15,8 @@ function Tab({ children, href, active }: TTab) {
         className={twMerge(
           active
             ? "border-primary-600 text-primary-600 hover:border-primary-600"
-            : "hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300",
-          "inline-block whitespace-nowrap border-b-2 border-transparent p-4",
+            : "border-transparent hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300",
+          "inline-block whitespace-nowrap border-b-2 p-4 py-2",
         )}
       >
         {children}

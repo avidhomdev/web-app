@@ -16,11 +16,7 @@ type TLocation = Partial<Tables<"business_locations">> &
 type TBusiness = Partial<Tables<"businesses">> &
   Partial<Tables<"business_profiles">>;
 
-interface User
-  extends Pick<
-    Tables<"profiles">,
-    "avatar_url" | "id" | "full_name" | "created_at"
-  > {
+interface User extends Tables<"profiles"> {
   businesses?: Tables<"businesses">[];
   business_profiles?: Tables<"business_profiles">[];
   locations?: Tables<"business_locations">[];
@@ -36,8 +32,25 @@ const UserProviderContext = createContext<{
   user: {
     avatar_url: "",
     created_at: "",
+    updated_at: "",
     full_name: "",
     id: "",
+    username: "",
+    address: "",
+    address2: "",
+    city: "",
+    email: "",
+    phone: "",
+    state: "",
+    postal_code: "",
+    website: "",
+    businesses: [],
+    business_profiles: [],
+    locations: [],
+    location_profiles: [],
+    location: {},
+    locationAdmin: false,
+    business: {},
   },
 });
 

@@ -6,19 +6,21 @@ import { useFormStatus } from "react-dom";
 
 type SubmitButtonProps = PropsWithChildren & {
   pendingText?: string;
+  size?: "sm" | "md" | "lg";
 };
 
 export default function SubmitButton({
   children,
   pendingText,
+  size,
 }: SubmitButtonProps) {
   const { pending } = useFormStatus();
 
   return (
-    <Button disabled={pending} type="submit" color="primary">
+    <Button disabled={pending} type="submit" color="primary" size={size}>
       {pending && pendingText ? (
         <>
-          <Spinner aria-label="Form submitted" size="md" />
+          <Spinner aria-label="Form submitted" size="sm" className="mr-2" />
           {pendingText}
         </>
       ) : (

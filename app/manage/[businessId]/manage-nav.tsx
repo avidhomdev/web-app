@@ -27,7 +27,7 @@ export default function ManageNav() {
   } = useUserContext();
 
   const { business } = useBusinessContext();
-  const { locationId } = useParams();
+  const { businessId, locationId } = useParams();
   const location = business.locations.find(
     (location) => location.id === Number(locationId),
   );
@@ -106,9 +106,9 @@ export default function ManageNav() {
           <Dropdown.Header>
             <span className="block text-sm">{full_name}</span>
           </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
+          <Dropdown.Item href={`/manage/${businessId}/settings/profile`}>
+            Profile
+          </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item href="/auth/signout">Sign out</Dropdown.Item>
         </Dropdown>
