@@ -183,6 +183,47 @@ export type Database = {
           },
         ]
       }
+      business_integrations: {
+        Row: {
+          authorized_on_date: string | null
+          business_id: string
+          created_at: string
+          id: number
+          resource: string
+          status: Database["public"]["Enums"]["row_status"]
+          token: string | null
+          type: string
+        }
+        Insert: {
+          authorized_on_date?: string | null
+          business_id: string
+          created_at?: string
+          id?: number
+          resource: string
+          status?: Database["public"]["Enums"]["row_status"]
+          token?: string | null
+          type?: string
+        }
+        Update: {
+          authorized_on_date?: string | null
+          business_id?: string
+          created_at?: string
+          id?: number
+          resource?: string
+          status?: Database["public"]["Enums"]["row_status"]
+          token?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_integrations_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_location_customer_bid_media: {
         Row: {
           bid_id: number
@@ -1472,28 +1513,49 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
+          address2: string | null
           avatar_url: string | null
+          city: string | null
           created_at: string
+          email: string | null
           full_name: string | null
           id: string
+          phone: string | null
+          postal_code: string | null
+          state: string | null
           updated_at: string | null
           username: string | null
           website: string | null
         }
         Insert: {
+          address?: string | null
+          address2?: string | null
           avatar_url?: string | null
+          city?: string | null
           created_at?: string
+          email?: string | null
           full_name?: string | null
           id: string
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
           updated_at?: string | null
           username?: string | null
           website?: string | null
         }
         Update: {
+          address?: string | null
+          address2?: string | null
           avatar_url?: string | null
+          city?: string | null
           created_at?: string
+          email?: string | null
           full_name?: string | null
           id?: string
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
           updated_at?: string | null
           username?: string | null
           website?: string | null
@@ -1639,6 +1701,7 @@ export type Database = {
         | "canceled"
         | "complete"
       location_profile_roles: "admin" | "manager" | "base"
+      row_status: "inactive" | "active"
     }
     CompositeTypes: {
       [_ in never]: never
