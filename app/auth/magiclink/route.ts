@@ -16,7 +16,10 @@ export async function GET(request: Request) {
 
     if (error) {
       return NextResponse.redirect(
-        new URL("/sign-in?error=magiclink-auth-failed", request.url),
+        new URL(
+          `/sign-in?error=magiclink-auth-failed&message=${error.message}`,
+          request.url,
+        ),
       );
     }
 
