@@ -1,12 +1,9 @@
 "use server";
 
-import { initialFormState } from "@/constants/initial-form-state";
-import { ServerActionWithState } from "@/types/server-actions";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-export const signInAction = async <T>(...args: ServerActionWithState<T>) => {
-  const [_, formData] = args;
+export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const supabase = await createSupabaseServerClient();
@@ -16,9 +13,7 @@ export const signInAction = async <T>(...args: ServerActionWithState<T>) => {
     password,
   });
 
-  if (error) {
-    return { ...initialFormState, error: error.message };
-  }
-  redirect("/manage");
-  return { ...initialFormState, success: true };
+  if (error) throw new Error(error.message);
+
+  return redirect("/manage");
 };
