@@ -26,7 +26,6 @@ export default async function Page({
   ] = await Promise.all([fetchLocationCustomers, fetchEmployees]);
 
   if (fetchEmployeesError || fetchCustomersError) {
-    console.log({ fetchEmployeesError, fetchCustomersError });
     throw fetchEmployeesError?.message || fetchCustomersError?.message;
   }
 
