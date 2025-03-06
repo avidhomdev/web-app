@@ -6,15 +6,16 @@ import { createSupabaseServerClient } from "@/utils/supabase/server";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const token = searchParams.get("token");
-  const type = searchParams.get("type") as EmailOtpType;
-  const email = searchParams.get("email") as string;
+  const token_hash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
   const next = searchParams.get("next") ?? "/manage";
+
+  if (!token_hash || !type)
+    redirect(`/error?message=Invalid token_hash or type`);
 
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.verifyOtp({
-    email: email ?? "",
-    token: token ?? "",
+    token_hash,
     type,
   });
 
