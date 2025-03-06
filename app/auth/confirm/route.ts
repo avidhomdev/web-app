@@ -7,22 +7,17 @@ import { createSupabaseServerClient } from "@/utils/supabase/server";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get("token");
-  const type = searchParams.get("type") as EmailOtpType | null;
+  const type = searchParams.get("type") as EmailOtpType;
   const email = searchParams.get("email") as string;
   const next = searchParams.get("next") ?? "/manage";
 
-  if (token && type) {
-    const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.auth.verifyOtp({
+    email: email ?? "",
+    token: token ?? "",
+    type,
+  });
 
-    const { error } = await supabase.auth.verifyOtp({
-      email,
-      token,
-      type,
-    });
-    if (!error) {
-      redirect(next);
-    }
-    console.log("error", error);
-  }
-  redirect("/error");
+  if (!error) redirect(next);
+  redirect(`/error?message=${error.message}`);
 }
