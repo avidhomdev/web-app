@@ -1,8 +1,16 @@
+import ErrorAlert from "@/components/error-alert";
 import SubmitButton from "@/components/submit-button";
-import { Card, Checkbox, Label, TextInput } from "flowbite-react";
-import Link from "next/link";
+import { Alert, Card, Label, TextInput } from "flowbite-react";
+import Form from "next/form";
+import { ResetPassword } from "./action";
 
-export default function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ error: string; success: string }>;
+}) {
+  const { error, success } = await searchParams;
+
   return (
     <Card
       horizontal
@@ -23,22 +31,16 @@ export default function Page() {
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white lg:text-3xl">
         Reset your password
       </h2>
-      <form className="mt-8 space-y-6">
-        <div className="flex flex-col gap-y-2">
-          <Label htmlFor="email">Your email</Label>
-          <TextInput
-            id="email"
-            name="email"
-            placeholder="name@company.com"
-            type="email"
-          />
-        </div>
+      {success && <Alert color="success">Successfully updated password!</Alert>}
+      {error && <ErrorAlert message={error} />}
+      <Form action={ResetPassword} className="mt-8 space-y-6">
         <div className="flex flex-col gap-y-2">
           <Label htmlFor="newPassword">New password</Label>
           <TextInput
             id="newPassword"
             name="newPassword"
             placeholder="••••••••"
+            required
             type="password"
           />
         </div>
@@ -48,27 +50,16 @@ export default function Page() {
             id="confirmNewPassword"
             name="confirmNewPassword"
             placeholder="••••••••"
+            required
             type="password"
           />
-        </div>
-        <div className="flex items-center gap-x-3">
-          <Checkbox id="acceptTerms" name="acceptTerms" />
-          <Label htmlFor="acceptTerms">
-            I accept the&nbsp;
-            <Link
-              href="#"
-              className="text-primary-700 hover:underline dark:text-primary-500"
-            >
-              Terms and Conditions
-            </Link>
-          </Label>
         </div>
         <div>
           <SubmitButton pendingText="Resetting..." size="lg">
             Reset password
           </SubmitButton>
         </div>
-      </form>
+      </Form>
     </Card>
   );
 }

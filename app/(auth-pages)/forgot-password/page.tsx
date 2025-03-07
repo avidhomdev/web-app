@@ -1,8 +1,17 @@
+import ErrorAlert from "@/components/error-alert";
 import SubmitButton from "@/components/submit-button";
-import { Card, Checkbox, Label, TextInput } from "flowbite-react";
+import { Alert, Card, Label, TextInput } from "flowbite-react";
+import Form from "next/form";
 import Link from "next/link";
+import { RequestPasswordReset } from "./action";
 
-export default function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ error: string; success: string }>;
+}) {
+  const { error, success } = await searchParams;
+
   return (
     <Card
       horizontal
@@ -27,7 +36,9 @@ export default function Page() {
         Don&apos;t fret! Just type in your email and we will send you a code to
         reset your password!
       </p>
-      <form className="mt-8 space-y-6">
+      {success && <Alert color="success">Password reset email sent!</Alert>}
+      {error && <ErrorAlert message={error} />}
+      <Form action={RequestPasswordReset} className="mt-8 space-y-6">
         <div className="mb-6 flex flex-col gap-y-2">
           <Label htmlFor="email">Your email</Label>
           <TextInput
@@ -38,19 +49,7 @@ export default function Page() {
             type="email"
           />
         </div>
-        <div className="mb-6 flex flex-col gap-x-3 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center justify-between gap-x-3">
-            <Checkbox id="acceptTerms" name="acceptTerms" required />
-            <Label htmlFor="acceptTerms">
-              I accept the&nbsp;
-              <Link
-                href="#"
-                className="text-primary-700 hover:underline dark:text-primary-500"
-              >
-                Terms and Conditions
-              </Link>
-            </Label>
-          </div>
+        <div className="mb-6 flex justify-end">
           <Link
             href="/sign-in"
             className="text-right text-sm text-primary-700 hover:underline dark:text-primary-500"
@@ -63,7 +62,7 @@ export default function Page() {
             Request password reset
           </SubmitButton>
         </div>
-      </form>
+      </Form>
     </Card>
   );
 }
