@@ -38,8 +38,8 @@ export default async function Page({
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white lg:text-3xl">
         Sign in to HOM
       </h2>
+      {error && <ErrorAlert message={error} />}
       <Form action={signInAction} className="mt-8 space-y-6">
-        {error && <ErrorAlert message={error} />}
         <div className="flex flex-col gap-y-2">
           <Label htmlFor="email">Your email</Label>
           <TextInput
