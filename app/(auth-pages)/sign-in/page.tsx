@@ -14,9 +14,9 @@ export function metadata() {
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ error: string }>;
+  searchParams: Promise<{ email: string; error: string }>;
 }) {
-  const { error } = await searchParams;
+  const { email, error } = await searchParams;
 
   return (
     <Card
@@ -43,6 +43,7 @@ export default async function Page({
         <div className="flex flex-col gap-y-2">
           <Label htmlFor="email">Your email</Label>
           <TextInput
+            defaultValue={email}
             id="email"
             name="email"
             placeholder="name@company.com"

@@ -13,7 +13,7 @@ export const signInAction = async (formData: FormData) => {
     password,
   });
 
-  if (error) redirect(`/sign-in?error=${error.message}`);
+  if (error) redirect(`/sign-in?error=${error.message}&email=${email}`);
 
   return redirect("/manage");
 };
