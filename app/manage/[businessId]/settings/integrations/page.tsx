@@ -1,7 +1,34 @@
-import { Button, Card, List, ListItem } from "flowbite-react";
-import { AddIntegrationDrawer } from "./add-integration-drawer";
+import { createSupabaseServerClient } from "@/utils/supabase/server";
+import DocusignIntegrationCard from "./docusign-integration/docusign-integration-card";
 
-export default function Page() {
+type TSearchParams = Promise<{
+  error?: string;
+  success?: string;
+  revoke?: string;
+  resource?: string;
+}>;
+
+type TParams = Promise<{
+  businessId: string;
+}>;
+
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: TParams;
+  searchParams: TSearchParams;
+}) {
+  const { businessId } = await params;
+  const { error, success, resource, revoke } = await searchParams;
+  const supabase = await createSupabaseServerClient();
+  const { data, error: fetchError } = await supabase
+    .from("business_integrations")
+    .select()
+    .match({ business_id: businessId, status: "active" });
+
+  if (fetchError) throw fetchError;
+
   return (
     <div className="grid gap-6">
       <div className="grid grid-cols-1 sm:grid-cols-12">
@@ -12,48 +39,15 @@ export default function Page() {
             DocuSign, Stripe, and more.
           </p>
         </hgroup>
-        <div className="grid gap-6 sm:col-span-9 md:col-span-8">
-          <div className="flex flex-row justify-end">
-            <AddIntegrationDrawer />
-          </div>
-          <Card>
-            <div>
-              <h3 className="font-semibold">Zoom</h3>
-              <p>Video conferencing, webinars and chat with customers.</p>
-            </div>
-            <List unstyled>
-              <ListItem>
-                ID: <strong className="font-semibold">uuid-1234234</strong>
-              </ListItem>
-              <ListItem>
-                Account:{" "}
-                <strong className="font-semibold">Account Owner Name</strong>
-              </ListItem>
-            </List>
-            <div className="flex flex-row gap-x-2">
-              <Button color="gray">Settings</Button>
-              <Button color="red">Revoke Access</Button>
-            </div>
-          </Card>
-          <Card>
-            <div>
-              <h3 className="font-semibold">Stripe</h3>
-              <p>Accept payments and manage subscriptions.</p>
-            </div>
-            <List unstyled>
-              <ListItem>
-                ID: <strong className="font-semibold">uuid-1234234</strong>
-              </ListItem>
-              <ListItem>
-                Account:{" "}
-                <strong className="font-semibold">Account Owner Name</strong>
-              </ListItem>
-            </List>
-            <div className="flex flex-row gap-x-2">
-              <Button color="gray">Settings</Button>
-              <Button color="red">Revoke Access</Button>
-            </div>
-          </Card>
+        <div className="grid gap-6 sm:col-span-9 md:col-span-7 md:col-start-6">
+          <DocusignIntegrationCard
+            businessId={businessId}
+            integration={data?.find((i) => i.resource === "docusign")}
+            error={error}
+            revoke={revoke}
+            resource={resource}
+            success={success}
+          />
         </div>
       </div>
     </div>
