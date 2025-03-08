@@ -1629,39 +1629,11 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
-      is_job_employee: {
-        Args: {
-          jobid: number
-        }
-        Returns: boolean
-      }
       is_location_manager_or_admin: {
         Args: {
           locationid: number
         }
         Returns: boolean
-      }
-      is_location_profile: {
-        Args: {
-          location_id: number
-        }
-        Returns: boolean
-      }
-      location_business_appointments_with_closers: {
-        Args: {
-          lid: number
-          start_timestamp: string
-        }
-        Returns: {
-          id: number
-          start_datetime: string
-          end_datetime: string
-          name: string
-          profile_id: string
-          full_name: string
-          location_id: number
-          closer_priority: number
-        }[]
       }
       location_profile_has_role: {
         Args: {
