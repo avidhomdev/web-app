@@ -185,31 +185,43 @@ export type Database = {
       }
       business_integrations: {
         Row: {
+          account_id: string | null
           authorized_on_date: string | null
           business_id: string
           created_at: string
-          id: number
+          expires_at: number | null
+          extras: Json | null
+          refresh_token: string | null
           resource: string
+          revoked_on_date: string | null
           status: Database["public"]["Enums"]["row_status"]
           token: string | null
           type: string
         }
         Insert: {
+          account_id?: string | null
           authorized_on_date?: string | null
           business_id: string
           created_at?: string
-          id?: number
+          expires_at?: number | null
+          extras?: Json | null
+          refresh_token?: string | null
           resource: string
+          revoked_on_date?: string | null
           status?: Database["public"]["Enums"]["row_status"]
           token?: string | null
           type?: string
         }
         Update: {
+          account_id?: string | null
           authorized_on_date?: string | null
           business_id?: string
           created_at?: string
-          id?: number
+          expires_at?: number | null
+          extras?: Json | null
+          refresh_token?: string | null
           resource?: string
+          revoked_on_date?: string | null
           status?: Database["public"]["Enums"]["row_status"]
           token?: string | null
           type?: string
