@@ -20,9 +20,16 @@ function ChangeAccountForm({
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
 }) {
+  const [selectedAccountId, setSelectedAccountId] = useState(
+    integration.account_id ?? "",
+  );
   const [isChangeModalShown, setIsChangeModalShown] = useState(false);
   const [confirmChange, setConfirmChange] = useState(false);
-  const toggleChangeModal = () => setIsChangeModalShown(!isChangeModalShown);
+  const closeChangeModal = () => setIsChangeModalShown(false);
+
+  const selectedAccount = accounts.find(
+    (account) => account.account_id === selectedAccountId,
+  );
 
   return (
     <>
@@ -35,18 +42,26 @@ function ChangeAccountForm({
           name="business_id"
           value={integration.business_id}
         />
+        {selectedAccount && (
+          <input
+            type="hidden"
+            name="base_uri"
+            value={selectedAccount.base_uri}
+          />
+        )}
         <div>
           <Label htmlFor="account_id" className="mb-2 block">
             Linked account:
           </Label>
           <Select
-            defaultValue={integration?.account_id ?? ""}
             id="account_id"
             name="account_id"
-            onChange={() => {
-              setIsChangeModalShown(true);
+            onChange={(e) => {
+              setSelectedAccountId(e.target.value);
+              if (isEditing) setIsChangeModalShown(true);
             }}
             required
+            value={selectedAccountId}
           >
             <option disabled value="">
               Select an account
@@ -69,7 +84,7 @@ function ChangeAccountForm({
             </Button>
           )}
           <Button
-            disabled={!confirmChange}
+            disabled={isEditing && !confirmChange}
             color="primary"
             title={
               confirmChange ? "Save new account" : "Select different account"
@@ -83,7 +98,7 @@ function ChangeAccountForm({
       <Modal
         show={isChangeModalShown}
         size="md"
-        onClose={toggleChangeModal}
+        onClose={closeChangeModal}
         popup
       >
         <Modal.Header />
@@ -101,12 +116,18 @@ function ChangeAccountForm({
                 color="failure"
                 onClick={() => {
                   setConfirmChange(true);
-                  setIsChangeModalShown(false);
+                  closeChangeModal();
                 }}
               >
                 Yes, I&apos;m sure
               </Button>
-              <Button color="gray" onClick={toggleChangeModal}>
+              <Button
+                color="gray"
+                onClick={() => {
+                  setSelectedAccountId("");
+                  closeChangeModal();
+                }}
+              >
                 No, cancel
               </Button>
             </div>

@@ -7,12 +7,14 @@ export async function updateDocusignIntegrationAccount(formData: FormData) {
   const fields = Object.fromEntries(formData);
   const businessId = fields.business_id as string;
   const accountId = fields.account_id as string;
+  const baseUri = fields.base_uri as string;
 
   const supabase = await createSupabaseServerClient();
   return await supabase
     .from("business_integrations")
     .update({
       account_id: accountId,
+      base_uri: baseUri,
     })
     .match({ business_id: businessId, resource: "docusign" })
     .then(({ error }) => {

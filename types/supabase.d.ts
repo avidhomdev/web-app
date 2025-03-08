@@ -187,10 +187,10 @@ export type Database = {
         Row: {
           account_id: string | null
           authorized_on_date: string | null
+          base_uri: string | null
           business_id: string
           created_at: string
           expires_at: number | null
-          extras: Json | null
           refresh_token: string | null
           resource: string
           revoked_on_date: string | null
@@ -201,10 +201,10 @@ export type Database = {
         Insert: {
           account_id?: string | null
           authorized_on_date?: string | null
+          base_uri?: string | null
           business_id: string
           created_at?: string
           expires_at?: number | null
-          extras?: Json | null
           refresh_token?: string | null
           resource: string
           revoked_on_date?: string | null
@@ -215,10 +215,10 @@ export type Database = {
         Update: {
           account_id?: string | null
           authorized_on_date?: string | null
+          base_uri?: string | null
           business_id?: string
           created_at?: string
           expires_at?: number | null
-          extras?: Json | null
           refresh_token?: string | null
           resource?: string
           revoked_on_date?: string | null
