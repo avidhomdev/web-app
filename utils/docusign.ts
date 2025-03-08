@@ -17,9 +17,47 @@ export interface IDocusignAccount {
   is_default: boolean;
 }
 
+export interface IDocusignTemplate {
+  templateId: string;
+  uri: string;
+  name: string;
+  shared: string;
+  passwordProtected: string;
+  description: string;
+  created: string;
+  lastModified: string;
+  lastUsed: string;
+  owner: {
+    userName: string;
+    userId: string;
+    email: string;
+  };
+  pageCount: string;
+  folderId: string;
+  folderName: string;
+  folderIds: string[];
+  autoMatch: string;
+  autoMatchSpecifiedByUser: string;
+  emailSubject: string;
+  emailBlurb: string;
+  signingLocation: string;
+  authoritativeCopy: string;
+  enforceSignerVisibility: string;
+  enableWetSign: string;
+  allowMarkup: string;
+  allowReassign: string;
+  disableResponsiveDocument: string;
+  anySigner: string | null;
+  envelopeLocation: string | null;
+}
+
 const clientId = process.env.DOCUSIGN_INTEGRATION_KEY!;
 const clientSecret = process.env.DOCUSIGN_SECRET_KEY!;
 const tokenEndpoint = process.env.NEXT_PUBLIC_DOCUSIGN_TOKEN_URL;
+
+export function generateDocusignRestApiUrl(baseUri: string, resource: string) {
+  return `${baseUri}/restapi/v2.1/${resource}`;
+}
 
 // Refresh access token
 export async function refreshAccessToken(businessId: string) {

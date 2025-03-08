@@ -148,6 +148,7 @@ function RevokeButton({ businessId }: { businessId: string }) {
         color="red"
         onClick={() => setIsRevoking(true)}
         disabled={isRevoking}
+        pill
       >
         <Trash2Icon className="size-5" />
       </Button>
@@ -211,7 +212,7 @@ export default function AccountDetails({
               </h3>
             </hgroup>
             <div className="flex gap-2">
-              <Button color="light" onClick={() => setIsEditing(true)}>
+              <Button color="light" onClick={() => setIsEditing(true)} pill>
                 <SettingsIcon className="size-5" />
               </Button>
               <RevokeButton businessId={integration.business_id} />

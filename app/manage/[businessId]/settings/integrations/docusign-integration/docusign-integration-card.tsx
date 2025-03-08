@@ -3,6 +3,7 @@ import { Tables } from "@/types/supabase";
 import { getAccessToken, IUserInfo } from "@/utils/docusign";
 import { Alert, Button, Card } from "flowbite-react";
 import AccountDetails from "./account-details";
+import TemplatesTable from "./templates-table";
 
 function docusignOauthUrl({ businessId }: { businessId: string }) {
   const searchParams = new URLSearchParams({
@@ -16,7 +17,7 @@ function docusignOauthUrl({ businessId }: { businessId: string }) {
   return `${process.env.NEXT_PUBLIC_DOCUSIGN_OAUTH_URL}?${searchParams.toString()}`;
 }
 
-async function getDocusignUserInfo(businessId: string) {
+async function getBusinessDocusignUserInfo(businessId: string) {
   const accessToken = await getAccessToken(businessId);
 
   return fetch(process.env.NEXT_PUBLIC_DOCUSIGN_USERINFO_URL!, {
@@ -39,8 +40,10 @@ export default async function DocusignIntegrationCard({
   revoke: string | undefined;
   success: string | undefined;
 }) {
-  const res: IUserInfo = await getDocusignUserInfo(businessId);
+  const res: IUserInfo = await getBusinessDocusignUserInfo(businessId);
   const { accounts } = res;
+
+  const hasAccount = Boolean(integration?.account_id && integration?.base_uri);
 
   return (
     <Card>
@@ -65,7 +68,12 @@ export default async function DocusignIntegrationCard({
         </>
       )}
       {integration ? (
-        <AccountDetails accounts={accounts} integration={integration} />
+        <>
+          <AccountDetails accounts={accounts} integration={integration} />
+          {hasAccount && (
+            <TemplatesTable businessId={businessId} integration={integration} />
+          )}
+        </>
       ) : (
         <div className="flex">
           <Button href={docusignOauthUrl({ businessId })}>Connect</Button>
