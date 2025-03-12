@@ -55,26 +55,43 @@ const clientId = process.env.DOCUSIGN_INTEGRATION_KEY!;
 const clientSecret = process.env.DOCUSIGN_SECRET_KEY!;
 const tokenEndpoint = process.env.NEXT_PUBLIC_DOCUSIGN_TOKEN_URL;
 
-export function generateDocusignRestApiUrl(baseUri: string, resource: string) {
+export function generateDocusignRestApiUrl({
+  baseUri,
+  resource,
+}: {
+  baseUri: string;
+  resource: string;
+}) {
   return `${baseUri}/restapi/v2.1/${resource}`;
 }
 
-// Refresh access token
-export async function refreshAccessToken(businessId: string) {
+async function getBusinessIntegrationData(businessId: string) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("business_integrations")
-    .select("refresh_token")
+    .select("*")
     .match({ business_id: businessId, resource: "docusign" })
     .single();
 
-  if (error || !data?.refresh_token) throw new Error("No refresh token found");
+  if (error || !data) throw new Error("No integration data found");
+
+  return {
+    ...data,
+    base_uri: data.base_uri
+      ? data.base_uri
+      : process.env.NEXT_PUBLIC_DOCUSIGN_REST_API!,
+  };
+}
+
+export async function refreshAccessToken(businessId: string) {
+  const { refresh_token } = await getBusinessIntegrationData(businessId);
+  if (!refresh_token) throw new Error("No refresh token found");
 
   const refreshTokenParams = new URLSearchParams({
     client_id: clientId,
     client_secret: clientSecret,
     grant_type: "refresh_token",
-    refresh_token: data.refresh_token,
+    refresh_token: refresh_token,
   });
 
   const refreshTokenUrl = `${tokenEndpoint}?${refreshTokenParams.toString()}`;
@@ -84,11 +101,12 @@ export async function refreshAccessToken(businessId: string) {
     method: "POST",
   }).then((res) => res.json());
 
-  const { access_token, refresh_token, expires_in } = response;
+  const { access_token, refresh_token: newRefreshToken, expires_in } = response;
+  const supabase = await createSupabaseServerClient();
   await supabase.from("business_integrations").upsert({
     business_id: businessId,
     expires_at: Date.now() + expires_in * 1000,
-    refresh_token, // New refresh token issued
+    refresh_token: newRefreshToken, // New refresh token issued
     resource: "docusign",
     token: access_token,
   });
@@ -96,52 +114,76 @@ export async function refreshAccessToken(businessId: string) {
   return access_token;
 }
 
-// Get or refresh access token
 export async function getAccessToken(businessId: string) {
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from("business_integrations")
-    .select("token, refresh_token, expires_at")
-    .match({ business_id: businessId, resource: "docusign" })
-    .single();
-
-  if (!data || !data.expires_at) return;
+  const { expires_at, token } = await getBusinessIntegrationData(businessId);
+  if (!expires_at) return;
 
   // 5-minute buffer to refresh proactively
-  if (data.expires_at > Date.now() + 300000) return data.token;
+  if (expires_at > Date.now() + 300000) return token;
 
   return await refreshAccessToken(businessId);
 }
 
-// // Get base URI for API calls
-// export async function getBaseUri(tenantId: string) {
-//   const accessToken = await getAccessToken(tenantId);
-//   const response = await axios.get(
-//     "https://account-d.docusign.com/oauth/userinfo",
-//     {
-//       headers: { Authorization: `Bearer ${accessToken}` },
-//     },
-//   );
+export async function getBusinessDocusignTemplates(
+  businessId: string,
+): Promise<IDocusignTemplate[]> {
+  const accessToken = await getAccessToken(businessId);
+  const { account_id: accountId, base_uri: baseUri } =
+    await getBusinessIntegrationData(businessId);
 
-//   // Assume first account; adjust if multi-account per user
-//   return response.data.accounts[0].base_uri;
-// }
+  if (!accessToken || !baseUri) return [];
 
-// List envelopes (example API call)
-// export async function listEnvelopes(tenantId: string) {
-//   const accessToken = await getAccessToken(tenantId);
-//   const baseUri = await getBaseUri(tenantId);
-//   const accountId = (
-//     await axios.get("https://account-d.docusign.com/oauth/userinfo", {
-//       headers: { Authorization: `Bearer ${accessToken}` },
-//     })
-//   ).data.accounts[0].account_id;
+  const envlopesApiUrl = generateDocusignRestApiUrl({
+    baseUri,
+    resource: `/accounts/${accountId}/templates`,
+  });
 
-//   const response = await axios.get(
-//     `${baseUri}/restapi/v2.1/accounts/${accountId}/envelopes`,
-//     {
-//       headers: { Authorization: `Bearer ${accessToken}` },
-//     },
-//   );
-//   return response.data.envelopes;
-// }
+  return fetch(envlopesApiUrl, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  })
+    .then((response) => response.json())
+    .then((data) => data.envelopeTemplates);
+}
+
+export async function createBusinessDocusignEnvelopeFromTemplate({
+  businessId,
+  data,
+}: {
+  businessId: string;
+  data: {
+    templateId: string;
+    templateRoles: {
+      email: string;
+      name: string;
+      roleName: string;
+      tabs?: {
+        textTabs: { tabLabel: string; value: string }[];
+      };
+    }[];
+    status: string;
+  };
+}) {
+  const accessToken = await getAccessToken(businessId);
+  const { account_id: accountId, base_uri: baseUri } =
+    await getBusinessIntegrationData(businessId);
+
+  const envelopesApiUrl = generateDocusignRestApiUrl({
+    baseUri,
+    resource: `/accounts/${accountId}/envelopes`,
+  });
+  console.log({ accessToken });
+  return fetch(envelopesApiUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      console.log("here", { res });
+      return res;
+    })
+    .catch(console.log);
+}

@@ -652,6 +652,55 @@ export type Database = {
           },
         ]
       }
+      business_location_job_docusign_envelopes: {
+        Row: {
+          business_id: string
+          created_at: string
+          envelope_id: string
+          id: number
+          job_id: number
+          location_id: number
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          envelope_id: string
+          id?: number
+          job_id: number
+          location_id: number
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          envelope_id?: string
+          id?: number
+          job_id?: number
+          location_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_location_job_docusign_envelopes_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_docusign_envelopes_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_docusign_envelopes_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "business_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_location_job_media: {
         Row: {
           business_id: string

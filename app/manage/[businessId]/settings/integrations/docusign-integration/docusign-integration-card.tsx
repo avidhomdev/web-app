@@ -70,9 +70,7 @@ export default async function DocusignIntegrationCard({
       {integration ? (
         <>
           <AccountDetails accounts={accounts} integration={integration} />
-          {hasAccount && (
-            <TemplatesTable businessId={businessId} integration={integration} />
-          )}
+          {hasAccount && <TemplatesTable businessId={businessId} />}
         </>
       ) : (
         <div className="flex">

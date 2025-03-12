@@ -1,7 +1,5 @@
-import { Tables } from "@/types/supabase";
 import {
-  generateDocusignRestApiUrl,
-  getAccessToken,
+  getBusinessDocusignTemplates,
   IDocusignTemplate,
 } from "@/utils/docusign";
 import { formatAsReadableDate } from "@/utils/formatter";
@@ -14,37 +12,13 @@ import {
   TableRow,
 } from "flowbite-react";
 
-async function getBusinessDocusignAccountTemplates(
-  baseUri: string,
-  businessId: string,
-  accountId: string,
-) {
-  const accessToken = await getAccessToken(businessId);
-  const envlopesApiUrl = generateDocusignRestApiUrl(
-    baseUri,
-    `/accounts/${accountId}/templates`,
-  );
-
-  return fetch(envlopesApiUrl, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  })
-    .then((response) => response.json())
-    .then((data) => data.envelopeTemplates);
-}
-
 export default async function TemplatesTable({
   businessId,
-  integration,
 }: {
   businessId: string;
-  integration: Tables<"business_integrations">;
 }) {
   const templates: IDocusignTemplate[] =
-    await getBusinessDocusignAccountTemplates(
-      integration.base_uri!,
-      businessId,
-      integration.account_id!,
-    );
+    await getBusinessDocusignTemplates(businessId);
 
   return (
     <>
