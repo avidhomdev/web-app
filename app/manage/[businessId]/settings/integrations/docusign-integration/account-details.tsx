@@ -27,7 +27,7 @@ function ChangeAccountForm({
   const [confirmChange, setConfirmChange] = useState(false);
   const closeChangeModal = () => setIsChangeModalShown(false);
 
-  const selectedAccount = accounts.find(
+  const selectedAccount = accounts?.find(
     (account) => account.account_id === selectedAccountId,
   );
 
@@ -66,7 +66,7 @@ function ChangeAccountForm({
             <option disabled value="">
               Select an account
             </option>
-            {accounts.map((account) => (
+            {accounts?.map((account) => (
               <option key={account.account_id} value={account.account_id}>
                 {account.account_name}
               </option>
@@ -189,7 +189,7 @@ export default function AccountDetails({
   integration: Tables<"business_integrations">;
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const selectedAccount = accounts.find(
+  const selectedAccount = accounts?.find(
     (account) => account.account_id === integration.account_id,
   );
 
