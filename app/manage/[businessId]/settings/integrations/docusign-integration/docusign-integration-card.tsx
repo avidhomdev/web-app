@@ -19,10 +19,29 @@ function docusignOauthUrl({ businessId }: { businessId: string }) {
 
 async function getBusinessDocusignUserInfo(businessId: string) {
   const accessToken = await getAccessToken(businessId);
-
   return fetch(process.env.NEXT_PUBLIC_DOCUSIGN_USERINFO_URL!, {
     headers: { Authorization: `Bearer ${accessToken}` },
   }).then((response) => response.json());
+}
+
+async function DocusignAccount({
+  businessId,
+  integration,
+}: {
+  businessId: string;
+  integration: Tables<"business_integrations">;
+}) {
+  const res: IUserInfo = await getBusinessDocusignUserInfo(businessId);
+  const { accounts } = res;
+
+  const hasAccount = Boolean(integration?.account_id && integration?.base_uri);
+
+  return (
+    <>
+      <AccountDetails accounts={accounts} integration={integration} />
+      {hasAccount && <TemplatesTable businessId={businessId} />}
+    </>
+  );
 }
 
 export default async function DocusignIntegrationCard({
@@ -40,11 +59,6 @@ export default async function DocusignIntegrationCard({
   revoke: string | undefined;
   success: string | undefined;
 }) {
-  const res: IUserInfo = await getBusinessDocusignUserInfo(businessId);
-  const { accounts } = res;
-
-  const hasAccount = Boolean(integration?.account_id && integration?.base_uri);
-
   return (
     <Card>
       <div>
@@ -55,7 +69,7 @@ export default async function DocusignIntegrationCard({
         <>
           {error && <ErrorAlert message={error} />}
           {revoke && (
-            <Alert color="red">
+            <Alert color="success">
               <strong className="font-semibold">Access Revoked.</strong> Please
               connect your account again if you wish to use DocuSign.
             </Alert>
@@ -68,10 +82,7 @@ export default async function DocusignIntegrationCard({
         </>
       )}
       {integration ? (
-        <>
-          <AccountDetails accounts={accounts} integration={integration} />
-          {hasAccount && <TemplatesTable businessId={businessId} />}
-        </>
+        <DocusignAccount businessId={businessId} integration={integration} />
       ) : (
         <div className="flex">
           <Button href={docusignOauthUrl({ businessId })}>Connect</Button>
