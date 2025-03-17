@@ -87,6 +87,8 @@ export async function GET(request: NextRequest) {
   revalidatePath(redirectPath);
 
   return NextResponse.redirect(
-    redirectUrl(`${redirectPath}?revoke=true&resource=docusign`),
+    redirectUrl(
+      `${redirectPath}?revoke=DocuSign access has been revoked.&resource=docusign`,
+    ),
   );
 }
