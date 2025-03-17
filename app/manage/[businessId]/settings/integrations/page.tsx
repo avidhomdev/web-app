@@ -1,10 +1,12 @@
+import ErrorAlert from "@/components/error-alert";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
+import { Alert } from "flowbite-react";
 import DocusignIntegrationCard from "./docusign-integration/docusign-integration-card";
+import StripeIntegrationCard from "./stripe-integration/stripe-integration-card";
 
 type TSearchParams = Promise<{
   error?: string;
   success?: string;
-  revoke?: string;
   resource?: string;
 }>;
 
@@ -20,7 +22,7 @@ export default async function Page({
   searchParams: TSearchParams;
 }) {
   const { businessId } = await params;
-  const { error, success, resource, revoke } = await searchParams;
+  const { error, success } = await searchParams;
   const supabase = await createSupabaseServerClient();
   const { data, error: fetchError } = await supabase
     .from("business_integrations")
@@ -40,13 +42,19 @@ export default async function Page({
           </p>
         </hgroup>
         <div className="grid gap-6 sm:col-span-9 md:col-span-7 md:col-start-6">
+          {error && <ErrorAlert message={error} />}
+          {success && (
+            <Alert color="success">
+              <strong className="font-semibold">Success!</strong> {success}
+            </Alert>
+          )}
           <DocusignIntegrationCard
             businessId={businessId}
             integration={data?.find((i) => i.resource === "docusign")}
-            error={error}
-            revoke={revoke}
-            resource={resource}
-            success={success}
+          />
+          <StripeIntegrationCard
+            businessId={businessId}
+            integration={data?.find((i) => i.resource === "stripe")}
           />
         </div>
       </div>

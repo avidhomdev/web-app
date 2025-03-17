@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
 
   if (error)
     return NextResponse.redirect(
-      redirectUrl(`${redirectPath}?error=${error.message}&resource=docusign`),
+      redirectUrl(`${redirectPath}?error=${error.message}`),
     );
 
   const { token, refresh_token } = integration;
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     },
   ).catch((error) => {
     return NextResponse.redirect(
-      redirectUrl(`${redirectPath}?error=${error.message}&resource=docusign`),
+      redirectUrl(`${redirectPath}?error=${error.message}`),
     );
   });
 
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
     },
   ).catch((error) => {
     return NextResponse.redirect(
-      redirectUrl(`${redirectPath}?error=${error.message}&resource=docusign`),
+      redirectUrl(`${redirectPath}?error=${error.message}`),
     );
   });
 
@@ -79,16 +79,12 @@ export async function GET(request: NextRequest) {
 
   if (updateError)
     return NextResponse.redirect(
-      redirectUrl(
-        `${redirectPath}?error=${updateError.message}&resource=docusign`,
-      ),
+      redirectUrl(`${redirectPath}?error=${updateError.message}`),
     );
 
   revalidatePath(redirectPath);
 
   return NextResponse.redirect(
-    redirectUrl(
-      `${redirectPath}?revoke=DocuSign access has been revoked.&resource=docusign`,
-    ),
+    redirectUrl(`${redirectPath}?success=DocuSign access has been revoked.`),
   );
 }

@@ -10,9 +10,7 @@ export async function GET(request: NextRequest) {
 
   if (!businessId) {
     return NextResponse.redirect(
-      redirectUrl(
-        `${redirectPath}?error=Business ID is required&resource=docusign`,
-      ),
+      redirectUrl(`${redirectPath}?error=Business ID is required`),
     );
   }
 
@@ -25,17 +23,13 @@ export async function GET(request: NextRequest) {
 
   if (fetchError) {
     return NextResponse.redirect(
-      redirectUrl(
-        `${redirectPath}?error=${fetchError.message}&resource=docusign`,
-      ),
+      redirectUrl(`${redirectPath}?error=${fetchError.message}`),
     );
   }
 
   if (!data.refresh_token) {
     return NextResponse.redirect(
-      redirectUrl(
-        `${redirectPath}?error=No refresh token found&resource=docusign`,
-      ),
+      redirectUrl(`${redirectPath}?error=No refresh token found`),
     );
   }
 
@@ -72,7 +66,7 @@ export async function GET(request: NextRequest) {
     })
     .catch((error) => {
       return NextResponse.redirect(
-        redirectUrl(`${redirectPath}?error=${error.message}&resource=docusign`),
+        redirectUrl(`${redirectPath}?error=${error.message}`),
       );
     });
 }

@@ -1,7 +1,6 @@
-import ErrorAlert from "@/components/error-alert";
 import { Tables } from "@/types/supabase";
 import { getAccessToken, IUserInfo } from "@/utils/docusign";
-import { Alert, Button, Card } from "flowbite-react";
+import { Button, Card } from "flowbite-react";
 import AccountDetails from "./account-details";
 import TemplatesTable from "./templates-table";
 
@@ -46,18 +45,10 @@ async function DocusignAccount({
 
 export default async function DocusignIntegrationCard({
   businessId,
-  error,
   integration,
-  resource,
-  revoke,
-  success,
 }: {
   businessId: string;
-  error: string | undefined;
   integration?: Tables<"business_integrations">;
-  resource: string | undefined;
-  revoke: string | undefined;
-  success: string | undefined;
 }) {
   return (
     <Card>
@@ -65,22 +56,6 @@ export default async function DocusignIntegrationCard({
         <h3 className="font-semibold">DocuSign</h3>
         <p>Send documents to your customers for easy signatures</p>
       </div>
-      {resource === "docusign" && (
-        <>
-          {error && <ErrorAlert message={error} />}
-          {revoke && (
-            <Alert color="success">
-              <strong className="font-semibold">Access Revoked.</strong> Please
-              connect your account again if you wish to use DocuSign.
-            </Alert>
-          )}
-          {success && (
-            <Alert color="success">
-              <strong className="font-semibold">Success!</strong> {success}
-            </Alert>
-          )}
-        </>
-      )}
       {integration ? (
         <DocusignAccount businessId={businessId} integration={integration} />
       ) : (

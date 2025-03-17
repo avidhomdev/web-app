@@ -44,14 +44,12 @@ export async function GET(request: NextRequest) {
 
   if (error)
     return NextResponse.redirect(
-      redirectUrl(
-        `${redirectBasePath}?error=${error.message}&resource=docusign`,
-      ),
+      redirectUrl(`${redirectBasePath}?error=${error.message}`),
     );
 
   return NextResponse.redirect(
     redirectUrl(
-      `${redirectBasePath}?success=DocuSign authenticated successfully.&resource=docusign`,
+      `${redirectBasePath}?success=DocuSign authenticated successfully.`,
     ),
   );
 }
