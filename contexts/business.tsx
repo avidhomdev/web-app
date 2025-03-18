@@ -8,6 +8,7 @@ interface IBusinessProfile extends Partial<Tables<"business_profiles">> {
 }
 
 export interface IBusiness extends Partial<Tables<"businesses">> {
+  integrations: Partial<Tables<"business_integrations">>[];
   locations: Partial<Tables<"business_locations">>[];
   products: Tables<"business_products">[];
   profiles: IBusinessProfile[];
@@ -23,6 +24,7 @@ type TBusinessProviderContext = {
 const initialContext = {
   business: {
     id: "biz",
+    integrations: [],
     locations: [],
     products: [],
     profiles: [],
@@ -57,7 +59,12 @@ export function BusinessContextProvider({
 
   const value = useMemo(
     () => ({
-      business,
+      business: {
+        ...business,
+        integrations: business.integrations.filter(
+          (integration) => integration.status === "active",
+        ),
+      },
       productsDictionary,
     }),
     [business, productsDictionary],
