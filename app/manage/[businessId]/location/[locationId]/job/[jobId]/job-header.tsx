@@ -9,12 +9,16 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 
 import PageTabs from "@/components/page-tabs";
 import { LOCATION_JOB_STATUS } from "@/constants/location-job-status";
+import { useBusinessContext } from "@/contexts/business";
 
 export default function JobHeader({ job }: { job: IJob }) {
   const supabase = createClient();
   const router = useRouter();
   const pathname = usePathname();
   const { businessId, locationId, jobId } = useParams();
+  const {
+    business: { integrations },
+  } = useBusinessContext();
 
   const handleUpdateJobStatus =
     (status: Database["public"]["Enums"]["location_job_status"]) =>
@@ -32,25 +36,18 @@ export default function JobHeader({ job }: { job: IJob }) {
       href: `/manage/${businessId}/location/${locationId}/job/${jobId}`,
       title: "Dashboard",
     },
+    ...(integrations.find((integration) => integration.resource === "docusign")
+      ? [
+          {
+            href: `/manage/${businessId}/location/${locationId}/job/${jobId}/documents`,
+            title: "Documents",
+          },
+        ]
+      : []),
+
     {
-      href: `/manage/${businessId}/location/${locationId}/job/${jobId}/scheduling`,
-      title: "Scheduling",
-    },
-    {
-      href: `/manage/${businessId}/location/${locationId}/job/${jobId}/timesheets`,
-      title: "Timesheets",
-    },
-    {
-      href: `/manage/${businessId}/location/${locationId}/job/${jobId}/documents`,
-      title: "Documents",
-    },
-    {
-      href: `/manage/${businessId}/location/${locationId}/job/${jobId}/invoices`,
-      title: "Invoices",
-    },
-    {
-      href: `/manage/${businessId}/location/${locationId}/job/${jobId}/log`,
-      title: "Log",
+      href: `/manage/${businessId}/location/${locationId}/job/${jobId}/payments`,
+      title: "Payments",
     },
   ];
 
@@ -97,17 +94,19 @@ export default function JobHeader({ job }: { job: IJob }) {
             </Dropdown>
           </div>
         </div>
-        <PageTabs>
-          {tabs.map((tab) => (
-            <PageTabs.Tab
-              key={tab.title}
-              href={tab.href}
-              active={pathname === tab.href}
-            >
-              {tab.title}
-            </PageTabs.Tab>
-          ))}
-        </PageTabs>
+        {tabs.length > 1 && (
+          <PageTabs>
+            {tabs.map((tab) => (
+              <PageTabs.Tab
+                key={tab.title}
+                href={tab.href}
+                active={pathname === tab.href}
+              >
+                {tab.title}
+              </PageTabs.Tab>
+            ))}
+          </PageTabs>
+        )}
       </header>
     </>
   );
