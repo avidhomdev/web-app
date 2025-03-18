@@ -23,9 +23,10 @@ export default async function Layout(
     .select(
       `
       *,
-      profiles: business_profiles(*, profile: profile_id(*)),
+      integrations: business_integrations(*),
       locations: business_locations!business_locations_business_id_fkey(*),
       products: business_products!business_products_business_id_fkey(*)
+      profiles: business_profiles(*, profile: profile_id(*)),
       `,
     )
     .eq("id", businessId)
