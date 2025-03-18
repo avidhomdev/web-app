@@ -1,7 +1,5 @@
 import dayjs from "dayjs";
 import {
-  Dropdown,
-  DropdownItem,
   Table,
   TableBody,
   TableCell,
@@ -11,19 +9,16 @@ import {
   theme,
 } from "flowbite-react";
 import { twMerge } from "tailwind-merge";
+import AddCreditCardPaymentDrawer from "./add-credit-card-payment-drawer";
 
 export default function Page() {
   return (
     <div className="grid gap-4 md:gap-6">
       <div className="ml-auto">
-        <Dropdown label="Collect Payment">
-          <DropdownItem href="/">Cash</DropdownItem>
-          <DropdownItem href="/">Check</DropdownItem>
-          <DropdownItem href="/">Credit Card</DropdownItem>
-        </Dropdown>
+        <AddCreditCardPaymentDrawer />
       </div>
       <div
-        id="jobs-table"
+        id="payments-table"
         className="grid gap-4 overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-lg shadow-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900"
       >
         <Table
