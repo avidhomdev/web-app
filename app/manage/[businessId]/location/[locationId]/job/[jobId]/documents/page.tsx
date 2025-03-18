@@ -20,10 +20,6 @@ export default async function Page({
     .eq("id", Number(jobId))
     .single();
 
-  // const { data } = await supabase
-  //   .from("business_location_job_docusign_envelopes")
-  //   .select("*")
-  //   .eq("job_id", Number(jobId));
   const templates = await getBusinessDocusignTemplates(businessId);
 
   return (
