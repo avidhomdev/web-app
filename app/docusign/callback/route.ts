@@ -7,7 +7,8 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code") as string;
   const businessId = searchParams.get("state") as string;
-
+  const redirectUrl = (path: string) => new URL(path, request.url);
+  const redirectBasePath = `/manage/${businessId}/settings/integrations`;
   const docusignTokenParams = new URLSearchParams({
     grant_type: "authorization_code",
     code,
@@ -25,6 +26,12 @@ export async function GET(request: NextRequest) {
     method: "POST",
   }).then((res) => res.json());
 
+  if (!fetchAccessToken?.access_token) {
+    return NextResponse.redirect(
+      redirectUrl(`${redirectBasePath}?error=Failure to find access token`),
+    );
+  }
+
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.from("business_integrations").upsert({
     authorized_on_date: dayjs().format("YYYY-MM-DD"),
@@ -38,9 +45,7 @@ export async function GET(request: NextRequest) {
     type: "oauth",
   });
 
-  const redirectBasePath = `/manage/${businessId}/settings/integrations`;
   revalidatePath(redirectBasePath);
-  const redirectUrl = (path: string) => new URL(path, request.url);
 
   if (error)
     return NextResponse.redirect(
