@@ -66,7 +66,7 @@ export default function Page() {
                 forceFallback
                 group="kanban"
                 list={list.tasks}
-                setList={console.log}
+                setList={() => {}}
               >
                 {list.tasks.map((task) => (
                   <Card

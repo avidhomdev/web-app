@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function AddCreditCardPaymentDrawer() {
   const [isOpen, setIsOpen] = useState(false);
-  console.log({ isOpen });
+
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>Credit Card</Button>
