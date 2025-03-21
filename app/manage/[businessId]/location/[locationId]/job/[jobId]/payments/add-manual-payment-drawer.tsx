@@ -1,52 +1,43 @@
 "use client";
 
-import ErrorAlert from "@/components/error-alert";
 import SubmitButton from "@/components/submit-button";
-import {
-  initialFormState,
-  TInitialFormState,
-} from "@/constants/initial-form-state";
-import { Tables } from "@/types/supabase";
-import { Button, Drawer, Label, TextInput } from "flowbite-react";
+import { Button, Drawer, Label, Select, TextInput } from "flowbite-react";
 import { BanknoteIcon } from "lucide-react";
 import Form from "next/form";
 import { useParams } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
-import { collectCreditCardPayment } from "./action";
+import { collectManualPayment } from "./action";
+import {
+  initialFormState,
+  TInitialFormState,
+} from "@/constants/initial-form-state";
+import ErrorAlert from "@/components/error-alert";
 
-export default function AddCreditCardPaymentDrawer({
-  customer,
-}: {
-  customer?: Tables<"business_location_customers">;
-}) {
+export default function AddManualPaymentDrawer() {
   const { businessId, locationId, jobId } = useParams();
   const [state, action] = useActionState(
-    collectCreditCardPayment<TInitialFormState>,
+    collectManualPayment<TInitialFormState>,
     {
       ...initialFormState,
       data: {
+        type: "",
         name: "Deposit",
         amount: "0",
-        return_url: typeof window === "undefined" ? "" : window.location.href,
       },
     },
   );
 
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
-    if (state.success && state.dismiss) {
-      setIsOpen(() => false);
-      if (state.data.redirect_to_stripe)
-        window.location = state.data.redirect_to_stripe;
-    }
-  }, [state.success, state.dismiss, state.data.redirect_to_stripe, setIsOpen]);
+    if (state.success && state.dismiss) setIsOpen(() => false);
+  }, [state.success, state.dismiss, setIsOpen]);
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>Credit Card</Button>
+      <Button onClick={() => setIsOpen(true)}>Cash or Check</Button>
       <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
         <Drawer.Header
-          title="Collect Credit Card Payment"
+          title="Collect Manual Payment"
           titleIcon={() => <BanknoteIcon className="mr-2" />}
         />
         <Drawer.Items>
@@ -59,12 +50,22 @@ export default function AddCreditCardPaymentDrawer({
             <input type="hidden" name="business_id" value={businessId} />
             <input type="hidden" name="location_id" value={locationId} />
             <input type="hidden" name="job_id" value={jobId} />
-            <input type="hidden" name="email" value={customer?.email ?? ""} />
-            <input
-              name="return_url"
-              type="hidden"
-              defaultValue={state.data.return_url}
-            />
+            <div>
+              <Label htmlFor="type" className="mb-2 block">
+                Type
+              </Label>
+              <Select
+                defaultValue={state.data.type}
+                key={state.data.type}
+                id="type"
+                name="type"
+                required
+              >
+                <option value="">Select a option</option>
+                <option value="cash">Cash</option>
+                <option value="check">Check</option>
+              </Select>
+            </div>
             <div>
               <Label htmlFor="name" className="mb-2 block">
                 Name

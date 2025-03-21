@@ -17,15 +17,16 @@ interface IJobProduct extends Tables<"business_location_job_products"> {
 }
 
 export interface IJob extends Tables<"business_location_jobs"> {
+  appointments?: IJobProduct[];
+  closer?: Tables<"profiles">;
   creator?: Tables<"profiles">;
   customer?: Tables<"profiles">;
   installer?: Tables<"profiles">;
-  closer?: Tables<"profiles">;
-  messages?: IJobMessage[];
   media?: Tables<"business_location_job_media">[];
-  profiles?: IJobProfile[];
+  messages?: IJobMessage[];
+  payments?: Tables<"business_location_job_payments">[];
   products?: IJobProduct[];
-  appointments?: IJobProduct[];
+  profiles?: IJobProfile[];
 }
 
 export interface IJobMessage extends Tables<"business_location_job_messages"> {

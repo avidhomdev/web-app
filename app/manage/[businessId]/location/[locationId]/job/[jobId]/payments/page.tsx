@@ -12,30 +12,8 @@ import {
 } from "flowbite-react";
 import { twMerge } from "tailwind-merge";
 import AddCreditCardPaymentDrawer from "./add-credit-card-payment-drawer";
-
-async function getJobStripeSessions({
-  email,
-  jobId,
-}: {
-  email: string;
-  jobId: string;
-}) {
-  const { data = [], error } = await fetch(
-    `${process.env.NEXT_PUBLIC_STRIPE_API_URL}/checkout/sessions?customer_details[email]=${email}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
-      },
-    },
-  ).then((res) => res.json());
-
-  if (error) throw new Error(error.message);
-
-  return data.filter(
-    (session: { metadata: { job_id: string } }) =>
-      session.metadata.job_id === jobId,
-  );
-}
+import AddManualPaymentDrawer from "./add-manual-payment-drawer";
+import { IJob } from "@/types/job";
 
 export default async function Page(props: {
   params: Promise<{ jobId: string }>;
@@ -47,22 +25,22 @@ export default async function Page(props: {
 
   const { data, error } = await supabase
     .from("business_location_jobs")
-    .select("*, customer: customer_id(*)")
+    .select(
+      "*, customer: customer_id(*), payments: business_location_job_payments(*)",
+    )
     .eq("id", Number(jobId))
     .limit(1)
-    .single();
+    .single()
+    .overrideTypes<IJob>();
 
   if (error) throw error;
   if (!data) throw new Error("No job found.");
-  const sessions = await getJobStripeSessions({
-    jobId,
-    email: data.customer?.email || "",
-  });
 
   return (
     <div className="grid gap-4 md:gap-6">
-      <div className="ml-auto">
-        <AddCreditCardPaymentDrawer customer={data.customer!} />
+      <div className="ml-auto flex flex-row items-center gap-x-2">
+        <AddManualPaymentDrawer />
+        <AddCreditCardPaymentDrawer customer={data.customer} />
       </div>
       <div
         id="payments-table"
@@ -93,25 +71,16 @@ export default async function Page(props: {
             <TableHeadCell />
           </TableHead>
           <TableBody>
-            {sessions.map(
-              (session: {
-                amount_total: number;
-                created: string;
-                id: string;
-                payment_method_types: string[];
-              }) => (
-                <TableRow key={session.id}>
-                  <TableCell>
-                    {dayjs(session.created).format("MM/DD/YYYY")}
-                  </TableCell>
-                  <TableCell>
-                    {formatAsCurrency(session.amount_total / 100)}
-                  </TableCell>
-                  <TableCell>{session.payment_method_types}</TableCell>
-                  <TableCell className="w-0">Tools</TableCell>
-                </TableRow>
-              ),
-            )}
+            {data.payments?.map((payment) => (
+              <TableRow key={payment.id}>
+                <TableCell>
+                  {dayjs(payment.created_at).format("MM/DD/YYYY")}
+                </TableCell>
+                <TableCell>{formatAsCurrency(payment.amount)}</TableCell>
+                <TableCell>{payment.type}</TableCell>
+                <TableCell className="w-0">Tools</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>

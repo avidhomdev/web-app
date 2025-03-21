@@ -812,6 +812,64 @@ export type Database = {
           },
         ]
       }
+      business_location_job_payments: {
+        Row: {
+          amount: number
+          business_id: string
+          created_at: string
+          id: number
+          job_id: number
+          location_id: number
+          name: string
+          stripe_checkout_session_id: string | null
+          type: string
+        }
+        Insert: {
+          amount: number
+          business_id: string
+          created_at?: string
+          id?: number
+          job_id: number
+          location_id: number
+          name: string
+          stripe_checkout_session_id?: string | null
+          type: string
+        }
+        Update: {
+          amount?: number
+          business_id?: string
+          created_at?: string
+          id?: number
+          job_id?: number
+          location_id?: number
+          name?: string
+          stripe_checkout_session_id?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_location_job_payments_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_payments_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_payments_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "business_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_location_job_products: {
         Row: {
           business_id: string
@@ -1489,41 +1547,6 @@ export type Database = {
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      business_tokens: {
-        Row: {
-          business_id: string
-          created_at: string
-          id: number
-          service: string
-          token: string
-          token_type: string
-        }
-        Insert: {
-          business_id: string
-          created_at?: string
-          id?: number
-          service: string
-          token: string
-          token_type: string
-        }
-        Update: {
-          business_id?: string
-          created_at?: string
-          id?: number
-          service?: string
-          token?: string
-          token_type?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "business_tokens_business_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: false
-            referencedRelation: "businesses"
             referencedColumns: ["id"]
           },
         ]
