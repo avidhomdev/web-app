@@ -68,7 +68,6 @@ export default async function Page(props: {
             <TableHeadCell>Date</TableHeadCell>
             <TableHeadCell>Amount</TableHeadCell>
             <TableHeadCell>Type</TableHeadCell>
-            <TableHeadCell />
           </TableHead>
           <TableBody>
             {data.payments?.map((payment) => (
@@ -78,7 +77,6 @@ export default async function Page(props: {
                 </TableCell>
                 <TableCell>{formatAsCurrency(payment.amount)}</TableCell>
                 <TableCell>{payment.type}</TableCell>
-                <TableCell className="w-0">Tools</TableCell>
               </TableRow>
             ))}
           </TableBody>
