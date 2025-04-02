@@ -12,7 +12,7 @@ import { BanknoteIcon } from "lucide-react";
 import Form from "next/form";
 import { useParams } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
-import { collectCreditCardPayment } from "./action";
+import { sendCustomerInvoice } from "./action";
 
 export default function AddCreditCardPaymentDrawer({
   customer,
@@ -21,7 +21,7 @@ export default function AddCreditCardPaymentDrawer({
 }) {
   const { businessId, locationId, jobId } = useParams();
   const [state, action] = useActionState(
-    collectCreditCardPayment<TInitialFormState>,
+    sendCustomerInvoice<TInitialFormState>,
     {
       ...initialFormState,
       data: {
@@ -60,6 +60,12 @@ export default function AddCreditCardPaymentDrawer({
             <input type="hidden" name="location_id" value={locationId} />
             <input type="hidden" name="job_id" value={jobId} />
             <input type="hidden" name="email" value={customer?.email ?? ""} />
+            <input type="hidden" name="id" value={customer?.id ?? ""} />
+            <input
+              type="hidden"
+              name="stripe_customer_id"
+              value={customer?.stripe_customer_id ?? ""}
+            />
             <input
               name="return_url"
               type="hidden"

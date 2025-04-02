@@ -4,6 +4,7 @@ import { formStateResponse } from "@/constants/initial-form-state";
 import { ServerActionWithState } from "@/types/server-actions";
 import { jsonToFormUrlEncoded } from "@/utils/json-to-form-url-encoded";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
+import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
 
 export async function collectManualPayment<T>(
@@ -42,6 +43,196 @@ export async function collectManualPayment<T>(
       error: error.message,
     });
   }
+
+  return formStateResponse({
+    ...prevState,
+    data,
+    success: true,
+    dismiss: true,
+  });
+}
+
+async function findOrCreateStripeCustomer({
+  customerId,
+  email,
+}: {
+  customerId: number;
+  email: string;
+}) {
+  const supabase = await createSupabaseServerClient();
+
+  return fetch(
+    `${process.env.NEXT_PUBLIC_STRIPE_API_URL}/customers?email=${encodeURIComponent(email)}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    },
+  )
+    .then((res) => res.json())
+    .then(async ({ data: customers }) => {
+      if (customers.length > 0) {
+        await supabase
+          .from("business_location_customers")
+          .update({ stripe_customer_id: customers[0].id })
+          .eq("id", customerId);
+        return customers[0].id;
+      }
+
+      return fetch(`${process.env.NEXT_PUBLIC_STRIPE_API_URL}/customers`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: jsonToFormUrlEncoded({ email }),
+      })
+        .then((res) => res.json())
+        .then(async (customer) => {
+          await supabase
+            .from("business_location_customers")
+            .update({ stripe_customer_id: customer.id })
+            .eq("id", customerId);
+          return customer.id;
+        });
+    });
+}
+
+async function createInvoiceWithLineItems({
+  customer,
+  job_id,
+  lines,
+}: {
+  customer: string;
+  job_id: string;
+  lines: { amount: number; description: string }[];
+}) {
+  return fetch(`${process.env.NEXT_PUBLIC_STRIPE_API_URL}/invoices`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: jsonToFormUrlEncoded({
+      customer,
+      collection_method: "send_invoice",
+      due_date: dayjs().add(1, "day").unix(),
+      metadata: {
+        job_id,
+      },
+    }),
+  })
+    .then((res) => res.json())
+    .then(({ id, error }) => {
+      if (error) throw new Error(error.message);
+
+      return id;
+    })
+    .then((invoiceId) =>
+      fetch(
+        `${process.env.NEXT_PUBLIC_STRIPE_API_URL}/invoices/${invoiceId}/add_lines`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: jsonToFormUrlEncoded({
+            lines,
+          }),
+        },
+      ),
+    )
+    .then((res) => res.json())
+    .then(({ id, error }) => {
+      if (error) throw new Error(error.message);
+
+      return fetch(
+        `${process.env.NEXT_PUBLIC_STRIPE_API_URL}/invoices/${id}/finalize`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        },
+      );
+    })
+    .then((res) => res.json());
+}
+
+export async function sendCustomerInvoice<T>(
+  ...args: ServerActionWithState<T>
+) {
+  const supabase = await createSupabaseServerClient();
+  const [prevState, formData] = args;
+  const data = Object.fromEntries(formData);
+  const newState = {
+    ...prevState,
+    data,
+  };
+
+  if (Number(data.amount) <= 0) {
+    return formStateResponse({
+      ...prevState,
+      data,
+      error: "Amount must be greater than 0",
+    });
+  }
+
+  if (!data.stripe_customer_id && !data.email) {
+    return formStateResponse({
+      ...newState,
+      error: "Missing customer information.",
+    });
+  }
+
+  const stripeCustomerId =
+    data.stripe_customer_id ||
+    (await findOrCreateStripeCustomer({
+      customerId: Number(data.id),
+      email: data.email as string,
+    }));
+
+  const stripeResponse = await createInvoiceWithLineItems({
+    customer: stripeCustomerId,
+    job_id: data.job_id as string,
+    lines: [
+      {
+        amount: Number(data.amount) * 100,
+        description: data.name as string,
+      },
+    ],
+  });
+
+  const insertParams = {
+    business_id: data.business_id as string,
+    location_id: Number(data.location_id),
+    job_id: Number(data.job_id),
+    name: data.name as string,
+    type: "invoice",
+    amount: Number(data.amount),
+    stripe_invoice_id: stripeResponse.id,
+  };
+
+  const { error } = await supabase
+    .from("business_location_job_payments")
+    .insert(insertParams);
+
+  if (error) {
+    return formStateResponse({
+      ...prevState,
+      data,
+      success: false,
+      error: error.message,
+    });
+  }
+
+  revalidatePath(
+    `/manage/${data.business_id}/location/${data.location_id}/job/${data.job_id}/payments`,
+  );
 
   return formStateResponse({
     ...prevState,

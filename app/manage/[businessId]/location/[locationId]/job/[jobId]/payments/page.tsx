@@ -29,6 +29,10 @@ export default async function Page(props: {
       "*, customer: customer_id(*), payments: business_location_job_payments(*)",
     )
     .eq("id", Number(jobId))
+    .order("created_at", {
+      ascending: false,
+      referencedTable: "business_location_job_payments",
+    })
     .limit(1)
     .single()
     .overrideTypes<IJob>();
