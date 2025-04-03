@@ -49,20 +49,30 @@ export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
   }
 
   if (fields.profile_id) {
-    const { error: businessProfileUpsertError } = await supabase
+    const { data: foundBusinessProfiles } = await supabase
       .from("business_profiles")
-      .upsert({
+      .select("profile_id")
+      .match({
         business_id: fields.business_id as string,
         profile_id: fields.profile_id as string,
-        role: "base" as Database["public"]["Enums"]["business_roles"],
-      });
+      })
+      .limit(1);
 
-    if (businessProfileUpsertError) {
-      return formStateResponse({
-        ...state,
-        data: fields,
-        error: businessProfileUpsertError.message,
-      });
+    if (!foundBusinessProfiles || foundBusinessProfiles.length === 0) {
+      const { error: businessProfileUpsertError } = await supabase
+        .from("business_profiles")
+        .insert({
+          business_id: fields.business_id as string,
+          profile_id: fields.profile_id as string,
+          role: "base" as Database["public"]["Enums"]["business_roles"],
+        });
+      if (businessProfileUpsertError) {
+        return formStateResponse({
+          ...state,
+          data: fields,
+          error: businessProfileUpsertError.message,
+        });
+      }
     }
 
     const { error } = await supabase.from("business_location_profiles").upsert({
