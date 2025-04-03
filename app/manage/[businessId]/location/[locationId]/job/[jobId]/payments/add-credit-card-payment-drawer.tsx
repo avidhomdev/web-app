@@ -94,8 +94,8 @@ export default function AddCreditCardPaymentDrawer({
                 required
               />
             </div>
-            <SubmitButton pendingText="Starting checkout...">
-              Checkout
+            <SubmitButton pendingText="Sending invoice...">
+              Send Invoice
             </SubmitButton>
           </Form>
         </Drawer.Items>

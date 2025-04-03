@@ -62,7 +62,7 @@ export default function JobProductsFormFields({
       striped
       theme={{
         body: { cell: { base: "p-2" } },
-        head: { cell: { base: "p-2 bg-gray-50" } },
+        head: { cell: { base: "p-2 bg-gray-50 dark:bg-gray-700" } },
       }}
     >
       <Table.Head>

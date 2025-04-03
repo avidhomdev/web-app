@@ -27,6 +27,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-sortablejs": "^6.1.4",
+    "resend": "^4.2.0",
     "sharp": "^0.33.5",
     "sortablejs": "^1.15.3"
   },

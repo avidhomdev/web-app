@@ -1,11 +1,13 @@
 "use server";
 
+import JobInvoiceEmailTemplate from "@/components/emails/job-invoice";
 import { formStateResponse } from "@/constants/initial-form-state";
 import { ServerActionWithState } from "@/types/server-actions";
 import { jsonToFormUrlEncoded } from "@/utils/json-to-form-url-encoded";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
+import { Resend } from "resend";
 
 export async function collectManualPayment<T>(
   ...args: ServerActionWithState<T>
@@ -163,6 +165,8 @@ async function createInvoiceWithLineItems({
     .then((res) => res.json());
 }
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export async function sendCustomerInvoice<T>(
   ...args: ServerActionWithState<T>
 ) {
@@ -233,6 +237,16 @@ export async function sendCustomerInvoice<T>(
   revalidatePath(
     `/manage/${data.business_id}/location/${data.location_id}/job/${data.job_id}/payments`,
   );
+
+  await resend.emails.send({
+    from: "no-reply <no-reply@avid-hom.com>",
+    to: [data.email as string],
+    subject: "New Invoice",
+    react: JobInvoiceEmailTemplate({
+      name: data.name as string,
+      invoice_url: stripeResponse.hosted_invoice_url,
+    }),
+  });
 
   return formStateResponse({
     ...prevState,

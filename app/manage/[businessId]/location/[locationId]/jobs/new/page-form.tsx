@@ -15,7 +15,6 @@ import initialFormState, {
   TInitialFormState,
 } from "@/constants/initial-form-state";
 import { JOB_LEAD_TYPES } from "@/constants/job-lead-types";
-import { JOB_PAYMENT_TYPES } from "@/constants/job-payment-types";
 import { JOB_PROFILE_ROLES } from "@/constants/job-profile-roles";
 import { US_STATES } from "@/constants/us-states";
 import { ILocationEmployee } from "@/types/location";
@@ -494,51 +493,6 @@ const FormFields = ({
             leadType={leadType}
             products={products}
           />
-        </fieldset>
-      </Card>
-      <Card>
-        <h2 className="text-xl font-medium text-gray-400">
-          Payment Information
-        </h2>
-        <fieldset
-          disabled={pending}
-          className="grid gap-2 pb-2 sm:grid-cols-2 md:gap-6 md:pb-6"
-        >
-          <div>
-            <Label htmlFor="down_payment_collected" className="mb-2 block">
-              Down Payment Collected
-            </Label>
-            <TextInput
-              autoComplete="off"
-              defaultValue={data.down_payment_collected}
-              id="down_payment_collected"
-              name="down_payment_collected"
-              type="number"
-            />
-          </div>
-          <div>
-            <Label htmlFor="payment_type" className="mb-2 block">
-              Payment Type
-            </Label>
-            <Select
-              defaultValue={data.payment_type}
-              id="payment_type"
-              key={data.payment_type}
-              name="payment_type"
-              required
-            >
-              <option value="" disabled>
-                Select a type
-              </option>
-              {Object.entries(JOB_PAYMENT_TYPES).map(
-                ([jobPaymentTypeKey, jobPaymentType]) => (
-                  <option key={jobPaymentTypeKey} value={jobPaymentTypeKey}>
-                    {jobPaymentType.name}
-                  </option>
-                ),
-              )}
-            </Select>
-          </div>
         </fieldset>
       </Card>
       <Card>
