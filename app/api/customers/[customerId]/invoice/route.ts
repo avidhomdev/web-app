@@ -127,16 +127,15 @@ export async function POST(
   const headersList = await headers();
 
   // Extract JWT
-  const authHeader = headersList.get("Authorization");
+  const jwt = headersList.get("x-vercel-user-token");
+
   // eslint-disable-next-line no-console
-  console.log(Object.fromEntries(headersList));
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!jwt) {
     return NextResponse.json(
       { success: false, error: "Missing or invalid Authorization header" },
       { status: 401 },
     );
   }
-  const jwt = authHeader.split(" ")[1];
 
   const supabase = await createSupabaseServerClient({ jwt });
   const {
@@ -146,7 +145,7 @@ export async function POST(
 
   if (authError || !user) {
     return NextResponse.json(
-      { success: false, error: "Invalid or expired token" },
+      { success: false, error: authError?.message || "No user found." },
       { status: 401 },
     );
   }
