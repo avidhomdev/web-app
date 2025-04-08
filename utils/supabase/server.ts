@@ -4,7 +4,8 @@ import { cookies } from "next/headers";
 
 export const createSupabaseServerClient = async ({
   admin = false,
-}: { admin?: boolean } = {}) => {
+  jwt,
+}: { admin?: boolean; jwt?: string } = {}) => {
   const cookieStore = await cookies();
 
   return createServerClient<Database>(
@@ -29,6 +30,13 @@ export const createSupabaseServerClient = async ({
           }
         },
       },
+      ...(jwt
+        ? {
+            global: {
+              headers: { Authorization: `Bearer ${jwt}` },
+            },
+          }
+        : {}),
     },
   );
 };
