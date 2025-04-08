@@ -11,6 +11,7 @@
     "check-all": "next lint && tsc --noemit"
   },
   "dependencies": {
+    "@react-email/components": "^0.0.36",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "ag-charts-community": "^10.1.0",
