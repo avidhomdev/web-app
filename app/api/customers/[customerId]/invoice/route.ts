@@ -133,7 +133,7 @@ export async function POST(
   if (!jwt) {
     return NextResponse.json(
       { success: false, error: "Missing or invalid Authorization header" },
-      { status: 401 },
+      { status: 401, headers: corsHeaders },
     );
   }
 
@@ -146,7 +146,7 @@ export async function POST(
   if (authError || !user) {
     return NextResponse.json(
       { success: false, error: authError?.message || "No user found." },
-      { status: 401 },
+      { status: 401, headers: corsHeaders },
     );
   }
 
@@ -161,7 +161,7 @@ export async function POST(
   if (!customer || customerError) {
     return NextResponse.json(
       { success: false, error: "Missing customer information" },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
 
@@ -186,7 +186,7 @@ export async function POST(
   if (stripeResponse.error) {
     return NextResponse.json(
       { success: false, error: stripeResponse.error.message },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
 
@@ -200,5 +200,19 @@ export async function POST(
     }),
   });
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true }, { headers: corsHeaders });
+}
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Authorization, Content-Type",
+};
+export async function OPTIONS() {
+  return NextResponse.json(
+    {},
+    {
+      headers: corsHeaders,
+    },
+  );
 }
