@@ -2,7 +2,6 @@ import JobInvoiceEmailTemplate from "@/components/emails/job-invoice";
 import { jsonToFormUrlEncoded } from "@/utils/json-to-form-url-encoded";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import dayjs from "dayjs";
-import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -129,10 +128,18 @@ export async function POST(
   { params }: { params: Promise<{ customerId: string }> },
 ) {
   const { customerId } = await params;
-  const headersList = await headers();
+  const headersList = await request.headers;
 
   // Extract JWT
   const authHeader = headersList.get("authorization");
+  // eslint-disable-next-line no-console
+  console.log({
+    authHeader,
+    m: request.method,
+    u: request.url,
+    h: request.headers,
+    o: request.referrer,
+  });
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json(
       { success: false, error: "Missing or invalid Authorization header" },
