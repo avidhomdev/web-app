@@ -197,14 +197,5 @@ export async function POST(
     }),
   });
 
-  return NextResponse.json(
-    { success: true },
-    {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Authorization, Content-Type",
-      },
-    },
-  );
+  return NextResponse.json({ success: true });
 }
