@@ -118,6 +118,11 @@ async function createInvoiceWithLineItems({
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*", // Replace with specific origin in production
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Authorization, Content-Type",
+};
 
 export async function POST(
   request: NextRequest,
@@ -127,15 +132,14 @@ export async function POST(
   const headersList = await headers();
 
   // Extract JWT
-  const jwt = headersList.get("x-vercel-user-token");
-
-  // eslint-disable-next-line no-console
-  if (!jwt) {
+  const authHeader = headersList.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json(
       { success: false, error: "Missing or invalid Authorization header" },
-      { status: 401, headers: corsHeaders },
+      { headers: corsHeaders, status: 401 },
     );
   }
+  const jwt = authHeader.split(" ")[1];
 
   const supabase = await createSupabaseServerClient({ jwt });
   const {
@@ -145,8 +149,8 @@ export async function POST(
 
   if (authError || !user) {
     return NextResponse.json(
-      { success: false, error: authError?.message || "No user found." },
-      { status: 401, headers: corsHeaders },
+      { success: false, error: "Invalid or expired token" },
+      { headers: corsHeaders, status: 401 },
     );
   }
 
@@ -161,7 +165,7 @@ export async function POST(
   if (!customer || customerError) {
     return NextResponse.json(
       { success: false, error: "Missing customer information" },
-      { status: 400, headers: corsHeaders },
+      { headers: corsHeaders, status: 400 },
     );
   }
 
@@ -186,7 +190,7 @@ export async function POST(
   if (stripeResponse.error) {
     return NextResponse.json(
       { success: false, error: stripeResponse.error.message },
-      { status: 400, headers: corsHeaders },
+      { headers: corsHeaders, status: 400 },
     );
   }
 
@@ -203,11 +207,6 @@ export async function POST(
   return NextResponse.json({ success: true }, { headers: corsHeaders });
 }
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Authorization, Content-Type",
-};
 export async function OPTIONS() {
   return NextResponse.json(
     {},
