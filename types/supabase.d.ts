@@ -317,7 +317,6 @@ export type Database = {
           business_id: string
           created_at: string
           customer_id: number | null
-          id: number
           location_id: number
           product_id: number
           unit_price: number
@@ -328,7 +327,6 @@ export type Database = {
           business_id: string
           created_at?: string
           customer_id?: number | null
-          id?: number
           location_id: number
           product_id: number
           unit_price: number
@@ -339,7 +337,6 @@ export type Database = {
           business_id?: string
           created_at?: string
           customer_id?: number | null
-          id?: number
           location_id?: number
           product_id?: number
           unit_price?: number
@@ -390,6 +387,7 @@ export type Database = {
           created_at: string
           creator_id: string
           customer_id: number
+          discount: number
           has_water_rebate: boolean
           hoa_approval_required: boolean
           hoa_contact_email: string | null
@@ -405,10 +403,11 @@ export type Database = {
         }
         Insert: {
           business_id: string
-          commission?: number
+          commission: number
           created_at?: string
           creator_id: string
           customer_id: number
+          discount?: number
           has_water_rebate?: boolean
           hoa_approval_required?: boolean
           hoa_contact_email?: string | null
@@ -428,6 +427,7 @@ export type Database = {
           created_at?: string
           creator_id?: string
           customer_id?: number
+          discount?: number
           has_water_rebate?: boolean
           hoa_approval_required?: boolean
           hoa_contact_email?: string | null
@@ -1183,6 +1183,7 @@ export type Database = {
           created_at: string
           creator_id: string
           customer_id: number | null
+          discount: number | null
           down_payment_collected: number | null
           email: string | null
           estimated_end_date: string | null
@@ -1212,6 +1213,7 @@ export type Database = {
           created_at?: string
           creator_id: string
           customer_id?: number | null
+          discount?: number | null
           down_payment_collected?: number | null
           email?: string | null
           estimated_end_date?: string | null
@@ -1241,6 +1243,7 @@ export type Database = {
           created_at?: string
           creator_id?: string
           customer_id?: number | null
+          discount?: number | null
           down_payment_collected?: number | null
           email?: string | null
           estimated_end_date?: string | null

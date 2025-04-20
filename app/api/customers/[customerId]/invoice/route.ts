@@ -130,16 +130,7 @@ export async function POST(
   const { customerId } = await params;
   const headersList = await request.headers;
 
-  // Extract JWT
   const authHeader = headersList.get("authorization");
-  // eslint-disable-next-line no-console
-  console.log({
-    authHeader,
-    m: request.method,
-    u: request.url,
-    h: request.headers,
-    o: request.referrer,
-  });
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json(
       { success: false, error: "Missing or invalid Authorization header" },
