@@ -105,13 +105,15 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
       >
         <Preview>New Job from bid</Preview>
         <Body className="bg-offwhite font-sans text-base">
-          <Img
-            alt="illustration"
-            className="block rounded-full object-cover object-center"
-            height={300}
-            src="https://www.avid-hom.com/images/pay-laptop.png"
-            width={300}
-          />
+          <Section>
+            <Img
+              alt="illustration"
+              className="mx-auto w-full rounded-[12px] object-cover"
+              height={320}
+              src="https://www.avid-hom.com/images/pay-laptop.png"
+              width={320}
+            />
+          </Section>
           <Container className="p-45 bg-white">
             <Heading className="my-0 text-center leading-8">
               New Job from Bid

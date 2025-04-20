@@ -227,7 +227,7 @@ export async function POST(
       await resend.emails.send({
         from: "no-reply <no-reply@avid-hom.com>",
         to: ["devavidhom@gmail.com"],
-        subject: "New Job",
+        subject: `New job from ${bid.name} bid for ${bid.customer.full_name}`,
         react: NewJobFromBidEmailTemplate({
           job: data,
         }),
