@@ -104,14 +104,10 @@ export async function POST(
       profile_id: user.id,
       role: "closer" as Enums<"job_roles">,
     },
-    ...(bid.customer.creator_id && bid.customer.creator_id !== user.id
-      ? [
-          {
-            profile_id: bid.customer.creator_id,
-            role: "setter" as Enums<"job_roles">,
-          },
-        ]
-      : []),
+    {
+      profile_id: bid.customer.creator_id || user.id,
+      role: "setter" as Enums<"job_roles">,
+    },
   ];
 
   const jobProfileInsert = jobProfiles.map((jobProfile) => ({
@@ -182,12 +178,36 @@ export async function POST(
     );
   }
 
+  if (bid.notes) {
+    const { error: jobMessagesInsertError } = await supabase
+      .from("business_location_job_messages")
+      .insert({
+        business_id: bid.business_id,
+        location_id: bid.location_id,
+        job_id: job.id,
+        author_id: bid.creator_id,
+        message: bid.notes,
+      });
+
+    if (jobMessagesInsertError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: jobMessagesInsertError.message,
+        },
+        { headers: corsHeaders, status: 400 },
+      );
+    }
+  }
+
   return supabase
     .from("business_location_jobs")
     .select(
       `
       *,
-      products: business_location_job_products(*, product: product_id(*))
+      messages: business_location_job_messages(*, author: author_id(*)),
+      products: business_location_job_products(*, product: product_id(*)),
+      profiles: business_location_job_profiles(*, profile: profile_id(*))
       `,
     )
     .eq("id", job.id)

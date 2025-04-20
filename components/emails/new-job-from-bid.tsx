@@ -6,6 +6,7 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Link,
   Preview,
   Row,
@@ -13,6 +14,7 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
+import dayjs from "dayjs";
 
 const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -101,8 +103,15 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
           },
         }}
       >
-        <Preview>New Job</Preview>
+        <Preview>New Job from bid</Preview>
         <Body className="bg-offwhite font-sans text-base">
+          <Img
+            alt="illustration"
+            className="block rounded-full object-cover object-center"
+            height={300}
+            src={`${baseUrl}/images/pay-laptop.svg`}
+            width={300}
+          />
           <Container className="p-45 bg-white">
             <Heading className="my-0 text-center leading-8">
               New Job from Bid
@@ -151,7 +160,62 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
                   {job.products?.map((product) => (
                     <li key={product.id}>
                       {product.product.name} -{" "}
-                      <b>{`${product.number_of_units} x ${product.product.unit}`}</b>
+                      <b>{`${product.number_of_units.toLocaleString()} x ${product.product.unit}`}</b>
+                    </li>
+                  ))}
+                </ul>
+              </Row>
+            </Section>
+            <Section>
+              <Heading as="h3" className="text-center">
+                People
+              </Heading>
+              {job.profiles?.map((profile) => (
+                <>
+                  <Section
+                    align="left"
+                    className="mt-[16px] max-w-[288px]"
+                    key={profile.id}
+                  >
+                    <Section className="mt-[5px] inline-block max-h-[48px] max-w-[48px] text-left">
+                      {profile.profile.avatar_url ? (
+                        <Img
+                          alt={profile.profile.full_name ?? ""}
+                          className="block rounded-full object-cover object-center"
+                          height={48}
+                          src={profile.profile.avatar_url}
+                          width={48}
+                        />
+                      ) : (
+                        <div className="size-12 rounded-full bg-gray-100" />
+                      )}
+                    </Section>
+                    <Section className="ml-[18px] inline-block max-w-[120px] text-left align-top">
+                      <Heading
+                        as="h3"
+                        className="m-0 text-[14px] font-medium leading-[20px] text-gray-900"
+                      >
+                        {profile.profile.full_name}
+                      </Heading>
+                      <Text className="m-0 text-[12px] font-medium capitalize leading-[14px] text-gray-500">
+                        {profile.role}
+                      </Text>
+                    </Section>
+                  </Section>
+                </>
+              ))}
+            </Section>
+            <Section>
+              <Heading as="h3" className="text-center">
+                Notes
+              </Heading>
+              <Row>
+                <ul className="list-none">
+                  {job.messages?.map((message) => (
+                    <li key={message.id}>
+                      {message.message}
+                      <br />
+                      <small>{`By: ${message.author?.full_name} on ${dayjs(message.created_at).format("MM-DD-YYYY")}`}</small>
                     </li>
                   ))}
                 </ul>
