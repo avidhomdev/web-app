@@ -109,7 +109,7 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
             alt="illustration"
             className="block rounded-full object-cover object-center"
             height={300}
-            src={`${baseUrl}/images/pay-laptop.svg`}
+            src="https://www.avid-hom.com/images/pay-laptop.png"
             width={300}
           />
           <Container className="p-45 bg-white">
