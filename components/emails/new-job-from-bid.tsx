@@ -24,8 +24,8 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
   const steps = [
     {
       id: 1,
-      Description: (
-        <li className="mb-20" key={1}>
+      description: () => (
+        <>
           <strong>Send Contract.</strong>{" "}
           <Link
             href={`${baseUrl}/manage/${job.business_id}/location/${job.business_location_id}/job/${job.id}/documents`}
@@ -33,13 +33,13 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
             Go to your job and send the contract
           </Link>
           , or manually email the customer to sign the contract.
-        </li>
+        </>
       ),
     },
     {
       id: 2,
-      Description: (
-        <li className="mb-20" key={2}>
+      description: () => (
+        <>
           <strong>Collect down payment.</strong> Now that the job has begun, you
           can start by collecting a deposit.
           <Link
@@ -48,13 +48,13 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
             Track or request a payment.
           </Link>
           .
-        </li>
+        </>
       ),
     },
     {
       id: 3,
-      Description: (
-        <li className="mb-20" key={3}>
+      description: () => (
+        <>
           <strong>Add employees to the job.</strong> To get the installers on
           the job, add them as crew members for the install.{" "}
           <Link
@@ -63,13 +63,13 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
             Start with adding crew
           </Link>
           .
-        </li>
+        </>
       ),
     },
     {
       id: 4,
-      Description: (
-        <li className="mb-20" key={4}>
+      description: () => (
+        <>
           <strong>Schedule the install.</strong> Last step is to schedule the
           install. This can be tricky with a busy calendar. Pay close attention
           to when you&apos;re scheduling for conflicts.{" "}
@@ -79,7 +79,7 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
             Add to the calendar
           </Link>
           .
-        </li>
+        </>
       ),
     },
   ];
@@ -129,7 +129,13 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
                 </Text>
               </Row>
               <Row>
-                <ul>{steps?.map(({ Description }) => Description)}</ul>
+                <ul>
+                  {steps?.map(({ id, description }) => (
+                    <li className="mb-20" key={id}>
+                      {description()}
+                    </li>
+                  ))}
+                </ul>
               </Row>
             </Section>
             <Section>
@@ -173,38 +179,36 @@ export function NewJobFromBidEmailTemplate({ job }: { job: IJob }) {
                 People
               </Heading>
               {job.profiles?.map((profile) => (
-                <>
-                  <Section
-                    align="left"
-                    className="mt-[16px] max-w-[288px]"
-                    key={profile.id}
-                  >
-                    <Section className="mt-[5px] inline-block max-h-[48px] max-w-[48px] text-left">
-                      {profile.profile.avatar_url ? (
-                        <Img
-                          alt={profile.profile.full_name ?? ""}
-                          className="block rounded-full object-cover object-center"
-                          height={48}
-                          src={profile.profile.avatar_url}
-                          width={48}
-                        />
-                      ) : (
-                        <div className="size-12 rounded-full bg-gray-100" />
-                      )}
-                    </Section>
-                    <Section className="ml-[18px] inline-block max-w-[120px] text-left align-top">
-                      <Heading
-                        as="h3"
-                        className="m-0 text-[14px] font-medium leading-[20px] text-gray-900"
-                      >
-                        {profile.profile.full_name}
-                      </Heading>
-                      <Text className="m-0 text-[12px] font-medium capitalize leading-[14px] text-gray-500">
-                        {profile.role}
-                      </Text>
-                    </Section>
+                <Section
+                  align="left"
+                  className="mt-[16px] max-w-[288px]"
+                  key={profile.id}
+                >
+                  <Section className="mt-[5px] inline-block max-h-[48px] max-w-[48px] text-left">
+                    {profile.profile.avatar_url ? (
+                      <Img
+                        alt={profile.profile.full_name ?? ""}
+                        className="block rounded-full object-cover object-center"
+                        height={48}
+                        src={profile.profile.avatar_url}
+                        width={48}
+                      />
+                    ) : (
+                      <div className="size-12 rounded-full bg-gray-100" />
+                    )}
                   </Section>
-                </>
+                  <Section className="ml-[18px] inline-block max-w-[120px] text-left align-top">
+                    <Heading
+                      as="h3"
+                      className="m-0 text-[14px] font-medium leading-[20px] text-gray-900"
+                    >
+                      {profile.profile.full_name}
+                    </Heading>
+                    <Text className="m-0 text-[12px] font-medium capitalize leading-[14px] text-gray-500">
+                      {profile.role}
+                    </Text>
+                  </Section>
+                </Section>
               ))}
             </Section>
             <Section>

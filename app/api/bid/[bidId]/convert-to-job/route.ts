@@ -200,6 +200,37 @@ export async function POST(
     }
   }
 
+  await supabase.from("business_location_job_tasks").insert([
+    {
+      business_id: bid.business_id,
+      location_id: bid.location_id,
+      job_id: job.id,
+      name: "Send contract",
+      type: "checkbox",
+    },
+    {
+      business_id: bid.business_id,
+      location_id: bid.location_id,
+      job_id: job.id,
+      name: "Collect deposit",
+      type: "checkbox",
+    },
+    {
+      business_id: bid.business_id,
+      location_id: bid.location_id,
+      job_id: job.id,
+      name: "Assign Crew Lead",
+      type: "checkbox",
+    },
+    {
+      business_id: bid.business_id,
+      location_id: bid.location_id,
+      job_id: job.id,
+      name: "Schedule Install",
+      type: "checkbox",
+    },
+  ]);
+
   return supabase
     .from("business_location_jobs")
     .select(
