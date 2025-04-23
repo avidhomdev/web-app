@@ -231,6 +231,11 @@ export async function POST(
     },
   ]);
 
+  await supabase
+    .from("business_location_customer_bids")
+    .update({ converted_to_job_id: job.id })
+    .eq("id", bid.id);
+
   return supabase
     .from("business_location_jobs")
     .select(
