@@ -80,6 +80,9 @@ export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
       location_id: Number(fields.location_id) as number,
       profile_id: fields.profile_id as string,
       role: fields.role as Database["public"]["Enums"]["location_profile_roles"],
+      is_setter: fields.is_setter === "yes",
+      is_closer: fields.is_closer === "yes",
+      is_installer: fields.is_installer === "yes",
     });
 
     if (error) {
@@ -126,6 +129,7 @@ export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
       role: fields.role as Database["public"]["Enums"]["location_profile_roles"],
       is_setter: fields.is_setter === "yes",
       is_closer: fields.is_closer === "yes",
+      is_installer: fields.is_installer === "yes",
     });
 
     if (error) {
@@ -151,6 +155,7 @@ export async function UpdateEmployee<T>(...args: ServerActionWithState<T>) {
       role: fields.role as Database["public"]["Enums"]["location_profile_roles"],
       is_setter: fields.is_setter === "yes",
       is_closer: fields.is_closer === "yes",
+      is_installer: fields.is_installer === "yes",
     })
     .match({ location_id: fields.location_id, profile_id: fields.profile_id });
 

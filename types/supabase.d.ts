@@ -1318,6 +1318,7 @@ export type Database = {
           commission_rate: number | null
           created_at: string
           is_closer: boolean
+          is_installer: boolean
           is_setter: boolean
           location_id: number
           profile_id: string
@@ -1330,6 +1331,7 @@ export type Database = {
           commission_rate?: number | null
           created_at?: string
           is_closer?: boolean
+          is_installer?: boolean
           is_setter?: boolean
           location_id: number
           profile_id: string
@@ -1342,6 +1344,7 @@ export type Database = {
           commission_rate?: number | null
           created_at?: string
           is_closer?: boolean
+          is_installer?: boolean
           is_setter?: boolean
           location_id?: number
           profile_id?: string

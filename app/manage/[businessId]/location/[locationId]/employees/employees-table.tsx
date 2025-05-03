@@ -460,6 +460,12 @@ function Content() {
     },
     {
       cellClassNames: "w-0 text-nowrap hidden sm:table-cell",
+      field: "is_installer",
+      header: "Installer",
+      render: (row) => (row.is_installer ? <CheckCircle2Icon /> : null),
+    },
+    {
+      cellClassNames: "w-0 text-nowrap hidden sm:table-cell",
       field: "is_setter",
       header: "Setter",
       render: (row) => (row.is_setter ? <CheckCircle2Icon /> : null),

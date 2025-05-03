@@ -48,6 +48,7 @@ export default function SearchOrInviteUserDrawer({
         id: "",
         inviting_new: false,
         is_closer: false,
+        is_installer: false,
         is_setter: false,
         location_id: locationId,
         role: "",
@@ -158,14 +159,14 @@ export default function SearchOrInviteUserDrawer({
                   Setter
                 </Label>
                 <Select
-                  defaultValue={state.data.is_setter}
+                  defaultValue={state.data.is_setter ? "yes" : "no"}
                   key={state.data.is_setter}
                   name="is_setter"
                   required
                 >
                   <option value="">Select a option</option>
-                  <option value="no">Not a setter</option>
-                  <option value="yes">Is a setter</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
                 </Select>
               </div>
               <div>
@@ -173,14 +174,29 @@ export default function SearchOrInviteUserDrawer({
                   Closer
                 </Label>
                 <Select
-                  defaultValue={state.data.is_closer}
+                  defaultValue={state.data.is_closer ? "yes" : "no"}
                   key={state.data.is_closer}
                   name="is_closer"
                   required
                 >
                   <option value="">Select a option</option>
-                  <option value="no">Not a closer</option>
-                  <option value="yes">Is a closer</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="installer" className="mb-2 block">
+                  Installer
+                </Label>
+                <Select
+                  defaultValue={state.data.is_installer ? "yes" : "no"}
+                  key={state.data.is_installer}
+                  name="is_installer"
+                  required
+                >
+                  <option value="">Select a option</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
                 </Select>
               </div>
             </>
