@@ -827,7 +827,7 @@ VALUES
     '7e15d5cf-952c-4416-85e1-465849358402',
     'scheduled',
     'self',
-    NULL,
+    2,
     NULL
   ),
   (
@@ -842,7 +842,7 @@ VALUES
     '1480e0d8-a3ea-4e03-b370-fab96a6be4ef',
     'new',
     'self',
-    NULL,
+    2,
     NULL
   ),
   (
@@ -857,7 +857,7 @@ VALUES
     '7e15d5cf-952c-4416-85e1-465849358402',
     'pending',
     'self',
-    NULL,
+    2,
     NULL
   ),
   (
@@ -872,7 +872,7 @@ VALUES
     '7e15d5cf-952c-4416-85e1-465849358402',
     'approved',
     'self',
-    NULL,
+    2,
     NULL
   ),
   (
@@ -887,7 +887,7 @@ VALUES
     '7e15d5cf-952c-4416-85e1-465849358402',
     'billed',
     'self',
-    NULL,
+    2,
     NULL
   ),
   (
@@ -902,7 +902,7 @@ VALUES
     '7e15d5cf-952c-4416-85e1-465849358402',
     'canceled',
     'self',
-    NULL,
+    2,
     NULL
   ),
   (
@@ -917,7 +917,7 @@ VALUES
     '7e15d5cf-952c-4416-85e1-465849358402',
     'complete',
     'self',
-    NULL,
+    1,
     NULL
   );
 
