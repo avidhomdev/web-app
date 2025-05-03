@@ -489,7 +489,7 @@ export type Database = {
           city: string
           closer_id: string | null
           created_at: string
-          creator_id: string | null
+          creator_id: string
           disposition_status: string | null
           email: string
           full_name: string
@@ -508,7 +508,7 @@ export type Database = {
           city: string
           closer_id?: string | null
           created_at?: string
-          creator_id?: string | null
+          creator_id: string
           disposition_status?: string | null
           email: string
           full_name: string
@@ -527,7 +527,7 @@ export type Database = {
           city?: string
           closer_id?: string | null
           created_at?: string
-          creator_id?: string | null
+          creator_id?: string
           disposition_status?: string | null
           email?: string
           full_name?: string
