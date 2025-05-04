@@ -25,6 +25,7 @@ import {
   InfoIcon,
   SearchIcon,
   SettingsIcon,
+  StarIcon,
   Trash2Icon,
 } from "lucide-react";
 import {
@@ -474,13 +475,12 @@ function Content() {
       cellClassNames: "w-0 text-nowrap hidden sm:table-cell",
       field: "is_closer",
       header: "Closer",
-      render: (row) => (row.is_closer ? <CheckCircle2Icon /> : null),
-    },
-    {
-      cellClassNames: "w-0 text-nowrap hidden sm:table-cell",
-      field: "closer_priority",
-      header: "Priority",
-      render: (row) => row.closer_priority,
+      render: (row) =>
+        row.is_closer ? (
+          <Badge className="justify-center" icon={StarIcon} size="sm">
+            {row.closer_priority}
+          </Badge>
+        ) : null,
     },
     {
       cellClassNames: "w-0",

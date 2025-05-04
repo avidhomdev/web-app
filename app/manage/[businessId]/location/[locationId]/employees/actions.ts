@@ -152,6 +152,7 @@ export async function UpdateEmployee<T>(...args: ServerActionWithState<T>) {
   const { error } = await supabase
     .from("business_location_profiles")
     .update({
+      closer_priority: Number(fields.closer_priority),
       role: fields.role as Database["public"]["Enums"]["location_profile_roles"],
       is_setter: fields.is_setter === "yes",
       is_closer: fields.is_closer === "yes",
