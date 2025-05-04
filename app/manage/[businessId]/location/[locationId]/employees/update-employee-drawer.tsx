@@ -62,8 +62,8 @@ const FormFields = ({ defaultValues }: { defaultValues: IEmployee }) => {
           required
         >
           <option value="">Select a option</option>
-          <option value="no">Not a setter</option>
-          <option value="yes">Is a setter</option>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
         </Select>
       </div>
       <div>
@@ -78,8 +78,8 @@ const FormFields = ({ defaultValues }: { defaultValues: IEmployee }) => {
           required
         >
           <option value="">Select a option</option>
-          <option value="no">Not a closer</option>
-          <option value="yes">Is a closer</option>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
         </Select>
       </div>
       <div>
@@ -95,6 +95,22 @@ const FormFields = ({ defaultValues }: { defaultValues: IEmployee }) => {
           required
           type="closer_priority"
         />
+      </div>{" "}
+      <div>
+        <Label htmlFor="is_installer" className="mb-2 block">
+          Installer
+        </Label>
+        <Select
+          defaultValue={defaultValues.is_installer ? "yes" : "no"}
+          id="is_installer"
+          key={defaultValues.is_installer ? "yes" : "no"}
+          name="is_installer"
+          required
+        >
+          <option value="">Select a option</option>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </Select>
       </div>
       <SubmitButton pendingText="Creating User">
         <UserCogIcon className="mr-2" />
