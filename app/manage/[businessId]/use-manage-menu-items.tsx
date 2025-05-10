@@ -4,14 +4,13 @@ import { useUserContext } from "@/contexts/user";
 import {
   BoxIcon,
   CalendarIcon,
+  HardHatIcon,
   HomeIcon,
   MapPinIcon,
   SettingsIcon,
   UserCircle2,
   UserIcon,
   UsersRoundIcon,
-  HardHatIcon,
-  CalendarDaysIcon,
 } from "lucide-react";
 
 import { useParams, usePathname } from "next/navigation";
@@ -98,14 +97,6 @@ export default function useManageMenuItems() {
       ),
       name: "Jobs",
     },
-    {
-      href: generateLocationLink("queue"),
-      icon: CalendarDaysIcon,
-      isActive: pathname.startsWith(
-        `/manage/${businessId}/location/${locationId}/queue`,
-      ),
-      name: "Queue",
-    },
     ...(isLocationManagement
       ? [
           {
@@ -117,12 +108,12 @@ export default function useManageMenuItems() {
             name: "Employees",
           },
           {
-            href: generateLocationLink("scheduling"),
+            href: generateLocationLink("schedule"),
             icon: CalendarIcon,
             isActive: pathname.startsWith(
-              `/manage/${businessId}/location/${locationId}/scheduling`,
+              `/manage/${businessId}/location/${locationId}/schedule`,
             ),
-            name: "Scheduling",
+            name: "Schedule",
           },
         ]
       : []),

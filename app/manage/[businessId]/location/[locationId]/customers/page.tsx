@@ -53,13 +53,13 @@ export default async function Page(props: TPageProps) {
   if (fetchAllError) throw fetchAllError;
 
   return (
-    <>
+    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <CustomersHeader />
       <CustomersTable
         customersCount={data?.length ?? 0}
         customers={filteredData ?? []}
         paginatedTotal={count ?? 0}
       />
-    </>
+    </div>
   );
 }

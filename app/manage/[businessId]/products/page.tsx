@@ -19,9 +19,9 @@ export default async function Page() {
   if (error) throw error;
 
   return (
-    <>
+    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <ProductsHeader />
       <ProductsTable products={data} />
-    </>
+    </div>
   );
 }

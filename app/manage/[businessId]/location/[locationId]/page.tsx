@@ -25,7 +25,7 @@ import { twMerge } from "tailwind-merge";
 
 export default function Page() {
   return (
-    <>
+    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <PageHeaderWithActions
         title="Dashboard"
         subtitle="Get a summary of whats going on in the business."
@@ -590,6 +590,6 @@ export default function Page() {
           </Avatar.Group>
         </Card>
       </div>
-    </>
+    </div>
   );
 }

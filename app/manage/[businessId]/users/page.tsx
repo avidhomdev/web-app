@@ -74,7 +74,7 @@ export default async function Page(props: {
     },
   );
   return (
-    <>
+    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <UsersHeader />
       <UsersTable
         usersCount={data?.length ?? 0}
@@ -82,6 +82,6 @@ export default async function Page(props: {
         paginatedTotal={count ?? 0}
         roleCounts={roleCounts}
       />
-    </>
+    </div>
   );
 }

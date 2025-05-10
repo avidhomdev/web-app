@@ -287,7 +287,7 @@ export default async function Page(props: {
   );
 
   return (
-    <>
+    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <JobsHeader />
       <JobStatusTiles
         previousWeek={previousWeek}
@@ -300,6 +300,6 @@ export default async function Page(props: {
         paginatedTotal={paginatedTotal ?? 0}
         statusCounts={statusCounts}
       />
-    </>
+    </div>
   );
 }

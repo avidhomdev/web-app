@@ -1213,6 +1213,121 @@ export type Database = {
           },
         ]
       }
+      business_location_job_schedule_profiles: {
+        Row: {
+          business_id: string
+          created_at: string
+          job_id: number
+          location_id: number
+          profile_id: string
+          schedule_id: number
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          job_id: number
+          location_id: number
+          profile_id: string
+          schedule_id: number
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          job_id?: number
+          location_id?: number
+          profile_id?: string
+          schedule_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_location_job_schedule_profiles_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_schedule_profiles_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_schedule_profiles_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "business_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_schedule_profiles_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_schedule_profiles_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_job_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      business_location_job_schedules: {
+        Row: {
+          business_id: string
+          created_at: string
+          end_datetime: string
+          id: number
+          job_id: number
+          location_id: number
+          start_datetime: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          end_datetime: string
+          id?: number
+          job_id: number
+          location_id: number
+          start_datetime: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          end_datetime?: string
+          id?: number
+          job_id?: number
+          location_id?: number
+          start_datetime?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_location_job_schedules_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_schedules_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "business_location_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_job_schedules_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "business_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_location_job_tasks: {
         Row: {
           business_id: string
@@ -1910,6 +2025,13 @@ export type Database = {
       is_location_manager_or_admin: {
         Args: { locationid: number }
         Returns: boolean
+      }
+      location_installers_available: {
+        Args: { lid: number; start_timestamp: string; end_timestamp: string }
+        Returns: {
+          profile_id: string
+          full_name: string
+        }[]
       }
       location_profile_has_role: {
         Args: { lid: number; r: string }

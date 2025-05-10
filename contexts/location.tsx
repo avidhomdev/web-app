@@ -8,7 +8,23 @@ interface ILocationProfile
   profile: Partial<Tables<"profiles">>;
 }
 
+interface ILocationJobProducts
+  extends Tables<"business_location_job_products"> {
+  product: Tables<"business_products">;
+}
+
+interface ILocationJobProfiles
+  extends Tables<"business_location_job_profiles"> {
+  profile: Tables<"profiles">;
+}
+
+export interface ILocationJob extends Tables<"business_location_jobs"> {
+  products: ILocationJobProducts[];
+  profiles: ILocationJobProfiles[];
+}
+
 export interface ILocation extends Tables<"business_locations"> {
+  jobs: ILocationJob[];
   profiles: ILocationProfile[];
 }
 
@@ -28,6 +44,7 @@ const initialContext = {
     created_at: "",
     business_id: "",
     profiles: [],
+    jobs: [],
   },
 };
 

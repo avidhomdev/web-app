@@ -55,7 +55,7 @@ export default async function Page(props: TPage) {
   if (error) throw error;
   if (fetchProductsError) throw fetchProductsError;
   return (
-    <>
+    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <PageHeaderWithActions
         title="New Job"
         subtitle="Add a new job"
@@ -104,6 +104,6 @@ export default async function Page(props: TPage) {
           )}
         </Card>
       )}
-    </>
+    </div>
   );
 }

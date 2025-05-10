@@ -68,7 +68,7 @@ export default async function Page(props: TPageProps) {
   );
 
   return (
-    <>
+    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <EmployeesHeader />
       <EmployeesTable
         employeesCount={data?.length ?? 0}
@@ -76,6 +76,6 @@ export default async function Page(props: TPageProps) {
         paginatedTotal={count ?? 0}
         roleCounts={roleCounts}
       />
-    </>
+    </div>
   );
 }

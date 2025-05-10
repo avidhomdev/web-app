@@ -31,9 +31,9 @@ export default async function Layout(props: TLayout) {
   if (!data) notFound();
 
   return (
-    <>
+    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <JobHeader job={data} />
       {children}
-    </>
+    </div>
   );
 }
