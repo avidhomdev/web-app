@@ -41,37 +41,37 @@ export default function useManageMenuItems() {
         name: "Dashboard",
       },
       {
-        href: generateBusinessLink("customers"),
-        icon: UsersRoundIcon,
-        isActive: pathname.startsWith(`/manage/${businessId}/customers`),
-        name: "Customers",
-      },
-      {
-        href: generateBusinessLink("locations"),
-        icon: MapPinIcon,
-        isActive: pathname === `/manage/${businessId}/locations`,
-        name: "Locations",
-      },
-      {
         href: generateBusinessLink("products"),
         icon: BoxIcon,
         isActive: pathname === `/manage/${businessId}/products`,
         name: "Products",
       },
-      {
-        href: generateBusinessLink("jobs"),
-        icon: HardHatIcon,
-        isActive: pathname === `/manage/${businessId}/jobs`,
-        name: "Jobs",
-      },
-      {
-        href: generateBusinessLink("schedule"),
-        icon: CalendarIcon,
-        isActive: pathname.startsWith(`/manage/${businessId}/schedule`),
-        name: "Schedule",
-      },
       ...(isBusinessManagement
         ? [
+            {
+              href: generateBusinessLink("customers"),
+              icon: UsersRoundIcon,
+              isActive: pathname.startsWith(`/manage/${businessId}/customers`),
+              name: "Customers",
+            },
+            {
+              href: generateBusinessLink("locations"),
+              icon: MapPinIcon,
+              isActive: pathname === `/manage/${businessId}/locations`,
+              name: "Locations",
+            },
+            {
+              href: generateBusinessLink("jobs"),
+              icon: HardHatIcon,
+              isActive: pathname === `/manage/${businessId}/jobs`,
+              name: "Jobs",
+            },
+            {
+              href: generateBusinessLink("schedule"),
+              icon: CalendarIcon,
+              isActive: pathname.startsWith(`/manage/${businessId}/schedule`),
+              name: "Schedule",
+            },
             {
               name: "Users",
               href: generateBusinessLink("users"),
