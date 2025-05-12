@@ -5,10 +5,7 @@ import PageHeaderWithActions from "@/components/page-header-with-actions";
 import {
   Avatar,
   AvatarGroup,
-  Button,
   Card,
-  Carousel,
-  createTheme,
   Progress,
   Textarea,
   theme,
@@ -17,7 +14,6 @@ import {
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  ShareIcon,
   StarIcon,
   TrendingDownIcon,
   TrendingUpIcon,
@@ -32,103 +28,6 @@ export default function Page() {
         title="Dashboard"
         subtitle="Get a summary of whats going on in the business."
       />
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:gap-6 xl:gap-8">
-        <Card
-          className="relative overflow-hidden lg:col-span-2"
-          theme={createTheme({
-            root: {
-              base: twMerge(
-                theme.card.root.base,
-                "bg-linear-to-tr from-gray-800 to-gray-900 border-gray-800 dark:border-gray-800 h-72",
-              ),
-            },
-          })}
-        >
-          <Carousel
-            leftControl="&nbsp;"
-            rightControl="&nbsp;"
-            theme={createTheme({
-              indicators: {
-                base: "size-3 rounded-full",
-                active: { on: "bg-white", off: "bg-gray-500" },
-                wrapper: twMerge(
-                  theme.carousel.indicators.wrapper,
-                  "bg-gray-700 p-2 rounded-full -bottom-2",
-                ),
-              },
-            })}
-          >
-            <div className="flex flex-col items-start gap-2">
-              <h6 className="text-3xl font-medium tracking-tighter text-gray-300">
-                Setter of the month, <br />
-                <span className="text-secondary-400 font-bold">John Doe</span>
-              </h6>
-              <p className="font-light text-gray-400">
-                The setter of the month is determined by the number of
-                appointments set.
-              </p>
-            </div>
-            <div className="flex flex-col items-start gap-2">
-              <h6 className="text-3xl font-medium tracking-tighter text-gray-300">
-                Installer of the month, <br />
-                <span className="font-bold text-emerald-400">John Doe</span>
-              </h6>
-              <p className="font-light text-gray-400">
-                The installer of the month is determined by the number of
-                appointments set.
-              </p>
-            </div>
-            <div className="flex flex-col items-start gap-2">
-              <h6 className="text-3xl font-medium tracking-tighter text-gray-300">
-                Closer of the month, <br />
-                <span className="font-bold text-cyan-400">John Doe</span>
-              </h6>
-              <p className="font-light text-gray-400">
-                The closer of the month is determined by the number of
-                appointments set.
-              </p>
-            </div>
-          </Carousel>
-          <div className="absolute -right-4 -bottom-4 z-0 opacity-10">
-            <Image alt="" height={300} src="/images/winners.svg" width={300} />
-          </div>
-        </Card>
-        <Card
-          className="lg:col-span-4"
-          theme={{
-            root: {
-              base: twMerge(
-                theme.card.root.base,
-                "bg-linear-to-tr from-gray-800 to-gray-900 border-gray-800 dark:border-gray-800",
-              ),
-            },
-          }}
-        >
-          <div className="grid lg:grid-cols-2">
-            <div className="flex flex-col items-start gap-4">
-              <h6 className="text-3xl font-medium tracking-tighter text-white">
-                Welcome back, <br />
-                <span className="text-primary-400 font-bold">John Doe</span>
-              </h6>
-              <p className="font-light text-gray-400">
-                Best seller of the month you have done 57.6% more sales today.
-              </p>
-              <Button color="primary" size="sm">
-                <ShareIcon className="mr-2 size-4" />
-                Share
-              </Button>
-            </div>
-            <div className="grid place-items-center">
-              <Image
-                alt=""
-                height={200}
-                src="/images/couple-award.svg"
-                width={200}
-              />
-            </div>
-          </div>
-        </Card>
-      </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6 xl:gap-8">
         <Card>
           <div className="grid grid-cols-3 items-center">
