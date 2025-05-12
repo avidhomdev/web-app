@@ -64,6 +64,12 @@ export default function useManageMenuItems() {
         isActive: pathname === `/manage/${businessId}/jobs`,
         name: "Jobs",
       },
+      {
+        href: generateBusinessLink("schedule"),
+        icon: CalendarIcon,
+        isActive: pathname.startsWith(`/manage/${businessId}/schedule`),
+        name: "Schedule",
+      },
       ...(isBusinessManagement
         ? [
             {

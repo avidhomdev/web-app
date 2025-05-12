@@ -16,9 +16,9 @@ export interface BusinessAppointment extends Tables<"business_appointments"> {
 export default async function Page({
   params,
 }: {
-  params: Promise<{ locationId: string }>;
+  params: Promise<{ businessId: string; locationId: string }>;
 }) {
-  const { locationId } = await params;
+  const { businessId, locationId } = await params;
   const supabase = await createSupabaseServerClient();
   const [{ data: appointments }, { data: jobs }] = await Promise.all([
     supabase
@@ -32,6 +32,7 @@ export default async function Page({
         job: job_id(*)f
       `,
       )
+      .match({ business_id: businessId })
       .not("job_id", "is", null)
       .overrideTypes<BusinessAppointment[]>(),
     supabase
