@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
       <section className="bg-white dark:bg-gray-900">
-        <div className="mx-auto max-w-screen-xl px-4 py-8 text-center lg:px-12 lg:py-16">
+        <div className="mx-auto max-w-(--breakpoint-xl) px-4 py-8 text-center lg:px-12 lg:py-16">
           <a
             href="#"
             className="mb-7 inline-flex items-center justify-between rounded-full bg-gray-100 p-1 pr-4 text-sm text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
@@ -78,7 +78,7 @@ export default function Page() {
         </div>
       </section>
       <section className="bg-white dark:bg-gray-900">
-        <div className="mx-auto max-w-screen-xl items-center gap-16 px-4 py-8 lg:grid lg:grid-cols-2 lg:px-6 lg:py-16">
+        <div className="mx-auto max-w-(--breakpoint-xl) items-center gap-16 px-4 py-8 lg:grid lg:grid-cols-2 lg:px-6 lg:py-16">
           <div className="text-gray-500 dark:text-gray-400 sm:text-lg">
             <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
               We didn&apos;t reinvent the wheel
@@ -111,7 +111,7 @@ export default function Page() {
       </section>
 
       <section>
-        <div className="mx-auto max-w-screen-xl items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
+        <div className="mx-auto max-w-(--breakpoint-xl) items-center gap-8 px-4 py-8 sm:py-16 md:grid md:grid-cols-2 lg:px-6 xl:gap-16">
           <div>
             <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
               Let&apos;s create more tools and ideas that brings us together.
@@ -124,7 +124,7 @@ export default function Page() {
             <div className="items-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
               <Button
                 href="#"
-                className="border-0 bg-gray-800 text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+                className="border-0 bg-gray-800 text-white hover:bg-gray-700 focus:outline-hidden focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-800"
               >
                 <svg
                   className="mr-3 h-7 w-7"
@@ -147,7 +147,7 @@ export default function Page() {
               </Button>
               <Button
                 href="#"
-                className="border-0 bg-gray-800 text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+                className="border-0 bg-gray-800 text-white hover:bg-gray-700 focus:outline-hidden focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-800"
               >
                 <svg
                   className="mr-3 h-7 w-7"
@@ -179,8 +179,8 @@ export default function Page() {
       </section>
 
       <section className="bg-white dark:bg-gray-900">
-        <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
-          <div className="mb-8 max-w-screen-md lg:mb-16">
+        <div className="mx-auto max-w-(--breakpoint-xl) px-4 py-8 sm:py-16 lg:px-6">
+          <div className="mb-8 max-w-(--breakpoint-md) lg:mb-16">
             <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
               Designed for business teams like yours
             </h2>
@@ -327,9 +327,9 @@ export default function Page() {
       </section>
 
       <section className="bg-white dark:bg-gray-900">
-        <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
+        <div className="mx-auto max-w-(--breakpoint-xl) px-4 py-8 lg:px-6 lg:py-16">
           <div className="space-y-8 sm:gap-6 lg:grid lg:grid-cols-3 lg:space-y-0 xl:gap-10">
-            <div className="mx-auto flex max-w-lg flex-col rounded-lg border border-gray-100 bg-white p-6 text-center text-gray-900 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white xl:p-8">
+            <div className="mx-auto flex max-w-lg flex-col rounded-lg border border-gray-100 bg-white p-6 text-center text-gray-900 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white xl:p-8">
               <h3 className="mb-4 text-2xl font-semibold">Starter</h3>
               <p className="text-gray-500 dark:text-gray-400 sm:text-lg">
                 Best option for personal use &amp; for your next project.
@@ -426,7 +426,7 @@ export default function Page() {
               </ul>
               <Button href="#">Get started</Button>
             </div>
-            <div className="mx-auto flex max-w-lg flex-col rounded-lg border border-gray-100 bg-white p-6 text-center text-gray-900 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white xl:p-8">
+            <div className="mx-auto flex max-w-lg flex-col rounded-lg border border-gray-100 bg-white p-6 text-center text-gray-900 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white xl:p-8">
               <h3 className="mb-4 text-2xl font-semibold">Company</h3>
               <p className="text-gray-500 dark:text-gray-400 sm:text-lg">
                 Relevant for multiple users, extended &amp; premium support.
@@ -523,7 +523,7 @@ export default function Page() {
               </ul>
               <Button href="#">Get started</Button>
             </div>
-            <div className="mx-auto flex max-w-lg flex-col rounded-lg border border-gray-100 bg-white p-6 text-center text-gray-900 shadow dark:border-gray-600 dark:bg-gray-800 dark:text-white xl:p-8">
+            <div className="mx-auto flex max-w-lg flex-col rounded-lg border border-gray-100 bg-white p-6 text-center text-gray-900 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white xl:p-8">
               <h3 className="mb-4 text-2xl font-semibold">Enterprise</h3>
               <p className="text-gray-500 dark:text-gray-400 sm:text-lg">
                 Best for large scale uses and extended redistribution rights.
@@ -625,7 +625,7 @@ export default function Page() {
       </section>
 
       <section>
-        <div className="mx-auto max-w-screen-xl items-center gap-8 px-4 py-8 lg:grid lg:grid-cols-2 lg:px-6 lg:py-16 xl:gap-16">
+        <div className="mx-auto max-w-(--breakpoint-xl) items-center gap-8 px-4 py-8 lg:grid lg:grid-cols-2 lg:px-6 lg:py-16 xl:gap-16">
           <div className="text-gray-500 sm:text-lg">
             <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-4xl">
               Stats that matter
@@ -746,8 +746,8 @@ export default function Page() {
       </section>
 
       <section className="bg-white dark:bg-gray-900">
-        <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
-          <div className="mx-auto max-w-screen-md text-center">
+        <div className="mx-auto max-w-(--breakpoint-xl) px-4 py-8 lg:px-6 lg:py-16">
+          <div className="mx-auto max-w-(--breakpoint-md) text-center">
             <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
               Testimonials
             </h2>
@@ -758,7 +758,7 @@ export default function Page() {
           </div>
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="space-y-6">
-              <figure className="rounded bg-gray-50 p-6 dark:bg-gray-800">
+              <figure className="rounded-sm bg-gray-50 p-6 dark:bg-gray-800">
                 <blockquote className="text-sm text-gray-500 dark:text-gray-400">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Solid foundation for any project
@@ -784,7 +784,7 @@ export default function Page() {
                   </Avatar>
                 </figcaption>
               </figure>
-              <figure className="rounded bg-gray-50 p-6 dark:bg-gray-800">
+              <figure className="rounded-sm bg-gray-50 p-6 dark:bg-gray-800">
                 <blockquote className="text-sm text-gray-500 dark:text-gray-400">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     A must-have for designers
@@ -810,7 +810,7 @@ export default function Page() {
                   </Avatar>
                 </figcaption>
               </figure>
-              <figure className="rounded bg-gray-50 p-6 dark:bg-gray-800">
+              <figure className="rounded-sm bg-gray-50 p-6 dark:bg-gray-800">
                 <blockquote className="text-sm text-gray-500 dark:text-gray-400">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Speechless with how easy this was to integrate
@@ -839,7 +839,7 @@ export default function Page() {
               </figure>
             </div>
             <div className="space-y-6">
-              <figure className="rounded bg-gray-50 p-6 dark:bg-gray-800">
+              <figure className="rounded-sm bg-gray-50 p-6 dark:bg-gray-800">
                 <blockquote className="text-sm text-gray-500 dark:text-gray-400">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Efficient Collaborating
@@ -866,7 +866,7 @@ export default function Page() {
                   </Avatar>
                 </figcaption>
               </figure>
-              <figure className="rounded bg-gray-50 p-6 dark:bg-gray-800">
+              <figure className="rounded-sm bg-gray-50 p-6 dark:bg-gray-800">
                 <blockquote className="text-sm text-gray-500 dark:text-gray-400">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Mindblowing workflow and variants
@@ -897,7 +897,7 @@ export default function Page() {
                   </Avatar>
                 </figcaption>
               </figure>
-              <figure className="rounded bg-gray-50 p-6 dark:bg-gray-800">
+              <figure className="rounded-sm bg-gray-50 p-6 dark:bg-gray-800">
                 <blockquote className="text-sm text-gray-500 dark:text-gray-400">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Perfect choice for a SaaS application
@@ -930,7 +930,7 @@ export default function Page() {
               </figure>
             </div>
             <div className="space-y-6">
-              <figure className="rounded bg-gray-50 p-6 dark:bg-gray-800">
+              <figure className="rounded-sm bg-gray-50 p-6 dark:bg-gray-800">
                 <blockquote className="text-sm text-gray-500 dark:text-gray-400">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Solid foundation for any project
@@ -957,7 +957,7 @@ export default function Page() {
                   </Avatar>
                 </figcaption>
               </figure>
-              <figure className="rounded bg-gray-50 p-6 dark:bg-gray-800">
+              <figure className="rounded-sm bg-gray-50 p-6 dark:bg-gray-800">
                 <blockquote className="text-sm text-gray-500 dark:text-gray-400">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Mindblowing workflow and variants
@@ -984,7 +984,7 @@ export default function Page() {
                   </Avatar>
                 </figcaption>
               </figure>
-              <figure className="rounded bg-gray-50 p-6 dark:bg-gray-800">
+              <figure className="rounded-sm bg-gray-50 p-6 dark:bg-gray-800">
                 <blockquote className="text-sm text-gray-500 dark:text-gray-400">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Speechless with how easy this was to integrate

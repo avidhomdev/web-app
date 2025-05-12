@@ -8,7 +8,7 @@ import {
 } from "@/constants/initial-form-state";
 
 import { BUSINESS_PROFILE_ROLES } from "@/constants/business-profile-roles";
-import { Avatar, Drawer, Label, Select } from "flowbite-react";
+import { Avatar, Drawer, DrawerHeader, DrawerItems, Label, Select } from "flowbite-react";
 import { UserCogIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
@@ -27,7 +27,7 @@ const FormFields = ({ defaultValues }: { defaultValues: IUser }) => {
         value={defaultValues.business_id}
       />
       <input type="hidden" name="profile_id" value={defaultValues.profile_id} />
-      <div className="flex items-center gap-2 rounded border border-gray-100 bg-gray-50 p-4 dark:border-gray-500 dark:bg-gray-700">
+      <div className="flex items-center gap-2 rounded-sm border border-gray-100 bg-gray-50 p-4 dark:border-gray-500 dark:bg-gray-700">
         <Avatar>{defaultValues.profile?.full_name}</Avatar>
       </div>
       <div>
@@ -80,11 +80,11 @@ export default function UpdateUserDrawer({
 
   return (
     <Drawer open={isOpen} onClose={handleClose} position="right">
-      <Drawer.Header
+      <DrawerHeader
         title="Edit User"
         titleIcon={() => <UserCogIcon className="mr-2" />}
       />
-      <Drawer.Items>
+      <DrawerItems>
         {state.error && (
           <div className="my-4">
             <ErrorAlert message={state.error} />
@@ -93,7 +93,7 @@ export default function UpdateUserDrawer({
         <form action={action}>
           <FormFields defaultValues={user} />
         </form>
-      </Drawer.Items>
+      </DrawerItems>
     </Drawer>
   );
 }

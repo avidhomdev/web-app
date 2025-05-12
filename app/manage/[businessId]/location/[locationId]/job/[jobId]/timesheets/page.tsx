@@ -70,9 +70,9 @@ export default async function Page() {
         ].map((tile) => (
           <div
             key={tile.name}
-            className="flex grow items-center gap-4 rounded-lg border border-gray-100 bg-white px-4 py-4 shadow-sm shadow-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900 sm:justify-center lg:gap-6 lg:py-6"
+            className="flex grow items-center gap-4 rounded-lg border border-gray-100 bg-white px-4 py-4 shadow-xs shadow-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900 sm:justify-center lg:gap-6 lg:py-6"
           >
-            <div className="relative size-16 flex-shrink-0">
+            <div className="relative size-16 shrink-0">
               <svg
                 className="size-full -rotate-90"
                 viewBox="0 0 36 36"

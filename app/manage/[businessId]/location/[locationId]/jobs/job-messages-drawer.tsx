@@ -9,7 +9,7 @@ import { IJob } from "@/types/job";
 import { createClient } from "@/utils/supabase/client";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Avatar, Button, Drawer, Spinner, Textarea } from "flowbite-react";
+import { Avatar, Button, Drawer, DrawerHeader, DrawerItems, Spinner, Textarea } from "flowbite-react";
 import { SendIcon, Trash2Icon, UserPlus2Icon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -100,11 +100,11 @@ export default function JobMessagesDrawer({
 
   return (
     <Drawer open={isOpen} onClose={handleClose} position="right">
-      <Drawer.Header
+      <DrawerHeader
         title="Job Messages"
         titleIcon={() => <UserPlus2Icon className="mr-2" />}
       />
-      <Drawer.Items className="relative">
+      <DrawerItems className="relative">
         <div
           className="flex h-[calc(100vh-10rem)] flex-col gap-2 overflow-auto pb-4"
           ref={ref}
@@ -138,14 +138,14 @@ export default function JobMessagesDrawer({
                       isAuthor
                         ? "from-blue-500 to-blue-600 text-blue-100"
                         : "from-gray-100 to-gray-200 dark:bg-gray-800 dark:from-gray-700 dark:to-gray-800",
-                      "relative w-full rounded bg-gradient-to-tr text-sm lg:p-3",
+                      "relative w-full rounded-sm bg-linear-to-tr text-sm lg:p-3",
                     )}
                   >
                     {message.message}
                     {isAuthor && (
                       <button
                         aria-label="Delete"
-                        className="absolute right-2 top-2 hidden cursor-pointer rounded bg-white/30 p-1 hover:bg-white group-hover:block dark:bg-gray-800/30 dark:hover:bg-gray-800"
+                        className="absolute right-2 top-2 hidden cursor-pointer rounded-sm bg-white/30 p-1 hover:bg-white group-hover:block dark:bg-gray-800/30 dark:hover:bg-gray-800"
                       >
                         <ConfirmModal
                           description={`Are you sure you want to remove this message?`}
@@ -175,13 +175,13 @@ export default function JobMessagesDrawer({
           <Textarea
             ref={textareaRef}
             rows={3}
-            className="resize-none rounded-sm pr-14"
+            className="resize-none rounded-xs pr-14"
             tabIndex={0}
             name="message"
           />
           <SendMessageButton />
         </form>
-      </Drawer.Items>
+      </DrawerItems>
     </Drawer>
   );
 }

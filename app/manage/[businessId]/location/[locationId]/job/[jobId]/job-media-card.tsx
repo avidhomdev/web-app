@@ -39,7 +39,7 @@ async function MediaList({
     return (
       <figure
         key={item.id}
-        className="group/figure relative w-36 overflow-hidden rounded bg-gray-100 p-2 pb-0 dark:bg-gray-700"
+        className="group/figure relative w-36 overflow-hidden rounded-sm bg-gray-100 p-2 pb-0 dark:bg-gray-700"
       >
         <div className="absolute right-2 top-2 z-10 hidden items-center gap-1 group-hover/figure:flex">
           <EditMediaDrawer media={item} />

@@ -69,9 +69,11 @@ export default async function Page(props: {
           }}
         >
           <TableHead>
-            <TableHeadCell>Date</TableHeadCell>
-            <TableHeadCell>Amount</TableHeadCell>
-            <TableHeadCell>Type</TableHeadCell>
+            <TableRow>
+              <TableHeadCell>Date</TableHeadCell>
+              <TableHeadCell>Amount</TableHeadCell>
+              <TableHeadCell>Type</TableHeadCell>
+            </TableRow>
           </TableHead>
           <TableBody>
             {data.payments?.map((payment) => (

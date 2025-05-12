@@ -1,20 +1,20 @@
 "use client";
-import { Accordion } from "flowbite-react";
+import { Accordion, AccordionContent, AccordionPanel, AccordionTitle } from "flowbite-react";
 
 export default function FaqAccordion() {
   return (
     <section className="bg-white dark:bg-gray-900">
-      <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
+      <div className="mx-auto max-w-(--breakpoint-xl) px-4 py-8 sm:py-16 lg:px-6">
         <h2 className="mb-6 text-center text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white lg:mb-8 lg:text-4xl">
           Frequently asked questions
         </h2>
-        <div className="mx-auto max-w-screen-md">
+        <div className="mx-auto max-w-(--breakpoint-md)">
           <Accordion flush>
-            <Accordion.Panel>
-              <Accordion.Title className="bg-transparent dark:bg-transparent">
+            <AccordionPanel>
+              <AccordionTitle className="bg-transparent dark:bg-transparent">
                 Can I use HOM in open-source projects?
-              </Accordion.Title>
-              <Accordion.Content>
+              </AccordionTitle>
+              <AccordionContent>
                 <p className="mb-2 text-gray-500 dark:text-gray-400">
                   HOM is an open-source library of interactive components built
                   on top of Tailwind CSS including buttons, dropdowns, modals,
@@ -31,13 +31,13 @@ export default function FaqAccordion() {
                   &nbsp;and start developing websites even faster with
                   components on top of Tailwind CSS.
                 </p>
-              </Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title className="bg-transparent dark:bg-transparent">
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel>
+              <AccordionTitle className="bg-transparent dark:bg-transparent">
                 Is there a Figma file available?
-              </Accordion.Title>
-              <Accordion.Content>
+              </AccordionTitle>
+              <AccordionContent>
                 <p className="mb-2 text-gray-500 dark:text-gray-400">
                   HOM is first conceptualized and designed using the Figma
                   software so everything you see in the library has a design
@@ -54,13 +54,13 @@ export default function FaqAccordion() {
                   &nbsp;based on the utility classes from Tailwind CSS and
                   components from HOM.
                 </p>
-              </Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title className="bg-transparent dark:bg-transparent">
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel>
+              <AccordionTitle className="bg-transparent dark:bg-transparent">
                 What are the differences between HOM and Tailwind UI?
-              </Accordion.Title>
-              <Accordion.Content>
+              </AccordionTitle>
+              <AccordionContent>
                 <p className="mb-2 text-gray-500 dark:text-gray-400">
                   The main difference is that the core components from HOM are
                   open source under the MIT license, whereas Tailwind UI is a
@@ -94,13 +94,13 @@ export default function FaqAccordion() {
                     </a>
                   </li>
                 </ul>
-              </Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-              <Accordion.Title className="bg-transparent dark:bg-transparent">
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel>
+              <AccordionTitle className="bg-transparent dark:bg-transparent">
                 What about browser support?
-              </Accordion.Title>
-              <Accordion.Content>
+              </AccordionTitle>
+              <AccordionContent>
                 <p className="mb-2 text-gray-500 dark:text-gray-400">
                   The main difference is that the core components from HOM are
                   open source under the MIT license, whereas Tailwind UI is a
@@ -134,8 +134,8 @@ export default function FaqAccordion() {
                     </a>
                   </li>
                 </ul>
-              </Accordion.Content>
-            </Accordion.Panel>
+              </AccordionContent>
+            </AccordionPanel>
           </Accordion>
         </div>
       </div>

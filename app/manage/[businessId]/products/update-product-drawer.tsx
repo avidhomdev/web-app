@@ -8,7 +8,7 @@ import {
 } from "@/constants/initial-form-state";
 import { useBusinessContext } from "@/contexts/business";
 import { useUserContext } from "@/contexts/user";
-import { Drawer, Label, TextInput, ToggleSwitch } from "flowbite-react";
+import { Drawer, DrawerHeader, DrawerItems, Label, TextInput, ToggleSwitch } from "flowbite-react";
 import { UserPlus2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
@@ -166,11 +166,11 @@ export default function UpdateProductDrawer({
 
   return (
     <Drawer open={isOpen} onClose={handleClose} position="right">
-      <Drawer.Header
+      <DrawerHeader
         title="Update product"
         titleIcon={() => <UserPlus2Icon className="mr-2" />}
       />
-      <Drawer.Items>
+      <DrawerItems>
         {state.error && (
           <div className="my-4">
             <ErrorAlert message={state.error} />
@@ -179,7 +179,7 @@ export default function UpdateProductDrawer({
         <form action={action} className="my-4">
           <FormFields defaultValues={product} />
         </form>
-      </Drawer.Items>
+      </DrawerItems>
     </Drawer>
   );
 }

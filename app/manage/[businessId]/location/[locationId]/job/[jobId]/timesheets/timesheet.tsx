@@ -2,7 +2,14 @@
 
 import { formatMinutesToHoursAndMinutes } from "@/utils/formatter";
 import dayjs from "dayjs";
-import { Table } from "flowbite-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+} from "flowbite-react";
 import { CheckCircleIcon, XCircleIcon } from "lucide-react";
 import { ITimesheet } from "./page";
 
@@ -10,48 +17,50 @@ export default function Timesheet({ rows }: { rows: ITimesheet[] }) {
   return (
     <>
       <Table striped>
-        <Table.Head>
-          <Table.HeadCell>Employee</Table.HeadCell>
-          <Table.HeadCell>Start</Table.HeadCell>
-          <Table.HeadCell>End</Table.HeadCell>
-          <Table.HeadCell>Hours</Table.HeadCell>
-          <Table.HeadCell>Paid</Table.HeadCell>
-        </Table.Head>
-        <Table.Body className="divide-y">
+        <TableHead>
+          <TableRow>
+            <TableHeadCell>Employee</TableHeadCell>
+            <TableHeadCell>Start</TableHeadCell>
+            <TableHeadCell>End</TableHeadCell>
+            <TableHeadCell>Hours</TableHeadCell>
+            <TableHeadCell>Paid</TableHeadCell>
+          </TableRow>
+        </TableHead>
+        <TableBody className="divide-y">
           {rows.map((timesheet) => (
-            <Table.Row
+            <TableRow
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
               key={timesheet.id}
             >
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              <TableCell className="font-medium whitespace-nowrap text-gray-900 dark:text-white">
                 {timesheet.profile.full_name}
-              </Table.Cell>
-              <Table.Cell className="whitespace-nowrap">
+              </TableCell>
+              <TableCell className="whitespace-nowrap">
                 {dayjs(timesheet.start_datetime).format("MM/DD hh:mm a")}
-              </Table.Cell>
-              <Table.Cell className="whitespace-nowrap">
+              </TableCell>
+              <TableCell className="whitespace-nowrap">
                 {timesheet.end_datetime
                   ? dayjs(timesheet.end_datetime).format("MM/DD hh:mm a")
                   : "Clocked in"}
-              </Table.Cell>
-              <Table.Cell className="whitespace-nowrap">
+              </TableCell>
+              <TableCell className="whitespace-nowrap">
                 {formatMinutesToHoursAndMinutes(
                   dayjs(timesheet.end_datetime ?? "").diff(
                     dayjs(timesheet.start_datetime),
                     "minutes",
                   ),
                 )}
-              </Table.Cell>
-              <Table.Cell>
+              </TableCell>
+              <TableCell>
                 {timesheet.paid ? (
                   <CheckCircleIcon className="text-green-400" />
                 ) : (
                   <XCircleIcon className="text-red-400" />
                 )}
-              </Table.Cell>
-            </Table.Row>
+              </TableCell>
+            </TableRow>
           ))}
-        </Table.Body>
+        </TableBody>
       </Table>
     </>
   );

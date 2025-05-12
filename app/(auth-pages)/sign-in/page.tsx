@@ -1,6 +1,6 @@
 import Form from "next/form";
 import SubmitButton from "@/components/submit-button";
-import { Card, Checkbox, Label, TextInput } from "flowbite-react";
+import { Card, Checkbox, createTheme, Label, TextInput } from "flowbite-react";
 import Link from "next/link";
 import { signInAction } from "./actions";
 import ErrorAlert from "@/components/error-alert";
@@ -23,8 +23,8 @@ export default async function Page({
       horizontal
       imgAlt=""
       imgSrc="/images/authentication/login.jpg"
-      className="flex w-full md:max-w-screen-lg"
-      theme={{
+      className="flex w-full md:max-w-(--breakpoint-lg)"
+      theme={createTheme({
         root: {
           children: "my-auto w-full gap-0 space-y-8 p-6 sm:p-8 lg:p-16",
         },
@@ -33,9 +33,9 @@ export default async function Page({
             on: "hidden w-2/3 rounded-l-lg md:w-96 md:p-0 lg:block",
           },
         },
-      }}
+      })}
     >
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white lg:text-3xl">
+      <h2 className="text-2xl font-bold text-gray-900 lg:text-3xl dark:text-white">
         Sign in to HOM
       </h2>
       {error && <ErrorAlert message={error} />}
@@ -66,7 +66,7 @@ export default async function Page({
           </div>
           <Link
             href="/forgot-password"
-            className="text-right text-sm text-primary-700 hover:underline dark:text-primary-500"
+            className="text-primary-700 dark:text-primary-500 text-right text-sm hover:underline"
           >
             Lost Password?
           </Link>

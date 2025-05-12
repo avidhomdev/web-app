@@ -16,7 +16,7 @@ export default function Error(props: { error: Error }) {
           Something has gone seriously wrong
         </h1>
         {props.error?.message && (
-          <div className="mx-auto my-4 rounded bg-red-100 p-4 text-left font-mono text-sm text-red-600">
+          <div className="mx-auto my-4 rounded-sm bg-red-100 p-4 text-left font-mono text-sm text-red-600">
             {`Error message: ${props.error.message}`}
           </div>
         )}

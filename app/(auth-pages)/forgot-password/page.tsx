@@ -1,6 +1,6 @@
 import ErrorAlert from "@/components/error-alert";
 import SubmitButton from "@/components/submit-button";
-import { Alert, Card, Label, TextInput } from "flowbite-react";
+import { Alert, Card, createTheme, Label, TextInput } from "flowbite-react";
 import Form from "next/form";
 import Link from "next/link";
 import { RequestPasswordReset } from "./action";
@@ -17,8 +17,8 @@ export default async function Page({
       horizontal
       imgAlt=""
       imgSrc="/images/authentication/reset-password.jpg"
-      className="flex w-full md:max-w-screen-lg"
-      theme={{
+      className="flex w-full md:max-w-(--breakpoint-lg)"
+      theme={createTheme({
         root: {
           children: "my-auto w-full gap-0 space-y-8 p-6 sm:p-8 lg:p-16",
         },
@@ -27,9 +27,9 @@ export default async function Page({
             on: "hidden w-2/3 rounded-l-lg md:w-96 md:p-0 lg:block",
           },
         },
-      }}
+      })}
     >
-      <h2 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white lg:text-3xl">
+      <h2 className="mb-3 text-2xl font-bold text-gray-900 lg:text-3xl dark:text-white">
         Forgot your password?
       </h2>
       <p className="text-base font-normal text-gray-500 dark:text-gray-400">
@@ -52,7 +52,7 @@ export default async function Page({
         <div className="mb-6 flex justify-end">
           <Link
             href="/sign-in"
-            className="text-right text-sm text-primary-700 hover:underline dark:text-primary-500"
+            className="text-primary-700 dark:text-primary-500 text-right text-sm hover:underline"
           >
             Remember it?
           </Link>

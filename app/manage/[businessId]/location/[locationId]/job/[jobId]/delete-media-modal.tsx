@@ -17,7 +17,7 @@ export default function DeleteMediaModal({ id }: { id: number }) {
       }}
       trigger={(toggle) => (
         <div
-          className="cursor-pointer rounded bg-white p-1 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
+          className="cursor-pointer rounded-sm bg-white p-1 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
           onClick={toggle}
         >
           <Trash2Icon className="size-4 text-red-500" />

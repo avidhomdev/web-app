@@ -39,10 +39,14 @@ export default function Page() {
               }}
             >
               <TableHead>
-                <TableHeadCell>Item</TableHeadCell>
-                <TableHeadCell className="text-right">Quantity</TableHeadCell>
-                <TableHeadCell className="text-right">Unit Price</TableHeadCell>
-                <TableHeadCell className="text-right">Price</TableHeadCell>
+                <TableRow>
+                  <TableHeadCell>Item</TableHeadCell>
+                  <TableHeadCell className="text-right">Quantity</TableHeadCell>
+                  <TableHeadCell className="text-right">
+                    Unit Price
+                  </TableHeadCell>
+                  <TableHeadCell className="text-right">Price</TableHeadCell>
+                </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow className="border-b">

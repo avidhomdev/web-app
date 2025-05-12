@@ -9,9 +9,16 @@ import {
   Alert,
   Badge,
   Button,
+  createTheme,
   Dropdown,
+  DropdownItem,
   Pagination,
   Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
   TextInput,
   theme,
 } from "flowbite-react";
@@ -160,13 +167,13 @@ function TableSearchFilter() {
         disabled={isProcessing}
       />
       {value.length >= 1 && (
-        <div className="absolute bottom-1 right-1">
+        <div className="absolute right-1 bottom-1">
           <Button
             color="light"
             outline
             size="xs"
             onClick={() => handleUpdateSearchParam("search", value)}
-            isProcessing={isProcessing}
+            disabled={isProcessing}
           >
             {isProcessing ? "Searching..." : "Search"}
           </Button>
@@ -202,26 +209,26 @@ function TablePagination() {
         <div className="flex items-center gap-2">
           <span>Rows per page:</span>
           <Dropdown inline label={perPage}>
-            <Dropdown.Item
+            <DropdownItem
               onClick={() => handleUpdateSearchParam("per_page", "5")}
             >
               5
-            </Dropdown.Item>
-            <Dropdown.Item
+            </DropdownItem>
+            <DropdownItem
               onClick={() => handleUpdateSearchParam("per_page", "10")}
             >
               10
-            </Dropdown.Item>
-            <Dropdown.Item
+            </DropdownItem>
+            <DropdownItem
               onClick={() => handleUpdateSearchParam("per_page", "15")}
             >
               15
-            </Dropdown.Item>
-            <Dropdown.Item
+            </DropdownItem>
+            <DropdownItem
               onClick={() => handleUpdateSearchParam("per_page", "20")}
             >
               20
-            </Dropdown.Item>
+            </DropdownItem>
           </Dropdown>
         </div>
       )}
@@ -326,8 +333,8 @@ function Content() {
 
   return (
     <Table>
-      <Table.Head
-        theme={{
+      <TableHead
+        theme={createTheme({
           base: "rounded-none",
           cell: {
             base: twMerge(
@@ -335,37 +342,42 @@ function Content() {
               "capitalize tracking-wide text-gray-500 text-sm font-normal",
             ),
           },
-        }}
+        })}
       >
-        {columns.map((column) => (
-          <Table.HeadCell key={column.header} className={column.cellClassNames}>
-            {column.header}
-          </Table.HeadCell>
-        ))}
-      </Table.Head>
-      <Table.Body>
+        <TableRow>
+          {columns.map((column) => (
+            <TableHeadCell
+              key={column.header}
+              className={column.cellClassNames}
+            >
+              {column.header}
+            </TableHeadCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {customers.map((employee) => (
-          <Table.Row
+          <TableRow
             key={employee.id}
             className="border-b border-dashed border-gray-200 dark:border-gray-700"
           >
             {columns.map((column) => (
-              <Table.Cell
+              <TableCell
                 key={column.header}
-                theme={{
+                theme={createTheme({
                   base: twMerge(
                     theme.table.body.cell.base,
                     column.cellClassNames,
                     "p-5",
                   ),
-                }}
+                })}
               >
                 {column.render(employee)}
-              </Table.Cell>
+              </TableCell>
             ))}
-          </Table.Row>
+          </TableRow>
         ))}
-      </Table.Body>
+      </TableBody>
     </Table>
   );
 }

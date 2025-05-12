@@ -8,7 +8,7 @@ import initialFormState, {
 import { useUserContext } from "@/contexts/user";
 import { IJob } from "@/types/job";
 import { formatAsReadableDate } from "@/utils/formatter";
-import { Card, Datepicker, Drawer, Label, List } from "flowbite-react";
+import { Card, Datepicker, Drawer, DrawerHeader, DrawerItems, Label, List, ListItem } from "flowbite-react";
 import { CalendarIcon, SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
@@ -76,11 +76,11 @@ function EditDrawer({ job }: { job: IJob }) {
         <SettingsIcon />
       </div>
       <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-        <Drawer.Header
+        <DrawerHeader
           title="Update estimated timeline"
           titleIcon={() => <SettingsIcon className="mr-2" />}
         />
-        <Drawer.Items>
+        <DrawerItems>
           {state.error && (
             <div className="my-4">
               <ErrorAlert message={state.error} />
@@ -89,7 +89,7 @@ function EditDrawer({ job }: { job: IJob }) {
           <form action={action} className="my-4">
             <EditDrawerFormFields job={job} />
           </form>
-        </Drawer.Items>
+        </DrawerItems>
       </Drawer>
     </>
   );
@@ -107,7 +107,7 @@ export default function JobEstimatedTimelineCard({
         <EditDrawer job={job} />
       </div>
       <List unstyled>
-        <List.Item className="flex items-center justify-between gap-2">
+        <ListItem className="flex items-center justify-between gap-2">
           <dt className="flex items-center gap-2">
             <CalendarIcon className="size-4" /> Start date
           </dt>
@@ -116,8 +116,8 @@ export default function JobEstimatedTimelineCard({
               ? formatAsReadableDate(job.estimated_start_date)
               : "Unknown"}
           </dl>
-        </List.Item>
-        <List.Item className="flex items-center justify-between gap-2">
+        </ListItem>
+        <ListItem className="flex items-center justify-between gap-2">
           <dt className="flex items-center gap-2">
             <CalendarIcon className="size-4" /> Completion date
           </dt>
@@ -126,7 +126,7 @@ export default function JobEstimatedTimelineCard({
               ? formatAsReadableDate(job.estimated_end_date)
               : "Unknown"}
           </dl>
-        </List.Item>
+        </ListItem>
       </List>
     </Card>
   );

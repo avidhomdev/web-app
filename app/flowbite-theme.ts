@@ -1,7 +1,7 @@
-import { CustomFlowbiteTheme, theme } from "flowbite-react";
+import { createTheme, theme } from "flowbite-react";
 import { twMerge } from "tailwind-merge";
 
-export const customTheme: CustomFlowbiteTheme = {
+export const customTheme = createTheme({
   button: {
     color: {
       primary:
@@ -36,4 +36,4 @@ export const customTheme: CustomFlowbiteTheme = {
       },
     },
   },
-};
+});

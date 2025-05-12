@@ -15,6 +15,9 @@ import {
   List,
   ListItem,
   Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Select,
   TextInput,
   Tooltip,
@@ -92,8 +95,8 @@ function NewAppointmentModal({
 
   return (
     <Modal dismissible show={Boolean(newAppointment)} onClose={close}>
-      <Modal.Header>Add to schedule</Modal.Header>
-      <Modal.Body>
+      <ModalHeader>Add to schedule</ModalHeader>
+      <ModalBody>
         {state.error && (
           <div className="my-4">
             <ErrorAlert message={state.error} />
@@ -158,8 +161,8 @@ function NewAppointmentModal({
             </Select>
           </div>
         </form>
-      </Modal.Body>
-      <Modal.Footer>
+      </ModalBody>
+      <ModalFooter>
         <Button
           color="primary"
           onClick={() => formRef.current?.requestSubmit()}
@@ -169,7 +172,7 @@ function NewAppointmentModal({
         <Button color="gray" onClick={close}>
           Cancel
         </Button>
-      </Modal.Footer>
+      </ModalFooter>
     </Modal>
   );
 }
@@ -202,7 +205,7 @@ function HorizontalTimeLines() {
             onDrop={handleDrop}
             dateTime={hour.format("YYYY-MM-DDTHH:mm")}
           >
-            <div className="-mt-3.5 w-fit rounded bg-white p-1 text-right text-xs leading-5 text-gray-400 dark:bg-gray-700 md:ml-4">
+            <div className="-mt-3.5 w-fit rounded-sm bg-white p-1 text-right text-xs leading-5 text-gray-400 dark:bg-gray-700 md:ml-4">
               {hour.format("hh:mm A")}
             </div>
           </time>
@@ -211,7 +214,7 @@ function HorizontalTimeLines() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
           >
-            <div className="-mt-3.5 w-fit rounded bg-white p-1 text-right text-xs leading-5 text-gray-400 dark:bg-gray-700 md:ml-4">
+            <div className="-mt-3.5 w-fit rounded-sm bg-white p-1 text-right text-xs leading-5 text-gray-400 dark:bg-gray-700 md:ml-4">
               {hour.add(30, "minutes").format("hh:mm A")}
             </div>
           </time>
@@ -315,7 +318,7 @@ function JobsWithoutAppointments({ jobs }: { jobs: IJob[] }) {
     <List className="grid gap-2" unstyled>
       {jobsWithoutAppointments.map((job) => (
         <ListItem
-          className="cursor-move rounded border-l-8 border-green-500 bg-white p-4"
+          className="cursor-move rounded-sm border-l-8 border-green-500 bg-white p-4"
           key={job.id}
           draggable
           onDragStart={(e) => e.dataTransfer.setData("id", job.id.toString())}

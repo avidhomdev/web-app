@@ -7,7 +7,17 @@ import initialFormState, {
 } from "@/constants/initial-form-state";
 import { useUserContext } from "@/contexts/user";
 import { IJob } from "@/types/job";
-import { Card, Drawer, Label, List, TextInput, Tooltip } from "flowbite-react";
+import {
+  Card,
+  Drawer,
+  DrawerHeader,
+  DrawerItems,
+  Label,
+  List,
+  ListItem,
+  TextInput,
+  Tooltip,
+} from "flowbite-react";
 import {
   EditIcon,
   MailIcon,
@@ -95,11 +105,11 @@ function EditDrawer({ job }: { job: IJob }) {
         <EditIcon />
       </div>
       <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-        <Drawer.Header
+        <DrawerHeader
           title="Update customer"
           titleIcon={() => <UserPlus2Icon className="mr-2" />}
         />
-        <Drawer.Items>
+        <DrawerItems>
           {state.error && (
             <div className="my-4">
               <ErrorAlert message={state.error} />
@@ -108,7 +118,7 @@ function EditDrawer({ job }: { job: IJob }) {
           <form action={action} className="my-4">
             <EditDrawerFormFields job={job} />
           </form>
-        </Drawer.Items>
+        </DrawerItems>
       </Drawer>
     </>
   );
@@ -122,11 +132,11 @@ export default function JobCustomerCard({ job }: TJobCustomerCard) {
         <EditDrawer job={job} />
       </div>
       <List unstyled>
-        <List.Item className="flex items-center justify-between gap-2">
+        <ListItem className="flex items-center justify-between gap-2">
           <dt>Name</dt>
           <dl>{job.full_name}</dl>
-        </List.Item>
-        <List.Item className="group/phone flex items-center justify-between gap-2">
+        </ListItem>
+        <ListItem className="group/phone flex items-center justify-between gap-2">
           <dt>Phone</dt>
           <dl>
             {job.phone ? (
@@ -141,8 +151,8 @@ export default function JobCustomerCard({ job }: TJobCustomerCard) {
               "NA"
             )}
           </dl>
-        </List.Item>
-        <List.Item className="group/email flex items-center justify-between gap-2">
+        </ListItem>
+        <ListItem className="group/email flex items-center justify-between gap-2">
           <dt>Email</dt>
           <dl>
             {job.email ? (
@@ -157,7 +167,7 @@ export default function JobCustomerCard({ job }: TJobCustomerCard) {
               "NA"
             )}
           </dl>
-        </List.Item>
+        </ListItem>
       </List>
     </Card>
   );

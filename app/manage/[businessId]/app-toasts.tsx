@@ -1,6 +1,6 @@
 "use client";
 
-import { Toast } from "flowbite-react";
+import { Toast, ToastToggle } from "flowbite-react";
 import { CheckIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
@@ -42,7 +42,7 @@ export default function AppToasts() {
           className="ml-auto flex items-center space-x-2"
           onClick={() => router.push(pathname)}
         >
-          <Toast.Toggle />
+          <ToastToggle />
         </div>
       </Toast>
     </div>

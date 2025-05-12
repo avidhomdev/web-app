@@ -9,7 +9,9 @@ import initialFormState, {
 import { useBusinessContext } from "@/contexts/business";
 import {
   Breadcrumb,
+  BreadcrumbItem,
   Card,
+  HelperText,
   Label,
   TextInput,
   ToggleSwitch,
@@ -101,16 +103,14 @@ function FormFields({
             <TextInput
               autoComplete="off"
               defaultValue={defaultValues.lead_price}
-              helperText={
-                <>
-                  Pricing applied to products when job has certain lead types
-                  selected.
-                </>
-              }
               id="lead_price"
               name="lead_price"
               placeholder="1.00"
             />
+            <HelperText>
+              Pricing applied to products when job has certain lead types
+              selected.
+            </HelperText>
           </div>
         </fieldset>
       </Card>
@@ -141,11 +141,13 @@ function FormFields({
             <TextInput
               autoComplete="off"
               defaultValue={defaultValues.min_units}
-              helperText={<>Minimum units that can be ordered at a time.</>}
               id="min_units"
               name="min_units"
               placeholder="1"
             />
+            <HelperText>
+              Minimum units that can be ordered at a time.
+            </HelperText>
           </div>
         </fieldset>
       </Card>
@@ -191,17 +193,17 @@ export default function Page() {
   });
 
   return (
-    <div className="container relative flex max-w-screen-md flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+    <div className="relative container flex max-w-(--breakpoint-md) flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <PageHeaderWithActions
         title="New Product"
         renderBreadcrumbs={() => (
           <Breadcrumb aria-label="Back to products">
-            <Breadcrumb.Item
+            <BreadcrumbItem
               href={`/manage/${businessId}/products`}
               icon={() => <ChevronLeftIcon className="mr-2" />}
             >
               Back to products
-            </Breadcrumb.Item>
+            </BreadcrumbItem>
           </Breadcrumb>
         )}
       />

@@ -23,7 +23,7 @@ export default function SignUpForm() {
   return (
     <form action={dispatch} className="flex flex-col gap-4">
       {state?.error && (
-        <div className="rounded border border-red-300 bg-red-200 p-2 text-xs text-red-600">
+        <div className="rounded-sm border border-red-300 bg-red-200 p-2 text-xs text-red-600">
           {state.error}
         </div>
       )}

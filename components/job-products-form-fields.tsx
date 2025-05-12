@@ -2,7 +2,18 @@
 
 import { Tables } from "@/types/supabase";
 import { formatAsCurrency } from "@/utils/formatter";
-import { Button, Select, Table, TextInput } from "flowbite-react";
+import {
+  Button,
+  createTheme,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+  TextInput,
+} from "flowbite-react";
 import { Trash2Icon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -60,42 +71,44 @@ export default function JobProductsFormFields({
     <Table
       key={leadType}
       striped
-      theme={{
+      theme={createTheme({
         body: { cell: { base: "p-2" } },
         head: { cell: { base: "p-2 bg-gray-50 dark:bg-gray-700" } },
-      }}
+      })}
     >
-      <Table.Head>
-        <Table.HeadCell className="hidden w-52 sm:table-cell">
-          Product
-        </Table.HeadCell>
-        <Table.HeadCell className="hidden w-24 sm:table-cell">
-          Units
-        </Table.HeadCell>
-        <Table.HeadCell className="hidden w-24 sm:table-cell">
-          Unit Price
-        </Table.HeadCell>
-        <Table.HeadCell className="hidden w-24 sm:table-cell">
-          Lead Price
-        </Table.HeadCell>
-        <Table.HeadCell className="hidden w-28 text-right sm:table-cell">
-          Total
-        </Table.HeadCell>
-        <Table.HeadCell className="w-0" />
-      </Table.Head>
-      <Table.Body className="divide-y dark:divide-gray-600">
+      <TableHead>
+        <TableRow>
+          <TableHeadCell className="hidden w-52 sm:table-cell">
+            Product
+          </TableHeadCell>
+          <TableHeadCell className="hidden w-24 sm:table-cell">
+            Units
+          </TableHeadCell>
+          <TableHeadCell className="hidden w-24 sm:table-cell">
+            Unit Price
+          </TableHeadCell>
+          <TableHeadCell className="hidden w-24 sm:table-cell">
+            Lead Price
+          </TableHeadCell>
+          <TableHeadCell className="hidden w-28 text-right sm:table-cell">
+            Total
+          </TableHeadCell>
+          <TableHeadCell className="w-0" />
+        </TableRow>
+      </TableHead>
+      <TableBody className="divide-y divide-gray-100 dark:divide-gray-600">
         {jobProducts.length === 0 && (
-          <Table.Row>
-            <Table.Cell colSpan={6}>No Products.</Table.Cell>
-          </Table.Row>
+          <TableRow>
+            <TableCell colSpan={6}>No Products.</TableCell>
+          </TableRow>
         )}
         {jobProducts.map((jobProduct, index) => {
           const businessProduct = productDictionary[jobProduct.product_id];
 
           if (!businessProduct) {
             return (
-              <Table.Row key={jobProduct.product_id}>
-                <Table.Cell>
+              <TableRow key={jobProduct.product_id}>
+                <TableCell>
                   <Select
                     autoFocus
                     defaultValue={jobProduct.product_id?.toString()}
@@ -137,22 +150,22 @@ export default function JobProductsFormFields({
                       </option>
                     ))}
                   </Select>
-                </Table.Cell>
-              </Table.Row>
+                </TableCell>
+              </TableRow>
             );
           }
 
           return (
-            <Table.Row key={businessProduct.id}>
-              <Table.Cell>
+            <TableRow key={businessProduct.id}>
+              <TableCell>
                 {businessProduct.name}
                 <input
                   name={`product__${index}__product_id`}
                   type="hidden"
                   value={businessProduct.id}
                 />
-              </Table.Cell>
-              <Table.Cell>
+              </TableCell>
+              <TableCell>
                 <TextInput
                   defaultValue={Number(jobProduct.number_of_units)}
                   name={`product__${index}__number_of_units`}
@@ -175,8 +188,8 @@ export default function JobProductsFormFields({
                   step={0.01}
                   type="number"
                 />
-              </Table.Cell>
-              <Table.Cell>
+              </TableCell>
+              <TableCell>
                 <TextInput
                   defaultValue={Number(jobProduct.unit_price)}
                   name={`product__${index}__unit_price`}
@@ -199,8 +212,8 @@ export default function JobProductsFormFields({
                   step={0.01}
                   type="number"
                 />
-              </Table.Cell>
-              <Table.Cell>
+              </TableCell>
+              <TableCell>
                 <TextInput
                   defaultValue={Number(jobProduct.lead_price)}
                   name={`product__${index}__lead_price`}
@@ -222,16 +235,16 @@ export default function JobProductsFormFields({
                   step={0.01}
                   type="number"
                 />
-              </Table.Cell>
-              <Table.Cell className="text-right">
+              </TableCell>
+              <TableCell className="text-right">
                 <input
                   name={`product__${index}__total_price`}
                   type="hidden"
                   value={Number(jobProduct.total_price)}
                 />
                 {formatAsCurrency(Number(jobProduct.total_price))}
-              </Table.Cell>
-              <Table.Cell className="w-0 p-0">
+              </TableCell>
+              <TableCell className="w-0 p-0">
                 <Trash2Icon
                   className="cursor-pointer text-red-400 opacity-50 hover:opacity-100"
                   onClick={() =>
@@ -240,14 +253,14 @@ export default function JobProductsFormFields({
                     )
                   }
                 />
-              </Table.Cell>
-            </Table.Row>
+              </TableCell>
+            </TableRow>
           );
         })}
         {!jobProducts.find((jobProduct) => jobProduct.product_id === 0) && (
           <>
-            <Table.Row className="sm:hidden">
-              <Table.Cell className="px-2">
+            <TableRow className="sm:hidden">
+              <TableCell className="px-2">
                 <Button
                   color="light"
                   onClick={() =>
@@ -260,10 +273,10 @@ export default function JobProductsFormFields({
                 >
                   Add product
                 </Button>
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row className="hidden sm:table-row">
-              <Table.Cell colSpan={6}>
+              </TableCell>
+            </TableRow>
+            <TableRow className="hidden sm:table-row">
+              <TableCell colSpan={6}>
                 <Button
                   color="light"
                   onClick={() =>
@@ -276,33 +289,33 @@ export default function JobProductsFormFields({
                 >
                   Add product
                 </Button>
-              </Table.Cell>
-            </Table.Row>
+              </TableCell>
+            </TableRow>
           </>
         )}
 
-        <Table.Row className="hidden sm:table-row">
-          <Table.Cell colSpan={4}>
+        <TableRow className="hidden sm:table-row">
+          <TableCell colSpan={4}>
             <p className="text-lg">Commission</p>
-          </Table.Cell>
-          <Table.Cell colSpan={2}>
+          </TableCell>
+          <TableCell colSpan={2}>
             <TextInput
               name="commission"
               onChange={(e) => setCommission(Number(e.target.value))}
               value={commission}
             />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row className="hidden sm:table-row">
-          <Table.Cell
+          </TableCell>
+        </TableRow>
+        <TableRow className="hidden sm:table-row">
+          <TableCell
             className="text-right text-lg font-bold text-green-400"
             colSpan={6}
           >
             {formatAsCurrency(Number(productsTotal) + commission)}
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row className="sm:hidden">
-          <Table.Cell className="px-2">
+          </TableCell>
+        </TableRow>
+        <TableRow className="sm:hidden">
+          <TableCell className="px-2">
             <p className="text-lg">Commission</p>
             <TextInput
               key={commission}
@@ -311,14 +324,14 @@ export default function JobProductsFormFields({
               type="number"
               value={commission}
             />
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row className="sm:hidden">
-          <Table.Cell className="text-right text-lg font-bold text-green-400">
+          </TableCell>
+        </TableRow>
+        <TableRow className="sm:hidden">
+          <TableCell className="text-right text-lg font-bold text-green-400">
             {formatAsCurrency(Number(productsTotal) + Number(commission))}
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
+          </TableCell>
+        </TableRow>
+      </TableBody>
     </Table>
   );
 }

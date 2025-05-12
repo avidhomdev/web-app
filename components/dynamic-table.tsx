@@ -1,6 +1,14 @@
 "use client";
 
-import { Alert, Table } from "flowbite-react";
+import {
+  Alert,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+} from "flowbite-react";
 import { InfoIcon } from "lucide-react";
 import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
@@ -25,30 +33,32 @@ export default function DynamicTable<RowData>({
 }: TDynamicTableProps<RowData & { id: string | number }>) {
   return rows.length ? (
     <Table theme={{ root: { shadow: "" } }} striped={striped}>
-      <Table.Head>
-        {columns.map((column) => (
-          <Table.HeadCell
-            className={twMerge(column.cellClassNames)}
-            key={column.field}
-          >
-            {column.header}
-          </Table.HeadCell>
-        ))}
-      </Table.Head>
-      <Table.Body>
+      <TableHead>
+        <TableRow>
+          {columns.map((column) => (
+            <TableHeadCell
+              className={twMerge(column.cellClassNames)}
+              key={column.field}
+            >
+              {column.header}
+            </TableHeadCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {rows.map((row) => (
-          <Table.Row key={row.id}>
+          <TableRow key={row.id}>
             {columns.map((column) => (
-              <Table.Cell
+              <TableCell
                 key={column.field}
                 className={twMerge(column.cellClassNames)}
               >
                 {column.renderCell(row)}
-              </Table.Cell>
+              </TableCell>
             ))}
-          </Table.Row>
+          </TableRow>
         ))}
-      </Table.Body>
+      </TableBody>
     </Table>
   ) : (
     <Alert color="failure" icon={() => <InfoIcon className="mr-2" />}>

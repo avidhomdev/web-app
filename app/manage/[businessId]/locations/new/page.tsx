@@ -6,7 +6,7 @@ import SubmitButton from "@/components/submit-button";
 import initialFormState, {
   TInitialFormState,
 } from "@/constants/initial-form-state";
-import { Breadcrumb, Card, Label, Select, TextInput } from "flowbite-react";
+import { Breadcrumb, BreadcrumbItem, Card, Label, Select, TextInput } from "flowbite-react";
 import { BoxIcon, ChevronLeftIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useActionState } from "react";
@@ -115,17 +115,17 @@ export default function Page() {
     initialFormState,
   );
   return (
-    <div className="container relative flex max-w-screen-md flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+    <div className="container relative flex max-w-(--breakpoint-md) flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <PageHeaderWithActions
         title="New Location"
         renderBreadcrumbs={() => (
           <Breadcrumb aria-label="Back to locations">
-            <Breadcrumb.Item
+            <BreadcrumbItem
               href={`/manage/${businessId}/locations`}
               icon={() => <ChevronLeftIcon className="mr-2" />}
             >
               Back to locations
-            </Breadcrumb.Item>
+            </BreadcrumbItem>
           </Breadcrumb>
         )}
       />

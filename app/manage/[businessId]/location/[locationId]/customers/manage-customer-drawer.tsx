@@ -11,6 +11,8 @@ import { useUserContext } from "@/contexts/user";
 import { Tables } from "@/types/supabase";
 import {
   Drawer,
+  DrawerHeader,
+  DrawerItems,
   Label,
   Select,
   Textarea,
@@ -216,7 +218,7 @@ export default function ManageCustomerDrawer({
         },
       }}
     >
-      <Drawer.Header
+      <DrawerHeader
         title={`${customer ? "Update" : "Add"} Customer`}
         titleIcon={() =>
           customer ? (
@@ -226,7 +228,7 @@ export default function ManageCustomerDrawer({
           )
         }
       />
-      <Drawer.Items>
+      <DrawerItems>
         {state.error && (
           <div className="my-4">
             <ErrorAlert message={state.error} />
@@ -248,7 +250,7 @@ export default function ManageCustomerDrawer({
             </SubmitButton>
           </div>
         </form>
-      </Drawer.Items>
+      </DrawerItems>
     </Drawer>
   );
 }

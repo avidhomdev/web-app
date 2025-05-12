@@ -14,6 +14,9 @@ import {
   Checkbox,
   Label,
   Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   TextInput,
   theme,
 } from "flowbite-react";
@@ -107,10 +110,10 @@ function CalendarDayModal({
 
   return (
     <Modal dismissible show onClose={close}>
-      <Modal.Header>
+      <ModalHeader>
         <span>{`Add JOB-${selectedJob.id} to the schedule on ${dayjsLocalDate(day)}`}</span>
-      </Modal.Header>
-      <Modal.Body>
+      </ModalHeader>
+      <ModalBody>
         {state.error && (
           <div className="my-4">
             <ErrorAlert message={state.error} />
@@ -119,7 +122,7 @@ function CalendarDayModal({
         <Card
           theme={{
             root: {
-              base: twMerge(theme.card.root.base, " shadow-sm"),
+              base: twMerge(theme.card.root.base, " shadow-xs"),
               children: twMerge(theme.card.root.children, "p-3"),
             },
           }}
@@ -240,15 +243,15 @@ function CalendarDayModal({
             </ul>
           </fieldset>
         </form>
-      </Modal.Body>
-      <Modal.Footer>
+      </ModalBody>
+      <ModalFooter>
         <Button color="primary" form="add-job-to-schedule" type="submit">
           Confirm
         </Button>
         <Button color="gray" onClick={close}>
           Cancel
         </Button>
-      </Modal.Footer>
+      </ModalFooter>
     </Modal>
   );
 }
@@ -291,7 +294,7 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
         <ul className="grid w-full list-none gap-1 px-2 pb-2">
           {appointments.map((appointment, i) => (
             <li
-              className="rounded bg-gray-200 p-2 hover:bg-gray-300 dark:bg-gray-900 hover:dark:bg-gray-800"
+              className="rounded-sm bg-gray-200 p-2 hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800"
               key={i}
             >
               <div>

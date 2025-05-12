@@ -2,11 +2,20 @@
 import { ConfirmModal } from "@/components/confirm-modal";
 import { useUserContext } from "@/contexts/user";
 import { formatAsCurrency } from "@/utils/formatter";
-import { Dropdown, Table, theme, Tooltip } from "flowbite-react";
+import {
+  Dropdown,
+  DropdownItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+  Tooltip,
+} from "flowbite-react";
 import { EllipsisVertical, SettingsIcon, Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
-import { twMerge } from "tailwind-merge";
 import { DeleteProduct } from "./actions";
 import { IBusinessProductWithLocation } from "./page";
 import UpdateProductDrawer from "./update-product-drawer";
@@ -71,14 +80,14 @@ function ActionsCell({ row }: { row: IBusinessProductWithLocation }) {
           size="sm"
           dismissOnClick={false}
         >
-          <Dropdown.Item onClick={() => setIsUpdateProductDrawerOpen(true)}>
+          <DropdownItem onClick={() => setIsUpdateProductDrawerOpen(true)}>
             Settings
-          </Dropdown.Item>
+          </DropdownItem>
           <ConfirmModal
             description={`Are you sure you want to remove ${row.name}?`}
             onConfirmClick={handleDelete}
             trigger={(toggle) => (
-              <Dropdown.Item onClick={toggle}>Delete</Dropdown.Item>
+              <DropdownItem onClick={toggle}>Delete</DropdownItem>
             )}
           />
         </Dropdown>
@@ -152,49 +161,32 @@ export default function ProductsTable({
       className="grid gap-4 overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-lg shadow-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900"
     >
       <Table>
-        <Table.Head
-          theme={{
-            base: "rounded-none",
-            cell: {
-              base: twMerge(
-                theme.table.head.cell.base,
-                "capitalize tracking-wide text-gray-500 text-sm font-normal",
-              ),
-            },
-          }}
-        >
-          {columns.map((column) => (
-            <Table.HeadCell
-              key={column.header}
-              className={column.cellClassNames ?? ""}
-            >
-              {column.header}
-            </Table.HeadCell>
-          ))}
-        </Table.Head>
-        <Table.Body>
+        <TableHead>
+          <TableRow>
+            {columns.map((column) => (
+              <TableHeadCell
+                key={column.header}
+                className={column.cellClassNames ?? ""}
+              >
+                {column.header}
+              </TableHeadCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {products.map((product) => (
-            <Table.Row
+            <TableRow
               key={product.id}
               className="border-b border-dashed border-gray-200 dark:border-gray-700"
             >
               {columns.map((column) => (
-                <Table.Cell
-                  key={column.header}
-                  theme={{
-                    base: twMerge(
-                      theme.table.body.cell.base,
-                      column.cellClassNames,
-                      "p-5",
-                    ),
-                  }}
-                >
+                <TableCell key={column.header}>
                   {column.render(product)}
-                </Table.Cell>
+                </TableCell>
               ))}
-            </Table.Row>
+            </TableRow>
           ))}
-        </Table.Body>
+        </TableBody>
       </Table>
     </div>
   );

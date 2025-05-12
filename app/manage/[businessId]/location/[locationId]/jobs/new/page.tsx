@@ -1,11 +1,10 @@
 import Linky from "@/components/linky";
-import PageHeaderWithActions from "@/components/page-header-with-actions";
 import { ILocationEmployee } from "@/types/location";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
-import { Breadcrumb, BreadcrumbItem, Card, List } from "flowbite-react";
-import { ChevronLeftIcon } from "lucide-react";
+import { Card, List } from "flowbite-react";
 import CustomerSearchInput from "./customer-search-input";
 import PageForm from "./page-form";
+import PageHeader from "./page-header";
 
 type TPage = {
   params: Promise<{ locationId: string; businessId: string }>;
@@ -55,21 +54,8 @@ export default async function Page(props: TPage) {
   if (error) throw error;
   if (fetchProductsError) throw fetchProductsError;
   return (
-    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <PageHeaderWithActions
-        title="New Job"
-        subtitle="Add a new job"
-        renderBreadcrumbs={() => (
-          <Breadcrumb aria-label="Back to jobs">
-            <BreadcrumbItem
-              href={`/manage/${businessId}/location/${locationId}/jobs`}
-              icon={() => <ChevronLeftIcon className="mr-2" />}
-            >
-              Back to Jobs
-            </BreadcrumbItem>
-          </Breadcrumb>
-        )}
-      />
+    <div className="relative container flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+      <PageHeader />
       {searchParams.customerId ? (
         <PageForm
           customer={customer}

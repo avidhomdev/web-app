@@ -9,7 +9,7 @@ import {
 import { LOCATION_JOB_STATUS } from "@/constants/location-job-status";
 import { useUserContext } from "@/contexts/user";
 import { Tables } from "@/types/supabase";
-import { Drawer, Label, Select, TextInput } from "flowbite-react";
+import { Drawer, DrawerHeader, DrawerItems, Label, Select, TextInput } from "flowbite-react";
 import { UserPlus2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
@@ -125,11 +125,11 @@ export default function UpdateJobDrawer({
 
   return (
     <Drawer open={isOpen} onClose={handleClose} position="right">
-      <Drawer.Header
+      <DrawerHeader
         title="Update job"
         titleIcon={() => <UserPlus2Icon className="mr-2" />}
       />
-      <Drawer.Items>
+      <DrawerItems>
         {state.error && (
           <div className="my-4">
             <ErrorAlert message={state.error} />
@@ -138,7 +138,7 @@ export default function UpdateJobDrawer({
         <form action={action} className="my-4">
           <FormFields defaultValues={job} />
         </form>
-      </Drawer.Items>
+      </DrawerItems>
     </Drawer>
   );
 }

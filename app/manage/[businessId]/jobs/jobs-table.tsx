@@ -13,12 +13,22 @@ import {
   Badge,
   Button,
   Checkbox,
+  createTheme,
   Datepicker,
   Dropdown,
+  DropdownHeader,
+  DropdownItem,
   List,
+  ListItem,
   Pagination,
   Popover,
+  TabItem,
   Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
   Tabs,
   TextInput,
   theme,
@@ -219,13 +229,13 @@ function TableSearchFilter() {
         disabled={isProcessing}
       />
       {value.length >= 1 && (
-        <div className="absolute bottom-1 right-1">
+        <div className="absolute right-1 bottom-1">
           <Button
             color="light"
             outline
             size="xs"
             onClick={() => handleUpdateSearchParam("search", value)}
-            isProcessing={isProcessing}
+            disabled={isProcessing}
           >
             {isProcessing ? "Searching..." : "Search"}
           </Button>
@@ -261,16 +271,16 @@ function ProductFilter() {
             ? "Select products"
             : `${productsSearchParamArray.length} Selected ${pluralize("Product", "Products", productsSearchParamArray.length)}`
         }
-        theme={{
+        theme={createTheme({
           content: twMerge(theme.dropdown.content, "max-h-60 overflow-y-auto"),
           floating: {
             target:
               "w-full [&>span]:justify-between [&>span]:w-full [&>span]:items-center",
           },
-        }}
+        })}
         enableTypeAhead={false}
       >
-        <Dropdown.Header>
+        <DropdownHeader>
           <TextInput
             autoComplete="off"
             disabled={isProcessing}
@@ -280,9 +290,9 @@ function ProductFilter() {
             placeholder="Search by name"
             value={searchTerm}
           />
-        </Dropdown.Header>
+        </DropdownHeader>
         {filteredProducts.map((product) => (
-          <Dropdown.Item
+          <DropdownItem
             as="label"
             className="flex cursor-pointer gap-2"
             htmlFor={product.id.toString()}
@@ -316,7 +326,7 @@ function ProductFilter() {
               }}
             />
             <span className="text-left">{product.name}</span>
-          </Dropdown.Item>
+          </DropdownItem>
         ))}
       </Dropdown>
     </div>
@@ -348,7 +358,7 @@ function StatusTabFilters() {
         }
       }}
       variant="underline"
-      theme={{
+      theme={createTheme({
         tablist: {
           base: twMerge(theme.tabs.tablist.base, "pt-1 pl-1 text-nowrap"),
           tabitem: {
@@ -366,9 +376,9 @@ function StatusTabFilters() {
           },
         },
         tabpanel: "hidden",
-      }}
+      })}
     >
-      <Tabs.Item
+      <TabItem
         title={
           <div className="flex items-center gap-2">
             All{" "}
@@ -378,7 +388,7 @@ function StatusTabFilters() {
         active={!searchParams.has("status")}
       />
       {Object.entries(LOCATION_JOB_STATUS).map(([statusKey, status]) => (
-        <Tabs.Item
+        <TabItem
           key={status.name}
           title={
             <div className="flex items-center gap-2">
@@ -456,26 +466,26 @@ function TablePagination() {
         <div className="flex items-center gap-2">
           <span>Rows per page:</span>
           <Dropdown inline label={perPage}>
-            <Dropdown.Item
+            <DropdownItem
               onClick={() => handleUpdateSearchParam("per_page", "5")}
             >
               5
-            </Dropdown.Item>
-            <Dropdown.Item
+            </DropdownItem>
+            <DropdownItem
               onClick={() => handleUpdateSearchParam("per_page", "10")}
             >
               10
-            </Dropdown.Item>
-            <Dropdown.Item
+            </DropdownItem>
+            <DropdownItem
               onClick={() => handleUpdateSearchParam("per_page", "15")}
             >
               15
-            </Dropdown.Item>
-            <Dropdown.Item
+            </DropdownItem>
+            <DropdownItem
               onClick={() => handleUpdateSearchParam("per_page", "20")}
             >
               20
-            </Dropdown.Item>
+            </DropdownItem>
           </Dropdown>
         </div>
       )}
@@ -525,9 +535,9 @@ function Content() {
       header: "Name",
       render: (row) => (
         <Avatar
-          theme={{
+          theme={createTheme({
             root: { base: twMerge(theme.avatar.root.base, "justify-start") },
-          }}
+          })}
         >
           <div className="text-nowrap">
             <Linky
@@ -580,15 +590,13 @@ function Content() {
                     </small>
                     <List unstyled>
                       {productsCopy.map((p) => (
-                        <List.Item key={p.product_id}>
-                          {p.product.name}
-                        </List.Item>
+                        <ListItem key={p.product_id}>{p.product.name}</ListItem>
                       ))}
                     </List>
                   </div>
                 }
               >
-                <span className="ml-1 cursor-pointer font-semibold text-primary-400">{`+${productsCopy.length}`}</span>
+                <span className="text-primary-400 ml-1 cursor-pointer font-semibold">{`+${productsCopy.length}`}</span>
               </Popover>
             ) : null}
           </div>
@@ -613,8 +621,8 @@ function Content() {
 
   return (
     <Table>
-      <Table.Head
-        theme={{
+      <TableHead
+        theme={createTheme({
           base: "rounded-none",
           cell: {
             base: twMerge(
@@ -622,61 +630,65 @@ function Content() {
               "capitalize tracking-wide text-gray-500 text-sm font-normal",
             ),
           },
-        }}
-      >
-        {columns.map((column) => {
-          const isSortedColumn = sort?.includes(column.sortableKey ?? "");
-          const SortIcon =
-            isSortAscending && isSortedColumn ? ChevronDownIcon : ChevronUpIcon;
-
-          return (
-            <Table.HeadCell
-              key={column.header}
-              className={column.cellClassNames}
-            >
-              {Boolean(column.sortableKey) ? (
-                <div className="inline-flex items-center">
-                  <span>{column.header}</span>
-                  <SortIcon
-                    className="ml-1 cursor-pointer text-gray-400 hover:scale-105"
-                    onClick={() => {
-                      handleUpdateSearchParam(
-                        "sort",
-                        `${column.sortableKey}__${isSortAscending ? "descending" : "ascending"}`,
-                      );
-                    }}
-                  />
-                </div>
-              ) : (
-                column.header
-              )}
-            </Table.HeadCell>
-          );
         })}
-      </Table.Head>
-      <Table.Body>
+      >
+        <TableRow>
+          {columns.map((column) => {
+            const isSortedColumn = sort?.includes(column.sortableKey ?? "");
+            const SortIcon =
+              isSortAscending && isSortedColumn
+                ? ChevronDownIcon
+                : ChevronUpIcon;
+
+            return (
+              <TableHeadCell
+                key={column.header}
+                className={column.cellClassNames}
+              >
+                {Boolean(column.sortableKey) ? (
+                  <div className="inline-flex items-center">
+                    <span>{column.header}</span>
+                    <SortIcon
+                      className="ml-1 cursor-pointer text-gray-400 hover:scale-105"
+                      onClick={() => {
+                        handleUpdateSearchParam(
+                          "sort",
+                          `${column.sortableKey}__${isSortAscending ? "descending" : "ascending"}`,
+                        );
+                      }}
+                    />
+                  </div>
+                ) : (
+                  column.header
+                )}
+              </TableHeadCell>
+            );
+          })}
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {jobs.map((job) => (
-          <Table.Row
+          <TableRow
             key={job.id}
             className="border-b border-dashed border-gray-200 dark:border-gray-700"
           >
             {columns.map((column) => (
-              <Table.Cell
+              <TableCell
                 key={column.header}
-                theme={{
+                theme={createTheme({
                   base: twMerge(
                     theme.table.body.cell.base,
                     column.cellClassNames,
                     "p-5",
                   ),
-                }}
+                })}
               >
                 {column.render(job)}
-              </Table.Cell>
+              </TableCell>
             ))}
-          </Table.Row>
+          </TableRow>
         ))}
-      </Table.Body>
+      </TableBody>
     </Table>
   );
 }
