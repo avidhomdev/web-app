@@ -52,6 +52,12 @@ export default function useManageMenuItems() {
         isActive: pathname === `/manage/${businessId}/products`,
         name: "Products",
       },
+      {
+        href: generateBusinessLink("jobs"),
+        icon: HardHatIcon,
+        isActive: pathname === `/manage/${businessId}/jobs`,
+        name: "Jobs",
+      },
       ...(isBusinessManagement
         ? [
             {
