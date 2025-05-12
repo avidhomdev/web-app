@@ -8,5 +8,6 @@ export interface ILocationEmployee
 export interface ILocationCustomer
   extends Tables<"business_location_customers"> {
   creator?: Tables<"profiles">;
+  location?: Tables<"business_locations">;
   jobs?: Tables<"business_location_jobs">[];
 }

@@ -41,6 +41,12 @@ export default function useManageMenuItems() {
         name: "Dashboard",
       },
       {
+        href: generateBusinessLink("customers"),
+        icon: UsersRoundIcon,
+        isActive: pathname.startsWith(`/manage/${businessId}/customers`),
+        name: "Customers",
+      },
+      {
         href: generateBusinessLink("locations"),
         icon: MapPinIcon,
         isActive: pathname === `/manage/${businessId}/locations`,
