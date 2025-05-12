@@ -95,7 +95,7 @@ const FormFields = ({ defaultValues }: { defaultValues: IEmployee }) => {
           required
           type="closer_priority"
         />
-      </div>{" "}
+      </div>
       <div>
         <Label htmlFor="is_installer" className="mb-2 block">
           Installer
@@ -105,6 +105,22 @@ const FormFields = ({ defaultValues }: { defaultValues: IEmployee }) => {
           id="is_installer"
           key={defaultValues.is_installer ? "yes" : "no"}
           name="is_installer"
+          required
+        >
+          <option value="">Select a option</option>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </Select>
+      </div>
+      <div>
+        <Label htmlFor="is_contractor" className="mb-2 block">
+          Contractor
+        </Label>
+        <Select
+          defaultValue={defaultValues.is_contractor ? "yes" : "no"}
+          id="is_contractor"
+          key={defaultValues.is_contractor ? "yes" : "no"}
+          name="is_contractor"
           required
         >
           <option value="">Select a option</option>

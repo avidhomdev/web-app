@@ -49,6 +49,7 @@ export default function SearchOrInviteUserDrawer({
         inviting_new: false,
         is_closer: false,
         is_installer: false,
+        is_contractor: false,
         is_setter: false,
         location_id: locationId,
         role: "",
@@ -185,13 +186,28 @@ export default function SearchOrInviteUserDrawer({
                 </Select>
               </div>
               <div>
-                <Label htmlFor="installer" className="mb-2 block">
+                <Label htmlFor="is_installer" className="mb-2 block">
                   Installer
                 </Label>
                 <Select
                   defaultValue={state.data.is_installer ? "yes" : "no"}
                   key={state.data.is_installer}
                   name="is_installer"
+                  required
+                >
+                  <option value="">Select a option</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="is_contractor" className="mb-2 block">
+                  Contractor
+                </Label>
+                <Select
+                  defaultValue={state.data.is_contractor ? "yes" : "no"}
+                  key={state.data.is_contractor}
+                  name="is_contractor"
                   required
                 >
                   <option value="">Select a option</option>

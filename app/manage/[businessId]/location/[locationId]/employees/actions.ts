@@ -83,6 +83,7 @@ export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
       is_setter: fields.is_setter === "yes",
       is_closer: fields.is_closer === "yes",
       is_installer: fields.is_installer === "yes",
+      is_contractor: fields.is_contractor === "yes",
     });
 
     if (error) {
@@ -130,6 +131,7 @@ export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
       is_setter: fields.is_setter === "yes",
       is_closer: fields.is_closer === "yes",
       is_installer: fields.is_installer === "yes",
+      is_contractor: fields.is_contractor === "yes",
     });
 
     if (error) {
@@ -157,6 +159,7 @@ export async function UpdateEmployee<T>(...args: ServerActionWithState<T>) {
       is_setter: fields.is_setter === "yes",
       is_closer: fields.is_closer === "yes",
       is_installer: fields.is_installer === "yes",
+      is_contractor: fields.is_contractor === "yes",
     })
     .match({ location_id: fields.location_id, profile_id: fields.profile_id });
 

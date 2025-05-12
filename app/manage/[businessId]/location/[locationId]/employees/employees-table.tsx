@@ -467,6 +467,12 @@ function Content() {
     },
     {
       cellClassNames: "w-0 text-nowrap hidden sm:table-cell",
+      field: "is_contractor",
+      header: "Contractor",
+      render: (row) => (row.is_contractor ? <CheckCircle2Icon /> : null),
+    },
+    {
+      cellClassNames: "w-0 text-nowrap hidden sm:table-cell",
       field: "is_setter",
       header: "Setter",
       render: (row) => (row.is_setter ? <CheckCircle2Icon /> : null),
