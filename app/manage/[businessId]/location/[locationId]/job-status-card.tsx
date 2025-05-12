@@ -1,7 +1,7 @@
 "use client";
 
 import BarChart from "@/components/bar-chart";
-import { Button, Card } from "flowbite-react";
+import { Button, ButtonGroup, Card } from "flowbite-react";
 import { useState } from "react";
 
 const TIME_PERIODS = ["1W", "1M", "3M", "6M", "12M"];
@@ -12,7 +12,7 @@ export default function JobStatusCard() {
     <Card>
       <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
         <h3 className="text-xl font-semibold">Job Status</h3>
-        <Button.Group>
+        <ButtonGroup>
           {TIME_PERIODS.map((timePeriod) => (
             <Button
               key={timePeriod}
@@ -23,7 +23,7 @@ export default function JobStatusCard() {
               {timePeriod}
             </Button>
           ))}
-        </Button.Group>
+        </ButtonGroup>
       </div>
       <BarChart
         series={[

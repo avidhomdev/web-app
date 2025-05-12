@@ -5,7 +5,7 @@ import SubmitButton from "@/components/submit-button";
 import initialFormState, {
   TInitialFormState,
 } from "@/constants/initial-form-state";
-import { Drawer, Label, TextInput } from "flowbite-react";
+import { Drawer, DrawerHeader, DrawerItems, Label, TextInput } from "flowbite-react";
 import { FileUpIcon, PlusIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
@@ -72,11 +72,11 @@ export default function UploadMediaDrawer() {
       </div>
       {isOpen && (
         <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-          <Drawer.Header
+          <DrawerHeader
             title="Upload media"
             titleIcon={() => <FileUpIcon className="mr-2" />}
           />
-          <Drawer.Items>
+          <DrawerItems>
             {state.error && (
               <div className="my-4">
                 <ErrorAlert message={state.error} />
@@ -85,7 +85,7 @@ export default function UploadMediaDrawer() {
             <form action={action} className="my-4">
               <AddMediaDrawerFormFields />
             </form>
-          </Drawer.Items>
+          </DrawerItems>
         </Drawer>
       )}
     </>

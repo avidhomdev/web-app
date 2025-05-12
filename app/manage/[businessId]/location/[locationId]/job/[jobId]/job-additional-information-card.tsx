@@ -12,8 +12,11 @@ import { formatAsCurrency } from "@/utils/formatter";
 import {
   Card,
   Drawer,
+  DrawerHeader,
+  DrawerItems,
   Label,
   List,
+  ListItem,
   Radio,
   Select,
   TextInput,
@@ -247,11 +250,11 @@ function EditDrawer({ job }: { job: IJob }) {
         <SettingsIcon />
       </div>
       <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-        <Drawer.Header
+        <DrawerHeader
           title="Update information"
           titleIcon={() => <SettingsIcon className="mr-2" />}
         />
-        <Drawer.Items>
+        <DrawerItems>
           {state.error && (
             <div className="my-4">
               <ErrorAlert message={state.error} />
@@ -260,7 +263,7 @@ function EditDrawer({ job }: { job: IJob }) {
           <form action={action} className="my-4">
             <EditDrawerFormFields job={job} />
           </form>
-        </Drawer.Items>
+        </DrawerItems>
       </Drawer>
     </>
   );
@@ -278,51 +281,51 @@ export default function JobAdditionalInformationCard({
         <EditDrawer job={job} />
       </div>
       <List unstyled>
-        <List.Item className="flex items-center justify-between gap-2">
+        <ListItem className="flex items-center justify-between gap-2">
           <dt>Lead type</dt>
           <dl className="capitalize">
             {JOB_LEAD_TYPES[job.lead_type as TJobLeadTypes]?.name}
           </dl>
-        </List.Item>
-        <List.Item className="flex items-center justify-between gap-2">
+        </ListItem>
+        <ListItem className="flex items-center justify-between gap-2">
           <dt>Down payment collected</dt>
           <dl>{formatAsCurrency(Number(job.down_payment_collected))}</dl>
-        </List.Item>
-        <List.Item className="flex items-center justify-between gap-2">
+        </ListItem>
+        <ListItem className="flex items-center justify-between gap-2">
           <dt>Payment Type</dt>
           <dl>{JOB_PAYMENT_TYPES[job.payment_type].name}</dl>
-        </List.Item>
+        </ListItem>
         {job.hoa_approval_required ? (
           <>
-            <List.Item className="flex items-center justify-between gap-2">
+            <ListItem className="flex items-center justify-between gap-2">
               <dt>HOA Contact Name</dt>
               <dl>{job.hoa_contact_name}</dl>
-            </List.Item>
-            <List.Item className="flex items-center justify-between gap-2">
+            </ListItem>
+            <ListItem className="flex items-center justify-between gap-2">
               <dt>HOA Contact Phone</dt>
               <dl>{job.hoa_contact_phone}</dl>
-            </List.Item>
-            <List.Item className="flex items-center justify-between gap-2">
+            </ListItem>
+            <ListItem className="flex items-center justify-between gap-2">
               <dt>HOA Contact Email</dt>
               <dl>{job.hoa_contact_email}</dl>
-            </List.Item>
+            </ListItem>
           </>
         ) : (
-          <List.Item className="flex items-center justify-between gap-2">
+          <ListItem className="flex items-center justify-between gap-2">
             <dt>HOA Required</dt>
             <dl>No</dl>
-          </List.Item>
+          </ListItem>
         )}
         {job.has_water_rebate ? (
-          <List.Item className="flex items-center justify-between gap-2">
+          <ListItem className="flex items-center justify-between gap-2">
             <dt>Water Rebate Company</dt>
             <dl>{job.water_rebate_company}</dl>
-          </List.Item>
+          </ListItem>
         ) : (
-          <List.Item className="flex items-center justify-between gap-2">
+          <ListItem className="flex items-center justify-between gap-2">
             <dt>Water Rebate</dt>
             <dl>No</dl>
-          </List.Item>
+          </ListItem>
         )}
       </List>
     </Card>

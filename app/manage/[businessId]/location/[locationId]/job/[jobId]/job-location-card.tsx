@@ -8,7 +8,7 @@ import initialFormState, {
 import { US_STATES } from "@/constants/us-states";
 import { useUserContext } from "@/contexts/user";
 import { IJob } from "@/types/job";
-import { Button, Card, Drawer, Label, Select, TextInput } from "flowbite-react";
+import { Button, Card, Drawer, DrawerHeader, DrawerItems, Label, Select, TextInput } from "flowbite-react";
 import { MapIcon, MapPinIcon, MapPinnedIcon, SettingsIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
@@ -107,11 +107,11 @@ function EditDrawer({ job }: { job: IJob }) {
         <SettingsIcon />
       </div>
       <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-        <Drawer.Header
+        <DrawerHeader
           title="Update location"
           titleIcon={() => <MapPinIcon className="mr-2" />}
         />
-        <Drawer.Items>
+        <DrawerItems>
           {state.error && (
             <div className="my-4">
               <ErrorAlert message={state.error} />
@@ -120,7 +120,7 @@ function EditDrawer({ job }: { job: IJob }) {
           <form action={action} className="my-4">
             <EditDrawerFormFields job={job} />
           </form>
-        </Drawer.Items>
+        </DrawerItems>
       </Drawer>
     </>
   );
@@ -134,7 +134,7 @@ export default function JobLocationCard({ job }: TJobLocationCard) {
         <EditDrawer job={job} />
       </div>
       <div className="flex flex-col items-start gap-4 lg:gap-6">
-        <div className="grid aspect-video w-full place-items-center rounded bg-gray-100 dark:bg-gray-700">
+        <div className="grid aspect-video w-full place-items-center rounded-sm bg-gray-100 dark:bg-gray-700">
           <MapPinIcon className="size-14" />
           street view or aerial
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import SubmitButton from "@/components/submit-button";
-import { Button, Drawer, Label, Select, TextInput } from "flowbite-react";
+import { Button, Drawer, DrawerHeader, DrawerItems, Label, Select, TextInput } from "flowbite-react";
 import { BanknoteIcon } from "lucide-react";
 import Form from "next/form";
 import { useParams } from "next/navigation";
@@ -36,11 +36,11 @@ export default function AddManualPaymentDrawer() {
     <>
       <Button onClick={() => setIsOpen(true)}>Cash or Check</Button>
       <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-        <Drawer.Header
+        <DrawerHeader
           title="Collect Manual Payment"
           titleIcon={() => <BanknoteIcon className="mr-2" />}
         />
-        <Drawer.Items>
+        <DrawerItems>
           {state.error && (
             <div className="my-4">
               <ErrorAlert message={state.error} />
@@ -93,7 +93,7 @@ export default function AddManualPaymentDrawer() {
               Checkout
             </SubmitButton>
           </Form>
-        </Drawer.Items>
+        </DrawerItems>
       </Drawer>
     </>
   );

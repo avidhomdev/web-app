@@ -8,7 +8,7 @@ import initialFormState, {
 } from "@/constants/initial-form-state";
 import { useUserContext } from "@/contexts/user";
 import { Tables } from "@/types/supabase";
-import { Drawer, Label, TextInput } from "flowbite-react";
+import { Drawer, DrawerHeader, DrawerItems, Label, TextInput } from "flowbite-react";
 import { FileUpIcon, SettingsIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
@@ -80,18 +80,18 @@ export default function EditMediaDrawer({
   return (
     <>
       <div
-        className="cursor-pointer rounded bg-white p-1 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
+        className="cursor-pointer rounded-sm bg-white p-1 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
         onClick={() => setIsOpen(true)}
       >
         <SettingsIcon className="size-4" />
       </div>
       {isOpen && (
         <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-          <Drawer.Header
+          <DrawerHeader
             title="Update media"
             titleIcon={() => <FileUpIcon className="mr-2" />}
           />
-          <Drawer.Items>
+          <DrawerItems>
             {state.error && (
               <div className="my-4">
                 <ErrorAlert message={state.error} />
@@ -100,7 +100,7 @@ export default function EditMediaDrawer({
             <form action={action} className="my-4">
               <UpdateMediaDrawerFormFields media={media} />
             </form>
-          </Drawer.Items>
+          </DrawerItems>
         </Drawer>
       )}
     </>

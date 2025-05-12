@@ -1,3 +1,5 @@
+"use client";
+
 import { Alert, theme } from "flowbite-react";
 import { AlertCircleIcon } from "lucide-react";
 import { twMerge } from "tailwind-merge";

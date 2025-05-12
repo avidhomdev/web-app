@@ -1,7 +1,7 @@
 "use client";
 
 import { IJob } from "@/types/job";
-import { Breadcrumb } from "flowbite-react";
+import { Breadcrumb, BreadcrumbItem } from "flowbite-react";
 import { ChevronLeftIcon, HardHatIcon } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 
@@ -40,12 +40,12 @@ export default function JobHeader({ job }: { job: IJob }) {
   return (
     <header className="space-y-4 text-gray-500 dark:text-gray-300">
       <Breadcrumb aria-label="Default breadcrumb example">
-        <Breadcrumb.Item
+        <BreadcrumbItem
           href={`/manage/${businessId}/location/${locationId}/jobs`}
           icon={() => <ChevronLeftIcon className="mr-1" />}
         >
           Back to Jobs
-        </Breadcrumb.Item>
+        </BreadcrumbItem>
       </Breadcrumb>
       <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
         <hgroup>

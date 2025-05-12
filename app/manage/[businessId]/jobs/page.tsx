@@ -113,7 +113,7 @@ function JobStatusTiles({
           key={tile.name}
           className="flex grow items-center justify-center gap-4 px-4 lg:gap-6"
         >
-          <div className="relative size-16 flex-shrink-0">
+          <div className="relative size-16 shrink-0">
             <svg
               className="size-full -rotate-90"
               viewBox="0 0 36 36"
@@ -159,7 +159,7 @@ function JobStatusTiles({
               <h6 className="whitespace-nowrap font-medium">{tile.name}</h6>
               <Link
                 href={`${tile.status ? `?status=${tile.status ?? ""}` : "?"}#jobs-table`}
-                className="rounded p-1 hover:bg-gray-50 dark:hover:bg-gray-700"
+                className="rounded-sm p-1 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <FilterIcon className="size-5" />
               </Link>

@@ -99,7 +99,7 @@ export default function JobMessagesCard({ messages }: TJobMessages) {
                 rounded
                 size="md"
               />
-              <div className="group grid w-full gap-2 rounded bg-gray-50 p-3 dark:bg-gray-700">
+              <div className="group grid w-full gap-2 rounded-sm bg-gray-50 p-3 dark:bg-gray-700">
                 <div className="relative flex justify-between gap-2">
                   <p className="font-semibold">{message.author?.full_name}</p>
                   <time
@@ -113,7 +113,7 @@ export default function JobMessagesCard({ messages }: TJobMessages) {
                   {isAuthor && (
                     <button
                       aria-label="Delete"
-                      className="absolute right-0 top-5 hidden cursor-pointer rounded bg-white/30 p-1 hover:bg-white group-hover:block dark:bg-gray-800/30 dark:hover:bg-gray-800"
+                      className="absolute right-0 top-5 hidden cursor-pointer rounded-sm bg-white/30 p-1 hover:bg-white group-hover:block dark:bg-gray-800/30 dark:hover:bg-gray-800"
                     >
                       <ConfirmModal
                         description={`Are you sure you want to remove this message?`}
@@ -150,7 +150,7 @@ export default function JobMessagesCard({ messages }: TJobMessages) {
           <TextInput
             autoComplete="off"
             ref={messageInputRef}
-            className="w-full rounded-sm"
+            className="w-full rounded-xs"
             tabIndex={0}
             name="message"
           />

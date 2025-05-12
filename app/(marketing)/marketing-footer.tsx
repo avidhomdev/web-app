@@ -1,7 +1,7 @@
 export default function MarketingFooter() {
   return (
     <footer className="rounded-none bg-white p-4 py-8 dark:bg-gray-800 md:p-8 lg:p-10">
-      <div className="mx-auto max-w-screen-xl text-center">
+      <div className="mx-auto max-w-(--breakpoint-xl) text-center">
         <div className="grid lg:grid-cols-3">
           <a
             href="#"

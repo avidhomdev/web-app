@@ -4,7 +4,9 @@ import LineChart from "@/components/line-chart";
 import PageHeaderWithActions from "@/components/page-header-with-actions";
 import {
   Avatar,
+  AvatarGroup,
   Card,
+  createTheme,
   Progress,
   Textarea,
   theme,
@@ -22,7 +24,7 @@ import { twMerge } from "tailwind-merge";
 
 export default function Page() {
   return (
-    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+    <div className="relative container flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <PageHeaderWithActions
         title="Dashboard"
         subtitle="Get a summary of whats going on in the business."
@@ -112,7 +114,7 @@ export default function Page() {
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-6 xl:gap-6">
         <div className="xl:col-span-4">
           <Card
-            theme={{
+            theme={createTheme({
               root: {
                 base: twMerge(
                   theme.card.root.base,
@@ -120,18 +122,18 @@ export default function Page() {
                 ),
                 children: twMerge(theme.card.root.children, "p-0 gap-2"),
               },
-            }}
+            })}
           >
-            <div className="grid rounded-xl bg-white p-2 dark:bg-gray-900 lg:grid-cols-2">
+            <div className="grid rounded-xl bg-white p-2 lg:grid-cols-2 dark:bg-gray-900">
               <Card
-                theme={{
+                theme={createTheme({
                   root: {
                     base: twMerge(
                       theme.card.root.base,
-                      "rounded-2xl bg-emerald-800 bg-gradient-to-br from-emerald-800 to-emerald-500 shadow-none",
+                      "rounded-2xl bg-emerald-800 bg-linear-to-br from-emerald-800 to-emerald-500 shadow-none",
                     ),
                   },
-                }}
+                })}
               >
                 <div className="flex items-center justify-between gap-2">
                   <div>
@@ -218,7 +220,7 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <div className="grid divide-x-0 divide-y-2 divide-gray-100 rounded-xl bg-white dark:divide-gray-700 dark:bg-gray-900 lg:grid-cols-2 lg:divide-x-2 lg:divide-y-0">
+            <div className="grid divide-x-0 divide-y-2 divide-gray-100 rounded-xl bg-white lg:grid-cols-2 lg:divide-x-2 lg:divide-y-0 dark:divide-gray-700 dark:bg-gray-900">
               <div className="flex items-center justify-center gap-2 p-4 lg:gap-6 lg:p-6 xl:gap-8">
                 <div className="relative size-28">
                   <Tooltip style="auto" content="35% close rate">
@@ -326,11 +328,11 @@ export default function Page() {
             <div className="grid gap-4">
               <Avatar
                 rounded
-                theme={{
+                theme={createTheme({
                   root: {
                     base: twMerge(theme.avatar.root.base, "justify-start"),
                   },
-                }}
+                })}
               >
                 <div className="font-medium dark:text-white">
                   <div>Jese Leos</div>
@@ -371,7 +373,7 @@ export default function Page() {
           <h6 className="text-lg font-semibold tracking-tighter">
             Setter Leaderboard
           </h6>
-          <Avatar.Group>
+          <AvatarGroup>
             <Tooltip
               content="1st Place: John Doe"
               color="auto"
@@ -407,13 +409,13 @@ export default function Page() {
             >
               <Avatar rounded bordered placeholderInitials="TS" stacked />
             </Tooltip>
-          </Avatar.Group>
+          </AvatarGroup>
         </Card>
         <Card>
           <h6 className="text-lg font-semibold tracking-tighter">
             Installer Leaderboard
           </h6>
-          <Avatar.Group>
+          <AvatarGroup>
             <Tooltip
               content="1st Place: John Doe"
               color="auto"
@@ -449,13 +451,13 @@ export default function Page() {
             >
               <Avatar rounded bordered placeholderInitials="TS" stacked />
             </Tooltip>
-          </Avatar.Group>
+          </AvatarGroup>
         </Card>
         <Card>
           <h6 className="text-lg font-semibold tracking-tighter">
             Closer Leaderboard
           </h6>
-          <Avatar.Group>
+          <AvatarGroup>
             <Tooltip
               content="1st Place: John Doe"
               color="auto"
@@ -491,7 +493,7 @@ export default function Page() {
             >
               <Avatar rounded bordered placeholderInitials="TS" stacked />
             </Tooltip>
-          </Avatar.Group>
+          </AvatarGroup>
         </Card>
       </div>
     </div>

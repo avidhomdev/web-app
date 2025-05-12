@@ -1,7 +1,15 @@
 "use client";
 import Linky from "@/components/linky";
 import { Tables } from "@/types/supabase";
-import { Table, theme } from "flowbite-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+  theme,
+} from "flowbite-react";
 import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -50,7 +58,7 @@ export default function LocationsTable({
       className="grid gap-4 overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-lg shadow-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900"
     >
       <Table>
-        <Table.Head
+        <TableHead
           theme={{
             base: "rounded-none",
             cell: {
@@ -61,23 +69,25 @@ export default function LocationsTable({
             },
           }}
         >
-          {columns.map((column) => (
-            <Table.HeadCell
-              key={column.header}
-              className={column.cellClassNames ?? ""}
-            >
-              {column.header}
-            </Table.HeadCell>
-          ))}
-        </Table.Head>
-        <Table.Body>
+          <TableRow>
+            {columns.map((column) => (
+              <TableHeadCell
+                key={column.header}
+                className={column.cellClassNames ?? ""}
+              >
+                {column.header}
+              </TableHeadCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {locations.map((product) => (
-            <Table.Row
+            <TableRow
               key={product.id}
               className="border-b border-dashed border-gray-200 dark:border-gray-700"
             >
               {columns.map((column) => (
-                <Table.Cell
+                <TableCell
                   key={column.header}
                   theme={{
                     base: twMerge(
@@ -88,11 +98,11 @@ export default function LocationsTable({
                   }}
                 >
                   {column.render(product)}
-                </Table.Cell>
+                </TableCell>
               ))}
-            </Table.Row>
+            </TableRow>
           ))}
-        </Table.Body>
+        </TableBody>
       </Table>
     </div>
   );

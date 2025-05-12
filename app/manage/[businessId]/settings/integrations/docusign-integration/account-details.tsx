@@ -2,7 +2,7 @@
 
 import { Tables } from "@/types/supabase";
 import { IDocusignAccount } from "@/utils/docusign";
-import { Button, Card, Label, Modal, Select } from "flowbite-react";
+import { Button, Card, Label, Modal, ModalBody, ModalHeader, Select } from "flowbite-react";
 import { SettingsIcon, Trash2Icon } from "lucide-react";
 import Form from "next/form";
 import { useState } from "react";
@@ -101,8 +101,8 @@ function ChangeAccountForm({
         onClose={closeChangeModal}
         popup
       >
-        <Modal.Header />
-        <Modal.Body>
+        <ModalHeader />
+        <ModalBody>
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="text-lg font-normal text-gray-500 dark:text-gray-400">
@@ -132,7 +132,7 @@ function ChangeAccountForm({
               </Button>
             </div>
           </div>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     </>
   );
@@ -153,8 +153,8 @@ function RevokeButton({ businessId }: { businessId: string }) {
         <Trash2Icon className="size-5" />
       </Button>
       <Modal show={isRevoking} size="md" onClose={closeRevoking} popup>
-        <Modal.Header />
-        <Modal.Body>
+        <ModalHeader />
+        <ModalBody>
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="text-lg font-normal text-gray-500 dark:text-gray-400">
@@ -175,7 +175,7 @@ function RevokeButton({ businessId }: { businessId: string }) {
               </Button>
             </div>
           </div>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     </>
   );

@@ -1,11 +1,19 @@
 "use client";
 
 import { Tables } from "@/types/supabase";
-import { Button, Timeline } from "flowbite-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useState } from "react";
+import {
+  Button,
+  TimelineBody,
+  TimelineContent,
+  TimelineItem,
+  TimelinePoint,
+  TimelineTime,
+  TimelineTitle,
+} from "flowbite-react";
 import { CodeIcon } from "lucide-react";
+import { useState } from "react";
 dayjs.extend(relativeTime);
 
 type TLog = Tables<"business_logs"> & {
@@ -16,11 +24,11 @@ export default function JobHistoryTimelineItem({ log }: { log: TLog }) {
   const [showMore, setShowMore] = useState(true);
 
   return (
-    <Timeline.Item key={log.id} className="mb-6">
-      <Timeline.Point />
-      <Timeline.Content>
-        <Timeline.Title>{log.message}</Timeline.Title>
-        <Timeline.Time>{`${dayjs(log.created_at).fromNow()} by ${log.profile.full_name}`}</Timeline.Time>
+    <TimelineItem key={log.id} className="mb-6">
+      <TimelinePoint />
+      <TimelineContent>
+        <TimelineTitle>{log.message}</TimelineTitle>
+        <TimelineTime>{`${dayjs(log.created_at).fromNow()} by ${log.profile.full_name}`}</TimelineTime>
         {log.snapshot && (
           <>
             <Button
@@ -33,7 +41,7 @@ export default function JobHistoryTimelineItem({ log }: { log: TLog }) {
               {`${showMore ? "Hide" : "Show"} snapshot`}
             </Button>
             {showMore && (
-              <Timeline.Body className="overflow-x-scroll rounded bg-gray-700 p-4 text-gray-100">
+              <TimelineBody className="overflow-x-scroll rounded-sm bg-gray-700 p-4 text-gray-100">
                 <pre className="text-xs">
                   {JSON.stringify(
                     JSON.parse(log.snapshot as string),
@@ -41,11 +49,11 @@ export default function JobHistoryTimelineItem({ log }: { log: TLog }) {
                     2,
                   )}
                 </pre>
-              </Timeline.Body>
+              </TimelineBody>
             )}
           </>
         )}
-      </Timeline.Content>
-    </Timeline.Item>
+      </TimelineContent>
+    </TimelineItem>
   );
 }

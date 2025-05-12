@@ -29,7 +29,7 @@ export default function JobMessageCard({ jobs }: { jobs: IJob[] }) {
                 >{`JOB-${job.id}`}</Linky>
                 {`, ${dayjs(latestMessage.created_at).fromNow()}`}
               </p>
-              <div className="flex items-center gap-2 rounded">
+              <div className="flex items-center gap-2 rounded-sm">
                 <Tooltip content={latestMessage.author?.full_name}>
                   <Avatar
                     rounded
@@ -38,7 +38,7 @@ export default function JobMessageCard({ jobs }: { jobs: IJob[] }) {
                     )}
                   />
                 </Tooltip>
-                <p className="w-full rounded border border-amber-100 bg-amber-50 p-2 text-sm dark:border-amber-800 dark:bg-amber-700">
+                <p className="w-full rounded-sm border border-amber-100 bg-amber-50 p-2 text-sm dark:border-amber-800 dark:bg-amber-700">
                   {limitStringEllipsis(latestMessage?.message ?? "", 90)}
                 </p>
               </div>

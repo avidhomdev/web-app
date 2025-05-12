@@ -75,7 +75,7 @@ export default function Page() {
                       root: {
                         base: twMerge(
                           theme.card.root.base,
-                          "shadow-none cursor-move hover:bg-gray-50 hover:dark:bg-gray-700",
+                          "shadow-none cursor-move hover:bg-gray-50 dark:hover:bg-gray-700",
                         ),
                         children: twMerge(theme.card.root.children, "p-4"),
                       },

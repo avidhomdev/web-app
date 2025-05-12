@@ -7,7 +7,7 @@ import initialFormState, {
 } from "@/constants/initial-form-state";
 import { US_STATES } from "@/constants/us-states";
 import { useUserContext } from "@/contexts/user";
-import { Drawer, Label, Select, TextInput } from "flowbite-react";
+import { Drawer, DrawerHeader, DrawerItems, Label, Select, TextInput } from "flowbite-react";
 import { MapPinIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -44,11 +44,11 @@ export default function NewLocationDrawer({
 
   return (
     <Drawer open={isOpen} onClose={handleClose} position="right">
-      <Drawer.Header
+      <DrawerHeader
         title="New Location"
         titleIcon={() => <MapPinIcon className="mr-2" />}
       />
-      <Drawer.Items>
+      <DrawerItems>
         {state?.error && (
           <div className="my-4">
             <ErrorAlert message={state.error} />
@@ -119,7 +119,7 @@ export default function NewLocationDrawer({
             Create location
           </SubmitButton>
         </form>
-      </Drawer.Items>
+      </DrawerItems>
     </Drawer>
   );
 }

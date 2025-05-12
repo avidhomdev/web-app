@@ -7,7 +7,7 @@ import {
   TInitialFormState,
 } from "@/constants/initial-form-state";
 import { Tables } from "@/types/supabase";
-import { Button, Drawer, Label, TextInput } from "flowbite-react";
+import { Button, Drawer, DrawerHeader, DrawerItems, Label, TextInput } from "flowbite-react";
 import { BanknoteIcon } from "lucide-react";
 import Form from "next/form";
 import { useParams } from "next/navigation";
@@ -45,11 +45,11 @@ export default function AddCreditCardPaymentDrawer({
     <>
       <Button onClick={() => setIsOpen(true)}>Credit Card</Button>
       <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-        <Drawer.Header
+        <DrawerHeader
           title="Collect Credit Card Payment"
           titleIcon={() => <BanknoteIcon className="mr-2" />}
         />
-        <Drawer.Items>
+        <DrawerItems>
           {state.error && (
             <div className="my-4">
               <ErrorAlert message={state.error} />
@@ -98,7 +98,7 @@ export default function AddCreditCardPaymentDrawer({
               Send Invoice
             </SubmitButton>
           </Form>
-        </Drawer.Items>
+        </DrawerItems>
       </Drawer>
     </>
   );

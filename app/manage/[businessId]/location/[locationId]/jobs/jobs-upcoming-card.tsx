@@ -28,19 +28,19 @@ export default function JobsUpcomingCard() {
             <div className="p-1 text-right text-sm font-semibold uppercase">
               {time}
             </div>
-            <div className="rounded bg-gray-50 p-1 text-sm dark:bg-gray-700">
+            <div className="rounded-sm bg-gray-50 p-1 text-sm dark:bg-gray-700">
               no
             </div>
-            <div className="rounded bg-gray-50 p-1 text-sm dark:bg-gray-700">
+            <div className="rounded-sm bg-gray-50 p-1 text-sm dark:bg-gray-700">
               no
             </div>
-            <div className="rounded bg-gray-50 p-1 text-sm dark:bg-gray-700">
+            <div className="rounded-sm bg-gray-50 p-1 text-sm dark:bg-gray-700">
               no
             </div>
-            <div className="rounded bg-gray-50 p-1 text-sm dark:bg-gray-700">
+            <div className="rounded-sm bg-gray-50 p-1 text-sm dark:bg-gray-700">
               no
             </div>
-            <div className="rounded bg-gray-50 p-1 text-sm dark:bg-gray-700">
+            <div className="rounded-sm bg-gray-50 p-1 text-sm dark:bg-gray-700">
               no
             </div>
           </div>

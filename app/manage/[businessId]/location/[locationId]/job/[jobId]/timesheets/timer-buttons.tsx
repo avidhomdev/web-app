@@ -6,7 +6,7 @@ import initialFormState, {
 import { useUserContext } from "@/contexts/user";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Button } from "flowbite-react";
+import { Button, ButtonGroup } from "flowbite-react";
 import { AlarmClockIcon, PlayCircleIcon, StopCircleIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useActionState } from "react";
@@ -42,7 +42,7 @@ export default function TimerButtons({
         type="hidden"
         name={hasStartedTimesheet ? "end_datetime" : "start_datetime"}
       />
-      <Button.Group>
+      <ButtonGroup>
         <Button color="green" disabled={hasStartedTimesheet} type="submit">
           <PlayCircleIcon className="mr-2 size-5" />
           Start
@@ -51,7 +51,7 @@ export default function TimerButtons({
           <StopCircleIcon className="mr-2 size-5" />
           Stop
         </Button>
-      </Button.Group>
+      </ButtonGroup>
       <div className="flex items-center gap-1 text-sm">
         <AlarmClockIcon className="size-5" />
         {startedTimesheet

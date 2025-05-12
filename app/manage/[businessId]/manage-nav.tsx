@@ -5,9 +5,16 @@ import { useSidebarContext } from "@/contexts/sidebar";
 import { useUserContext } from "@/contexts/user";
 import {
   Avatar,
+  createTheme,
   DarkThemeToggle,
   Dropdown,
+  DropdownDivider,
+  DropdownHeader,
+  DropdownItem,
   Navbar,
+  NavbarCollapse,
+  NavbarLink,
+  NavbarToggle,
   theme,
   Tooltip,
 } from "flowbite-react";
@@ -51,7 +58,7 @@ export default function ManageNav() {
             </button>
           </Tooltip>
         </div>
-        <div className="mr-4 flex items-center gap-2 rounded border border-gray-200 bg-gray-50 px-4 py-2 dark:border-gray-600 dark:bg-gray-700 md:mr-2 md:justify-center">
+        <div className="mr-4 flex items-center gap-2 rounded-sm border border-gray-200 bg-gray-50 px-4 py-2 md:mr-2 md:justify-center dark:border-gray-600 dark:bg-gray-700">
           <div className="hidden sm:contents">
             <Dropdown
               inline
@@ -60,14 +67,14 @@ export default function ManageNav() {
               color="light"
               className="z-20"
             >
-              <Dropdown.Header>Select a Business</Dropdown.Header>
+              <DropdownHeader>Select a Business</DropdownHeader>
               {businesses?.map((userBusiness) => (
-                <Dropdown.Item
+                <DropdownItem
                   key={userBusiness.id}
                   href={`/manage/${userBusiness.id}/dashboard`}
                 >
                   {userBusiness.name}
-                </Dropdown.Item>
+                </DropdownItem>
               ))}
             </Dropdown>
             <ChevronRightIcon />
@@ -78,14 +85,14 @@ export default function ManageNav() {
             className="z-20"
             inline
           >
-            <Dropdown.Header>Select a Location</Dropdown.Header>
+            <DropdownHeader>Select a Location</DropdownHeader>
             {business.locations?.map((businessLocation) => (
-              <Dropdown.Item
+              <DropdownItem
                 key={businessLocation.id}
                 href={`/manage/${businessLocation.business_id}/location/${businessLocation.id}`}
               >
                 {businessLocation.name}
-              </Dropdown.Item>
+              </DropdownItem>
             ))}
           </Dropdown>
         </div>
@@ -101,32 +108,34 @@ export default function ManageNav() {
               rounded
             />
           }
-          theme={{ content: twMerge(theme.dropdown.content, "z-50") }}
+          theme={createTheme({
+            content: twMerge(theme.dropdown.content, "z-50"),
+          })}
         >
-          <Dropdown.Header>
+          <DropdownHeader>
             <span className="block text-sm">{full_name}</span>
-          </Dropdown.Header>
-          <Dropdown.Item href={`/manage/${businessId}/settings/profile`}>
+          </DropdownHeader>
+          <DropdownItem href={`/manage/${businessId}/settings/profile`}>
             Profile
-          </Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item href="/auth/signout">Sign out</Dropdown.Item>
+          </DropdownItem>
+          <DropdownDivider />
+          <DropdownItem href="/auth/signout">Sign out</DropdownItem>
         </Dropdown>
-        <Navbar.Toggle />
+        <NavbarToggle />
         <DarkThemeToggle className="hidden lg:block" />
       </div>
-      <Navbar.Collapse className="mr-4 lg:hidden">
+      <NavbarCollapse className="mr-4 lg:hidden">
         {menuItems.map((menuItem) => (
-          <Navbar.Link
+          <NavbarLink
             key={menuItem.name}
             href={menuItem.href}
             active={menuItem.isActive}
-            theme={{ active: { on: "text-primary-400" } }}
+            theme={createTheme({ active: { on: "text-primary-400" } })}
           >
             {menuItem.name}
-          </Navbar.Link>
+          </NavbarLink>
         ))}
-      </Navbar.Collapse>
+      </NavbarCollapse>
     </Navbar>
   );
 }

@@ -3,7 +3,7 @@
 import initialFormState, {
   TInitialFormState,
 } from "@/constants/initial-form-state";
-import { Drawer } from "flowbite-react";
+import { Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
 import {
   PropsWithChildren,
   ReactNode,
@@ -54,8 +54,8 @@ export default function FormDrawer({
       {renderTrigger(toggle)}
       {isOpen && (
         <Drawer open={isOpen} onClose={close} position="right">
-          <Drawer.Header title={title} titleIcon={titleIcon} />
-          <Drawer.Items>
+          <DrawerHeader title={title} titleIcon={titleIcon} />
+          <DrawerItems>
             {state.error && (
               <div className="my-4">
                 <ErrorAlert message={state.error} />
@@ -64,7 +64,7 @@ export default function FormDrawer({
             <form action={action} className="my-4">
               {children}
             </form>
-          </Drawer.Items>
+          </DrawerItems>
         </Drawer>
       )}
     </>

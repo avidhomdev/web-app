@@ -1,7 +1,7 @@
 "use client";
 
 import { IDocusignTemplate } from "@/utils/docusign";
-import { Button, Drawer, Label, Select, theme } from "flowbite-react";
+import { Button, Drawer, DrawerHeader, DrawerItems, Label, Select, theme } from "flowbite-react";
 import { FileIcon } from "lucide-react";
 import Form from "next/form";
 import { useParams } from "next/navigation";
@@ -45,11 +45,11 @@ export default function AddDocumentDrawer({
             },
           }}
         >
-          <Drawer.Header
+          <DrawerHeader
             title="Add Document"
             titleIcon={() => <FileIcon className="mr-2" />}
           />
-          <Drawer.Items>
+          <DrawerItems>
             <Form action={createJobDocusignEnvelope}>
               <input type="hidden" name="business_id" value={businessId} />
               <input type="hidden" name="job_id" value={jobId} />
@@ -105,7 +105,7 @@ export default function AddDocumentDrawer({
                 </SubmitButton>
               </div>
             </Form>
-          </Drawer.Items>
+          </DrawerItems>
         </Drawer>
       )}
     </>

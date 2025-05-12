@@ -6,14 +6,7 @@ import initialFormState, {
   TInitialFormState,
 } from "@/constants/initial-form-state";
 import { LOCATION_PROFILE_ROLES } from "@/constants/location_profile_roles";
-import {
-  Alert,
-  Avatar,
-  Drawer,
-  Label,
-  Select,
-  TextInput,
-} from "flowbite-react";
+import { Alert, Avatar, Drawer, DrawerHeader, DrawerItems, Label, Select, TextInput } from "flowbite-react";
 import { UserPlusIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -68,11 +61,11 @@ export default function SearchOrInviteUserDrawer({
 
   return (
     <Drawer open={isOpen} onClose={handleClose} position="right">
-      <Drawer.Header
+      <DrawerHeader
         title="Search or Invite User"
         titleIcon={() => <UserPlusIcon className="mr-2" />}
       />
-      <Drawer.Items>
+      <DrawerItems>
         <p className="mb-4 text-xs">
           Search for a user by email. If the user is found, you can select that
           user and their role. If no user is found, we can send them an invite
@@ -126,7 +119,7 @@ export default function SearchOrInviteUserDrawer({
                   </div>
                 </>
               ) : (
-                <div className="flex items-center gap-2 rounded border border-gray-100 bg-gray-50 p-4 dark:border-gray-500 dark:bg-gray-700">
+                <div className="flex items-center gap-2 rounded-sm border border-gray-100 bg-gray-50 p-4 dark:border-gray-500 dark:bg-gray-700">
                   <Avatar>{state.data.full_name}</Avatar>
                   <input
                     type="hidden"
@@ -227,7 +220,7 @@ export default function SearchOrInviteUserDrawer({
             </SubmitButton>
           </div>
         </form>
-      </Drawer.Items>
+      </DrawerItems>
     </Drawer>
   );
 }

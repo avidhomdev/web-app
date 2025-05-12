@@ -31,8 +31,10 @@ export default async function TemplatesTable({
       </hgroup>
       <Table className="w-full">
         <TableHead>
-          <TableHeadCell>Name</TableHeadCell>
-          <TableHeadCell>Created</TableHeadCell>
+          <TableRow>
+            <TableHeadCell>Name</TableHeadCell>
+            <TableHeadCell>Created</TableHeadCell>
+          </TableRow>
         </TableHead>
         <TableBody>
           {templates.map((template) => (

@@ -2,7 +2,7 @@
 
 import getInitials from "@/utils/get-initials";
 import dayjs, { Dayjs } from "dayjs";
-import { Avatar, Button, ButtonGroup, Dropdown, Tooltip } from "flowbite-react";
+import { Avatar, Button, ButtonGroup, Dropdown, DropdownItem, Tooltip } from "flowbite-react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useRef } from "react";
@@ -122,8 +122,8 @@ export default function JobWeekView({
           </Button>
         </ButtonGroup>
         <Dropdown label="Week" size="sm" color="light">
-          <Dropdown.Item>Week</Dropdown.Item>
-          <Dropdown.Item>Month</Dropdown.Item>
+          <DropdownItem>Week</DropdownItem>
+          <DropdownItem>Month</DropdownItem>
         </Dropdown>
         <AddJobAppointmentDrawer />
       </div>
@@ -132,7 +132,7 @@ export default function JobWeekView({
         ref={isolatedRef}
       >
         <div className="relative flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full">
-          <div className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black ring-opacity-5 dark:bg-gray-800 sm:pr-8">
+          <div className="sticky top-0 z-30 flex-none bg-white shadow-sm ring-1 ring-black ring-opacity-5 dark:bg-gray-800 sm:pr-8">
             <div className="grid grid-cols-7 text-sm leading-6 text-gray-500 sm:hidden">
               {daysOfWeek.map((dayOfWeek) => {
                 const isToday = dayjs().isSame(dayOfWeek, "day");

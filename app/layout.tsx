@@ -1,8 +1,8 @@
+import { ThemeModeScript, ThemeProvider } from "flowbite-react";
 import { GeistSans } from "geist/font/sans";
-import "./globals.css";
-import { Flowbite, ThemeModeScript } from "flowbite-react";
-import { customTheme } from "./flowbite-theme";
 import { twMerge } from "tailwind-merge";
+import { customTheme } from "./flowbite-theme";
+import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -29,7 +29,7 @@ export default function RootLayout({
         <ThemeModeScript />
       </head>
       <body className="bg-gray-50 text-gray-500 dark:bg-gray-900 dark:text-gray-300">
-        <Flowbite theme={{ theme: customTheme }}>{children}</Flowbite>
+        <ThemeProvider theme={customTheme}>{children}</ThemeProvider>
       </body>
     </html>
   );

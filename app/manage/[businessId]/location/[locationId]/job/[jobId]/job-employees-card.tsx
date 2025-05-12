@@ -9,7 +9,7 @@ import { JOB_PROFILE_ROLES } from "@/constants/job-profile-roles";
 import { useLocationContext } from "@/contexts/location";
 import { IJob } from "@/types/job";
 import getInitials from "@/utils/get-initials";
-import { Avatar, Card, Drawer, Label, Select } from "flowbite-react";
+import { Avatar, Card, Drawer, DrawerHeader, DrawerItems, Label, Select } from "flowbite-react";
 import { SettingsIcon, Trash2Icon, UserPlus2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
@@ -105,11 +105,11 @@ function AddDrawer({ job }: { job: IJob }) {
       </div>
       {isOpen && (
         <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-          <Drawer.Header
+          <DrawerHeader
             title="Add employee"
             titleIcon={() => <UserPlus2Icon className="mr-2" />}
           />
-          <Drawer.Items>
+          <DrawerItems>
             {state.error && (
               <div className="my-4">
                 <ErrorAlert message={state.error} />
@@ -118,7 +118,7 @@ function AddDrawer({ job }: { job: IJob }) {
             <form action={action} className="my-4">
               <DrawerFormFields job={job} />
             </form>
-          </Drawer.Items>
+          </DrawerItems>
         </Drawer>
       )}
     </>
@@ -154,11 +154,11 @@ function UpdateProfileDrawer({
       />
       {isOpen && (
         <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-          <Drawer.Header
+          <DrawerHeader
             title="Update employee"
             titleIcon={() => <UserPlus2Icon className="mr-2" />}
           />
-          <Drawer.Items>
+          <DrawerItems>
             {state.error && (
               <div className="my-4">
                 <ErrorAlert message={state.error} />
@@ -167,7 +167,7 @@ function UpdateProfileDrawer({
             <form action={action} className="my-4">
               <DrawerFormFields job={job} profile={profile} />
             </form>
-          </Drawer.Items>
+          </DrawerItems>
         </Drawer>
       )}
     </>

@@ -31,7 +31,7 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
         <ul className="grid w-full list-none gap-1 px-2 pb-2">
           {appointments.map((appointment, i) => (
             <li
-              className="rounded bg-gray-200 p-2 hover:bg-gray-300 dark:bg-gray-900 hover:dark:bg-gray-800"
+              className="rounded-sm bg-gray-200 p-2 hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800"
               key={i}
             >
               <div>
