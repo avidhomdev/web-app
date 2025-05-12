@@ -259,14 +259,24 @@ type CalendarDayProps = {
 };
 
 function CalendarDay({ appointments, day }: CalendarDayProps) {
+  const isToday = day.isSame(dayjs(), "day");
+  const isBeforeToday = day.isBefore(dayjs());
   const [selectedJob, setSelectedJob] = useState<ILocationJob | null>(null);
 
   return (
     <Card
       className="rounded-none text-left hover:border-gray-200 dark:hover:border-gray-900"
-      onDrop={(e) => setSelectedJob(JSON.parse(e.dataTransfer.getData("id")))}
+      onDrop={(e) =>
+        (isToday || !isBeforeToday) &&
+        setSelectedJob(JSON.parse(e.dataTransfer.getData("id")))
+      }
       theme={{
         root: {
+          base: twMerge(
+            theme.card.root.base,
+            isToday && "bg-yellow-50",
+            "shadow-none",
+          ),
           children: twMerge(
             theme.card.root.children,
             "p-0 justify-start items-start gap-2",

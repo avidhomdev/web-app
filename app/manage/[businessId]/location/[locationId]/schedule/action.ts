@@ -2,7 +2,7 @@
 
 import { formStateResponse } from "@/constants/initial-form-state";
 import { ServerActionWithState } from "@/types/server-actions";
-import { Database, Enums } from "@/types/supabase";
+import { Database } from "@/types/supabase";
 import { formatArrayFormFieldsIntoDictionary } from "@/utils/format-array-form-fields-into-dictionary";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 
