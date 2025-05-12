@@ -1,4 +1,5 @@
 "use client";
+import Linky from "@/components/linky";
 import { Tables } from "@/types/supabase";
 import { Table, theme } from "flowbite-react";
 import { ReactNode } from "react";
@@ -20,7 +21,11 @@ export default function LocationsTable({
     {
       field: "name",
       header: "Name",
-      render: (row) => row.name,
+      render: (row) => (
+        <Linky href={`/manage/${row.business_id}/location/${row.id}`}>
+          {row.name}
+        </Linky>
+      ),
     },
     {
       field: "address",

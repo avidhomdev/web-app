@@ -115,7 +115,7 @@ export default function Page() {
     initialFormState,
   );
   return (
-    <div className="mx-auto grid w-full max-w-screen-md gap-4">
+    <div className="container relative flex max-w-screen-md flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <PageHeaderWithActions
         title="New Location"
         renderBreadcrumbs={() => (
