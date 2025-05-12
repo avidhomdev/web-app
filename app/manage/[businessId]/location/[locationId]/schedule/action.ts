@@ -2,6 +2,7 @@
 
 import { formStateResponse } from "@/constants/initial-form-state";
 import { ServerActionWithState } from "@/types/server-actions";
+import { Database, Enums } from "@/types/supabase";
 import { formatArrayFormFieldsIntoDictionary } from "@/utils/format-array-form-fields-into-dictionary";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 
@@ -43,7 +44,7 @@ export async function AddJobToSchedule<T>(...args: ServerActionWithState<T>) {
 
   if (error) return formStateResponse({ ...newState, error: error.message });
 
-  const { error: insertScheduleError } = await supabase
+  const { error: insertAppointmentProfileError } = await supabase
     .from("business_appointment_profiles")
     .insert(
       Object.values(profilesDictionary).map((profile) => ({
@@ -53,10 +54,28 @@ export async function AddJobToSchedule<T>(...args: ServerActionWithState<T>) {
       })),
     );
 
-  if (insertScheduleError)
+  if (insertAppointmentProfileError)
     return formStateResponse({
       ...newState,
-      error: insertScheduleError.message,
+      error: insertAppointmentProfileError.message,
+    });
+
+  const { error: insertJobProfileError } = await supabase
+    .from("business_location_job_profiles")
+    .insert(
+      Object.values(profilesDictionary).map((profile) => ({
+        business_id: insert.business_id,
+        location_id: Number(fields.location_id),
+        job_id: Number(fields.job_id),
+        profile_id: profile.profile_id as string,
+        role: "installer" as Database["public"]["Enums"]["job_roles"],
+      })),
+    );
+
+  if (insertJobProfileError)
+    return formStateResponse({
+      ...newState,
+      error: insertJobProfileError.message,
     });
 
   return formStateResponse({ ...newState, success: true, dismiss: true });
