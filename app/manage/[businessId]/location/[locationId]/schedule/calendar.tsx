@@ -88,6 +88,7 @@ function CalendarDayModal({
     ...initialFormState,
     data: {
       business_id: selectedJob.business_id,
+      customer_id: selectedJob.customer_id,
       location_id: selectedJob.business_location_id,
       job_id: selectedJob.id,
       start_datetime: startOfDayMinString,
@@ -159,6 +160,11 @@ function CalendarDayModal({
             type="hidden"
             name="business_id"
             value={state.data.business_id}
+          />
+          <input
+            type="hidden"
+            name="customer_id"
+            value={state.data.customer_id}
           />
           <input
             type="hidden"
@@ -268,7 +274,6 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
 
   return (
     <Card
-      className="rounded-none text-left hover:border-gray-200 dark:hover:border-gray-900"
       onDrop={(e) =>
         (isToday || !isBeforeToday) &&
         setSelectedJob(JSON.parse(e.dataTransfer.getData("id")))
@@ -277,8 +282,9 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
         root: {
           base: twMerge(
             theme.card.root.base,
-            isToday && "bg-yellow-50",
-            "shadow-none",
+            isToday && "bg-yellow-50 border-yellow-200 hover:border-yellow-300",
+            !isToday && isBeforeToday && "bg-gray-100",
+            "shadow-none rounded-none text-left hover:border-gray-200 dark:hover:border-gray-900",
           ),
           children: twMerge(
             theme.card.root.children,
@@ -287,7 +293,7 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
         },
       }}
     >
-      <span className="rounded-br-lg border-b border-r border-gray-100 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-900">
+      <span className="rounded-br-lg border-r border-b border-gray-100 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-900">
         {day.date()}
       </span>
       {appointments ? (

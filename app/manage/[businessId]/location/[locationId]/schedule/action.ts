@@ -13,6 +13,7 @@ export async function AddJobToSchedule<T>(...args: ServerActionWithState<T>) {
 
   const insert = {
     business_id: fields.business_id as string,
+    customer_id: Number(fields.customer_id),
     location_id: Number(fields.location_id),
     job_id: Number(fields.job_id),
     start_datetime: fields.start_datetime as string,
@@ -58,6 +59,17 @@ export async function AddJobToSchedule<T>(...args: ServerActionWithState<T>) {
     return formStateResponse({
       ...newState,
       error: insertAppointmentProfileError.message,
+    });
+
+  const { error: updateJobStatusError } = await supabase
+    .from("business_location_jobs")
+    .update({ status: "scheduled" })
+    .eq("id", Number(fields.job_id));
+
+  if (updateJobStatusError)
+    return formStateResponse({
+      ...newState,
+      error: updateJobStatusError.message,
     });
 
   const { error: insertJobProfileError } = await supabase

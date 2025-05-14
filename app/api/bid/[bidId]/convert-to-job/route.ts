@@ -200,41 +200,46 @@ export async function POST(
     }
   }
 
-  await supabase.from("business_location_job_tasks").insert([
-    {
-      business_id: bid.business_id,
-      location_id: bid.location_id,
-      job_id: job.id,
-      name: "Send contract",
-      type: "checkbox",
-    },
-    {
-      business_id: bid.business_id,
-      location_id: bid.location_id,
-      job_id: job.id,
-      name: "Collect deposit",
-      type: "checkbox",
-    },
-    {
-      business_id: bid.business_id,
-      location_id: bid.location_id,
-      job_id: job.id,
-      name: "Assign Crew Lead",
-      type: "checkbox",
-    },
-    {
-      business_id: bid.business_id,
-      location_id: bid.location_id,
-      job_id: job.id,
-      name: "Schedule Install",
-      type: "checkbox",
-    },
+  await Promise.all([
+    supabase.from("business_location_job_tasks").insert([
+      {
+        business_id: bid.business_id,
+        location_id: bid.location_id,
+        job_id: job.id,
+        name: "Send contract",
+        type: "checkbox",
+      },
+      {
+        business_id: bid.business_id,
+        location_id: bid.location_id,
+        job_id: job.id,
+        name: "Collect deposit",
+        type: "checkbox",
+      },
+      {
+        business_id: bid.business_id,
+        location_id: bid.location_id,
+        job_id: job.id,
+        name: "Assign Crew Lead",
+        type: "checkbox",
+      },
+      {
+        business_id: bid.business_id,
+        location_id: bid.location_id,
+        job_id: job.id,
+        name: "Schedule Install",
+        type: "checkbox",
+      },
+    ]),
+    supabase
+      .from("business_location_customer_bids")
+      .update({ converted_to_job_id: job.id })
+      .eq("id", bid.id),
+    supabase
+      .from("business_location_customers")
+      .update({ disposition_status: "PITCHED_CLOSED" })
+      .eq("id", bid.customer.id),
   ]);
-
-  await supabase
-    .from("business_location_customer_bids")
-    .update({ converted_to_job_id: job.id })
-    .eq("id", bid.id);
 
   return supabase
     .from("business_location_jobs")
