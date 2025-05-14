@@ -1,34 +1,39 @@
+import Link from "next/link";
+
 export default function MarketingFooter() {
   return (
-    <footer className="rounded-none bg-white p-4 py-8 dark:bg-gray-800 md:p-8 lg:p-10">
+    <footer className="rounded-none bg-white p-4 py-8 md:p-8 lg:p-10 dark:bg-gray-800">
       <div className="mx-auto max-w-(--breakpoint-xl) text-center">
         <div className="grid lg:grid-cols-3">
-          <a
+          <Link
             href="#"
-            className="mb-4 flex items-center text-2xl font-semibold text-gray-900 dark:text-white lg:mb-0"
+            className="mb-4 flex items-center text-2xl font-semibold text-gray-900 lg:mb-0 dark:text-white"
           >
             HOM
-          </a>
-          <ul className="mb-4 flex flex-wrap items-center text-sm text-gray-500 dark:text-gray-400 lg:mb-0">
+          </Link>
+          <ul className="mb-4 flex flex-wrap items-center text-sm text-gray-500 lg:mb-0 dark:text-gray-400">
             <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
+              <Link href="#" className="mr-4 hover:underline md:mr-6">
                 About
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
+              <Link
+                href="/privacy-policy"
+                className="mr-4 hover:underline md:mr-6"
+              >
                 Privacy Policy
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
+              <Link href="#" className="mr-4 hover:underline md:mr-6">
                 Licensing
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
           <form action="#" className="flex w-full max-w-sm lg:ml-auto">
@@ -53,30 +58,30 @@ export default function MarketingFooter() {
               <input
                 type="email"
                 id="email"
-                className="block w-full rounded-l-lg border border-gray-300 bg-gray-50 p-3 pl-10 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-l-lg border border-gray-300 bg-gray-50 p-3 pl-10 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                 placeholder="Your email"
                 required
               />
             </div>
             <button
               type="submit"
-              className="cursor-pointer rounded-r-lg border border-primary-600 bg-primary-600 px-5 py-3 text-center text-sm text-white hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              className="border-primary-600 bg-primary-600 hover:bg-primary-700 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 cursor-pointer rounded-r-lg border px-5 py-3 text-center text-sm text-white focus:ring-4"
             >
               Subscribe
             </button>
           </form>
         </div>
-        <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
+        <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8 dark:border-gray-700" />
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="block text-sm text-gray-500 dark:text-gray-400">
             © 2021-2022&nbsp;
-            <a href="https://flowbite.com" className="hover:underline">
+            <Link href="https://flowbite.com" className="hover:underline">
               Flowbite™
-            </a>
+            </Link>
             . All Rights Reserved.
           </span>
           <div className="mt-4 flex justify-center space-x-6 sm:mt-0">
-            <a
+            <Link
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
@@ -92,8 +97,8 @@ export default function MarketingFooter() {
                   clipRule="evenodd"
                 />
               </svg>
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
@@ -109,8 +114,8 @@ export default function MarketingFooter() {
                   clipRule="evenodd"
                 />
               </svg>
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
@@ -122,8 +127,8 @@ export default function MarketingFooter() {
               >
                 <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
               </svg>
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
@@ -139,8 +144,8 @@ export default function MarketingFooter() {
                   clipRule="evenodd"
                 />
               </svg>
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
@@ -156,7 +161,7 @@ export default function MarketingFooter() {
                   clipRule="evenodd"
                 />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
