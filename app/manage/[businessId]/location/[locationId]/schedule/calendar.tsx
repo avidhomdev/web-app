@@ -271,7 +271,9 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
   const isToday = day.isSame(dayjs(), "day");
   const isBeforeToday = day.isBefore(dayjs());
   const [selectedJob, setSelectedJob] = useState<ILocationJob | null>(null);
-
+  const sortedAppointments = appointments.toSorted(
+    (a, b) => dayjs(a.start_datetime).unix() - dayjs(b.start_datetime).unix(),
+  );
   return (
     <Card
       onDrop={(e) =>
@@ -298,7 +300,7 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
       </span>
       {appointments ? (
         <ul className="grid w-full list-none gap-1 px-2 pb-2">
-          {appointments.map((appointment, i) => (
+          {sortedAppointments.map((appointment, i) => (
             <li
               className="rounded-sm bg-gray-200 p-2 hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800"
               key={i}
