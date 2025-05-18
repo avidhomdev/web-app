@@ -689,7 +689,7 @@ VALUES
     'UT',
     '84242',
     'setter',
-    'NEW',
+    'PITCHED_CLOSED',
     'This is just an example note.',
     '16814a2b-08dd-4083-a946-38680aa613b3',
     '45bb863d-b7ed-4eb4-913e-18a0bf7d4390'
@@ -706,7 +706,7 @@ VALUES
     'UT',
     '84242',
     'setter',
-    'PITCHED_NOT_CLOSED',
+    'PITCHED_CLOSED',
     'Another example for nicole.',
     '16814a2b-08dd-4083-a946-38680aa613b3',
     '45bb863d-b7ed-4eb4-913e-18a0bf7d4390'
@@ -757,7 +757,7 @@ VALUES
     'UT',
     '84242',
     'setter',
-    'PITCHED_CLOSED',
+    'NEW',
     'This is just an example note.',
     '16814a2b-08dd-4083-a946-38680aa613b3',
     NULL
