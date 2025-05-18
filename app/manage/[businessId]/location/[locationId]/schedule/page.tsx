@@ -29,7 +29,7 @@ export default async function Page({
         profiles: business_appointment_profiles(*,
           profile: profile_id(*)
         ),
-        job: job_id(*)f
+        job: job_id(*)
       `,
       )
       .match({ business_id: businessId })
@@ -39,6 +39,7 @@ export default async function Page({
       .from("business_location_jobs")
       .select(
         `*,
+        customer: customer_id(*),
         products: business_location_job_products(
           *,
           product: product_id(*)

@@ -16,3 +16,7 @@ export const LOCATION_JOB_STATUS: {
   canceled: { name: "Canceled", color: "red" },
   complete: { name: "Complete", color: "slate" },
 };
+
+export function getLocationJobStatusProperties(status: TLeadStatus) {
+  return LOCATION_JOB_STATUS[status] || LOCATION_JOB_STATUS.new;
+}

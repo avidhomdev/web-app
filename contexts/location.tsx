@@ -19,6 +19,7 @@ interface ILocationJobProfiles
 }
 
 export interface ILocationJob extends Tables<"business_location_jobs"> {
+  customer: Tables<"business_location_customers">;
   products: ILocationJobProducts[];
   profiles: ILocationJobProfiles[];
 }
