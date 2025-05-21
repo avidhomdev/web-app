@@ -70,18 +70,19 @@ export async function POST(
     commission: bid.commission,
     creator_id: user.id,
     customer_id: bid.customer.id,
+    discount: bid.discount,
     full_name: bid.customer.full_name,
+    has_water_rebate: bid.has_water_rebate,
+    hoa_approval_required: bid.hoa_approval_required,
+    hoa_contact_email: bid.hoa_contact_email,
+    hoa_contact_name: bid.hoa_contact_name,
+    hoa_contact_phone: bid.hoa_contact_phone,
+    lead_type: bid.lead_type,
     postal_code: bid.customer.postal_code,
     state: bid.customer.state,
-    has_water_rebate: bid.has_water_rebate,
+    job_status: "packet_pending",
     water_rebate_company: bid.water_rebate_company,
-    hoa_approval_required: bid.hoa_approval_required,
-    hoa_contact_name: bid.hoa_contact_name,
-    hoa_contact_email: bid.hoa_contact_email,
-    hoa_contact_phone: bid.hoa_contact_phone,
-    discount: bid.discount,
-    lead_type: bid.lead_type,
-  };
+  } as const;
 
   const { data: job, error: jobInsertError } = await supabase
     .from("business_location_jobs")
