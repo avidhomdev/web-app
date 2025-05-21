@@ -81,12 +81,16 @@ const FormFields = ({
         />
       </div>
       <div>
-        <Label htmlFor="status" className="mb-2 block">
+        <Label htmlFor="job_status" className="mb-2 block">
           Status
         </Label>
-        <Select name="status" required defaultValue={defaultValues.status}>
+        <Select
+          name="job_status"
+          required
+          defaultValue={defaultValues.job_status}
+        >
           <option value="" disabled>
-            Select a status
+            Select a job status
           </option>
           {Object.entries(JOB_STATUS_PROPERTIES).map(
             ([jobStatusKey, jobStatus]) => (
