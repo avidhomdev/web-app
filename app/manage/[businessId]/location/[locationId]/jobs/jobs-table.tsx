@@ -2,12 +2,13 @@
 
 import { ConfirmModal } from "@/components/confirm-modal";
 import Linky from "@/components/linky";
-import { LOCATION_JOB_STATUS } from "@/constants/location-job-status";
 import { useBusinessContext } from "@/contexts/business";
 import { useUserContext } from "@/contexts/user";
+import { JOB_STATUS_PROPERTIES } from "@/enums/job-status";
 import { IJob } from "@/types/job";
-import { Database, Tables } from "@/types/supabase";
+import { Tables } from "@/types/supabase";
 import { formatAsCompactNumber, formatAsCurrency } from "@/utils/formatter";
+import pluralize from "@/utils/pluralize";
 import dayjs from "dayjs";
 import {
   Alert,
@@ -65,7 +66,6 @@ import { twMerge } from "tailwind-merge";
 import { DeleteJob } from "./actions";
 import JobMessagesDrawer from "./job-messages-drawer";
 import UpdateJobDrawer from "./update-job-drawer";
-import pluralize from "@/utils/pluralize";
 
 const JobsTableContext = createContext<{
   jobs: IJob[];
@@ -74,7 +74,7 @@ const JobsTableContext = createContext<{
   handleRemoveSearchParam: (param: string, value?: string) => void;
   isProcessing: boolean;
   paginatedTotal: number;
-  statusCounts: {
+  jobStatusCounts: {
     [k: string]: number;
   };
 }>({
@@ -84,7 +84,7 @@ const JobsTableContext = createContext<{
   handleRemoveSearchParam: () => null,
   isProcessing: false,
   paginatedTotal: 0,
-  statusCounts: {
+  jobStatusCounts: {
     new: 0,
     qualified: 0,
     nurturing: 0,
@@ -108,7 +108,7 @@ type TJobsTableProviderProps = PropsWithChildren & {
   jobsCount: number | null;
   paginatedTotal: number;
   jobs: IJob[];
-  statusCounts: {
+  jobStatusCounts: {
     [k: string]: number;
   };
 };
@@ -149,7 +149,7 @@ function JobsTableProvider({
   jobs,
   jobsCount,
   paginatedTotal,
-  statusCounts,
+  jobStatusCounts,
 }: TJobsTableProviderProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
@@ -192,7 +192,7 @@ function JobsTableProvider({
       handleRemoveSearchParam,
       isProcessing,
       paginatedTotal,
-      statusCounts,
+      jobStatusCounts,
     }),
     [
       filteredjobs,
@@ -201,7 +201,7 @@ function JobsTableProvider({
       handleRemoveSearchParam,
       isProcessing,
       paginatedTotal,
-      statusCounts,
+      jobStatusCounts,
     ],
   );
 
@@ -342,27 +342,27 @@ function ProductFilter() {
   );
 }
 
-function StatusTabFilters() {
+function JobStatusTabFilters() {
   const {
     handleUpdateSearchParam,
     handleRemoveSearchParam,
-    statusCounts,
+    jobStatusCounts,
     jobsCount,
   } = useJobsTableContext();
 
   const searchParams = useSearchParams();
-  const hasStatusParam = searchParams.has("status");
-  const statusParamValue = searchParams.get("status");
+  const hasJobStatusParam = searchParams.has("job_status");
+  const jobStatusParamValue = searchParams.get("job_status");
 
   return (
     <Tabs
       onActiveTabChange={(tab) => {
         if (tab === 0) {
-          handleRemoveSearchParam("status", statusParamValue ?? "");
+          handleRemoveSearchParam("job_status", jobStatusParamValue ?? "");
         } else {
           handleUpdateSearchParam(
-            "status",
-            Object.keys(LOCATION_JOB_STATUS)[tab - 1],
+            "job_status",
+            Object.keys(JOB_STATUS_PROPERTIES)[tab - 1],
           );
         }
       }}
@@ -390,30 +390,28 @@ function StatusTabFilters() {
       <TabItem
         title={
           <div className="flex items-center gap-2">
-            All{" "}
+            All
             <Badge color="lime">{formatAsCompactNumber(jobsCount ?? 0)}</Badge>
           </div>
         }
-        active={!searchParams.has("status")}
+        active={!searchParams.has("job_status")}
       />
-      {Object.entries(LOCATION_JOB_STATUS).map(([statusKey, status]) => (
-        <TabItem
-          key={status.name}
-          title={
-            <div className="flex items-center gap-2">
-              <span>{status.name}</span>
-              <Badge color={status.color}>
-                {formatAsCompactNumber(
-                  statusCounts[
-                    statusKey as Database["public"]["Enums"]["location_job_status"]
-                  ] ?? 0,
-                )}
-              </Badge>
-            </div>
-          }
-          active={hasStatusParam && statusParamValue === statusKey}
-        />
-      ))}
+      {Object.entries(JOB_STATUS_PROPERTIES).map(
+        ([jobStatusKey, jobStatus]) => (
+          <TabItem
+            key={jobStatus.name}
+            title={
+              <div className="flex items-center gap-2">
+                <span>{jobStatus.name}</span>
+                <Badge color={jobStatus.color}>
+                  {formatAsCompactNumber(jobStatusCounts[jobStatusKey] ?? 0)}
+                </Badge>
+              </div>
+            }
+            active={hasJobStatusParam && jobStatusParamValue === jobStatusKey}
+          />
+        ),
+      )}
     </Tabs>
   );
 }
@@ -714,12 +712,12 @@ function Content() {
     },
     {
       cellClassNames: "w-0 text-nowrap hidden md:table-cell",
-      field: "status",
+      field: "job_status",
       header: "Status",
       render: (row) => (
         <div className="flex">
-          <Badge color={LOCATION_JOB_STATUS[row.status].color}>
-            {LOCATION_JOB_STATUS[row.status].name}
+          <Badge color={JOB_STATUS_PROPERTIES[row.job_status].color}>
+            {JOB_STATUS_PROPERTIES[row.job_status].name}
           </Badge>
         </div>
       ),
@@ -850,7 +848,7 @@ function TableActiveFilters() {
     products,
     search,
     source,
-    status,
+    job_status,
   } = Object.fromEntries(searchParams);
 
   const hasFilters =
@@ -862,7 +860,7 @@ function TableActiveFilters() {
       products,
       search,
       source,
-      status,
+      job_status,
     }).join("").length > 0;
 
   return (
@@ -888,24 +886,24 @@ function TableActiveFilters() {
               </Badge>
             </div>
           )}
-          {status && (
+          {job_status && (
             <div className="flex items-center justify-between gap-4 rounded-xl border border-dashed border-gray-300 p-2 px-4">
               <span className="text-sm font-semibold text-gray-500">
                 Status
               </span>
               <Badge
                 color={
-                  LOCATION_JOB_STATUS[
-                    status as keyof typeof LOCATION_JOB_STATUS
+                  JOB_STATUS_PROPERTIES[
+                    job_status as keyof typeof JOB_STATUS_PROPERTIES
                   ]?.color
                 }
-                onClick={() => handleRemoveSearchParam("status")}
+                onClick={() => handleRemoveSearchParam("job_status")}
               >
                 <div className="flex cursor-pointer items-center gap-2">
                   <p>
                     {
-                      LOCATION_JOB_STATUS[
-                        status as keyof typeof LOCATION_JOB_STATUS
+                      JOB_STATUS_PROPERTIES[
+                        job_status as keyof typeof JOB_STATUS_PROPERTIES
                       ]?.name
                     }
                   </p>
@@ -1054,12 +1052,12 @@ export default function JobsTable({
   jobsCount,
   jobs,
   paginatedTotal,
-  statusCounts,
+  jobStatusCounts,
 }: {
   jobsCount: number | null;
   jobs: IJob[];
   paginatedTotal: number;
-  statusCounts: {
+  jobStatusCounts: {
     [k: string]: number;
   };
 }) {
@@ -1067,7 +1065,7 @@ export default function JobsTable({
     <JobsTableProvider
       jobs={jobs}
       jobsCount={jobsCount}
-      statusCounts={statusCounts}
+      jobStatusCounts={jobStatusCounts}
       paginatedTotal={paginatedTotal}
     >
       <div
@@ -1075,7 +1073,7 @@ export default function JobsTable({
         className="grid gap-4 overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-lg shadow-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900"
       >
         <div className="overflow-x-auto">
-          <StatusTabFilters />
+          <JobStatusTabFilters />
         </div>
         <div className="track grid gap-2 px-2 md:grid-cols-4 md:px-4 lg:gap-4 lg:px-6">
           <TableSearchFilter />

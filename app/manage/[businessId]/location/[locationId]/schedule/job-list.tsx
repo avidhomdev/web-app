@@ -1,11 +1,11 @@
 "use client";
 
-import { getLocationJobStatusProperties } from "@/constants/location-job-status";
 import { ILocationJob } from "@/contexts/location";
+import { getJobStatusProperties } from "@/enums/job-status";
 import { Badge, Card } from "flowbite-react";
 
 function JobCard({ job }: { job: ILocationJob }) {
-  const jobStatusProperties = getLocationJobStatusProperties(job.status);
+  const jobStatusProperties = getJobStatusProperties(job.job_status);
 
   return (
     <Card

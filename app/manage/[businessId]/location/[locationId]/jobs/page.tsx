@@ -1,5 +1,5 @@
 import { IJob } from "@/types/job";
-import { Database, Tables } from "@/types/supabase";
+import { Tables } from "@/types/supabase";
 import { formatAsCompactNumber, formatAsPercentage } from "@/utils/formatter";
 import { percentageChange } from "@/utils/percentage-change";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
@@ -23,35 +23,31 @@ export const metadata = {
 function JobStatusTiles({
   previousWeek,
   jobsCount,
-  statusCounts,
+  jobStatusCounts,
 }: {
-  previousWeek: Partial<Tables<"business_location_jobs">>[] | null;
+  previousWeek:
+    | Pick<Tables<"business_location_jobs">, "id" | "job_status">[]
+    | null;
   jobsCount: number;
-  statusCounts: {
-    [k in Database["public"]["Enums"]["location_job_status"]]: number;
+  jobStatusCounts: {
+    [k: string]: number;
   };
 }) {
-  const previousWeekStatusCounts = (previousWeek ?? []).reduce(
+  const previousWeekJobStatusCounts = (previousWeek ?? []).reduce(
     (dictionary, job) => {
-      dictionary[
-        job.status as Database["public"]["Enums"]["location_job_status"]
-      ] =
-        Number(
-          dictionary[
-            job.status as Database["public"]["Enums"]["location_job_status"]
-          ] ?? 0,
-        ) + 1;
+      dictionary[job.job_status] = Number(dictionary[job.job_status] ?? 0) + 1;
 
       return dictionary;
     },
     {
-      new: 0,
+      packet_pending: 0,
+      packet_complete: 0,
       scheduled: 0,
-      pending: 0,
-      approved: 0,
-      billed: 0,
-      canceled: 0,
+      install_complete: 0,
       complete: 0,
+      cancelled: 0,
+      billed: 0,
+      commissioned: 0,
     },
   );
 
@@ -66,48 +62,48 @@ function JobStatusTiles({
       progress: 100,
     },
     {
-      name: "New",
-      status: "new",
-      value: formatAsCompactNumber(statusCounts.new),
+      name: "Packet Pending",
+      status: "packet_pending",
+      value: formatAsCompactNumber(jobStatusCounts.packet_pending),
       weekly_change: percentageChange(
-        previousWeekStatusCounts.new,
-        statusCounts.new,
+        previousWeekJobStatusCounts.packet_pending,
+        jobStatusCounts.packet_pending,
       ),
       classNames: "fill-indigo-600/20 stroke-indigo-600",
       progressClassNames: "text-indigo-700 dark:text-indigo-800 ",
       icon: SignpostIcon,
-      progress: 100 - (statusCounts.new / jobsCount) * 100,
+      progress: 100 - (jobStatusCounts.packet_pending / jobsCount) * 100,
     },
     {
       name: "Scheduled",
       status: "scheduled",
-      value: formatAsCompactNumber(statusCounts.scheduled),
+      value: formatAsCompactNumber(jobStatusCounts.scheduled),
       weekly_change: percentageChange(
-        previousWeekStatusCounts.scheduled,
-        statusCounts.scheduled,
+        previousWeekJobStatusCounts.scheduled,
+        jobStatusCounts.scheduled,
       ),
       classNames: "fill-green-600/20 stroke-green-600",
       progressClassNames: "text-green-700 dark:text-green-800 ",
       icon: LandmarkIcon,
-      progress: 100 - (statusCounts.scheduled / jobsCount) * 100,
+      progress: 100 - (jobStatusCounts.scheduled / jobsCount) * 100,
     },
     {
-      name: "Canceled",
-      status: "canceled",
-      value: formatAsCompactNumber(statusCounts.canceled),
+      name: "Cancelled",
+      status: "cancelled",
+      value: formatAsCompactNumber(jobStatusCounts.cancelled),
       weekly_change: percentageChange(
-        previousWeekStatusCounts.canceled,
-        statusCounts.canceled,
+        previousWeekJobStatusCounts.cancelled,
+        jobStatusCounts.cancelled,
       ),
       classNames: "fill-red-600/20 stroke-red-600",
       progressClassNames: "text-red-700 dark:text-red-800 ",
       icon: CaptionsOffIcon,
-      progress: 100 - (statusCounts.canceled / jobsCount) * 100,
+      progress: 100 - (jobStatusCounts.cancelled / jobsCount) * 100,
     },
   ];
 
   return (
-    <div className="flex w-full max-w-full items-center divide-x divide-gray-100 overflow-scroll rounded-lg border border-gray-100 bg-white py-4 shadow-lg shadow-gray-100 dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900 lg:py-6">
+    <div className="flex w-full max-w-full items-center divide-x divide-gray-100 overflow-scroll rounded-lg border border-gray-100 bg-white py-4 shadow-lg shadow-gray-100 lg:py-6 dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900">
       {tiles.map((tile) => (
         <div
           key={tile.name}
@@ -156,9 +152,9 @@ function JobStatusTiles({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h6 className="whitespace-nowrap font-medium">{tile.name}</h6>
+              <h6 className="font-medium whitespace-nowrap">{tile.name}</h6>
               <Link
-                href={`${tile.status ? `?status=${tile.status ?? ""}` : "?"}#jobs-table`}
+                href={`${tile.status ? `?job_status=${tile.status ?? ""}` : "?"}#jobs-table`}
                 className="rounded-sm p-1 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <FilterIcon className="size-5" />
@@ -195,7 +191,7 @@ export default async function Page(props: {
     per_page: number;
     products: string;
     sort: string;
-    status: string;
+    job_status: string;
   }>;
 }) {
   const params = await props.params;
@@ -209,7 +205,7 @@ export default async function Page(props: {
     created_before = null,
     page = 0,
     per_page = 10,
-    status = "",
+    job_status = "",
     sort = "",
   } = searchParams;
 
@@ -226,13 +222,13 @@ export default async function Page(props: {
 
   const fetchAllJobs = supabase
     .from("business_location_jobs")
-    .select("status", { count: "exact" })
+    .select("job_status", { count: "exact" })
     .eq("business_location_id", Number(locationId));
 
   const lastWeekDate = new Date(new Date().setDate(new Date().getDate() - 5));
   const fetchAllPreviousWeekJobs = supabase
     .from("business_location_jobs")
-    .select("id,status")
+    .select("id,job_status")
     .eq("business_location_id", Number(locationId))
     .lte("created_at", lastWeekDate.toISOString());
 
@@ -247,7 +243,7 @@ export default async function Page(props: {
     )
     .match({
       business_location_id: locationId,
-      ...(status ? { status } : {}),
+      ...(job_status ? { job_status } : {}),
     })
     .range(startRange, endRange)
     .gte("created_at", new Date(created_after ?? "0").toISOString())
@@ -269,36 +265,37 @@ export default async function Page(props: {
 
   if (error) throw error;
 
-  const statusCounts = (all ?? []).reduce(
+  const jobStatusCounts = (all ?? []).reduce(
     (dictionary, job) => {
-      dictionary[job.status] = Number(dictionary[job.status] ?? 0) + 1;
+      dictionary[job.job_status] = Number(dictionary[job.job_status] ?? 0) + 1;
 
       return dictionary;
     },
     {
-      new: 0,
+      packet_pending: 0,
+      packet_complete: 0,
       scheduled: 0,
-      pending: 0,
-      approved: 0,
-      billed: 0,
-      canceled: 0,
+      install_complete: 0,
       complete: 0,
+      cancelled: 0,
+      billed: 0,
+      commissioned: 0,
     },
   );
 
   return (
-    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+    <div className="relative container flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <JobsHeader />
       <JobStatusTiles
         previousWeek={previousWeek}
         jobsCount={count ?? 0}
-        statusCounts={statusCounts}
+        jobStatusCounts={jobStatusCounts}
       />
       <JobsTable
         jobsCount={count ?? 0}
         jobs={data ?? []}
         paginatedTotal={paginatedTotal ?? 0}
-        statusCounts={statusCounts}
+        jobStatusCounts={jobStatusCounts}
       />
     </div>
   );

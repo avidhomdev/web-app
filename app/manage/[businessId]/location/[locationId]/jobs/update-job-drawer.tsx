@@ -6,15 +6,22 @@ import {
   initialFormState,
   TInitialFormState,
 } from "@/constants/initial-form-state";
-import { LOCATION_JOB_STATUS } from "@/constants/location-job-status";
 import { useUserContext } from "@/contexts/user";
 import { Tables } from "@/types/supabase";
-import { Drawer, DrawerHeader, DrawerItems, Label, Select, TextInput } from "flowbite-react";
+import {
+  Drawer,
+  DrawerHeader,
+  DrawerItems,
+  Label,
+  Select,
+  TextInput,
+} from "flowbite-react";
 import { UserPlus2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { UpdateJob } from "./actions";
+import { JOB_STATUS_PROPERTIES } from "@/enums/job-status";
 
 const FormFields = ({
   defaultValues,
@@ -81,7 +88,7 @@ const FormFields = ({
           <option value="" disabled>
             Select a status
           </option>
-          {Object.entries(LOCATION_JOB_STATUS).map(
+          {Object.entries(JOB_STATUS_PROPERTIES).map(
             ([jobStatusKey, jobStatus]) => (
               <option key={jobStatusKey} value={jobStatusKey}>
                 {jobStatus.name}

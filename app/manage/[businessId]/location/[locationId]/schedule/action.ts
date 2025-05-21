@@ -63,7 +63,7 @@ export async function AddJobToSchedule<T>(...args: ServerActionWithState<T>) {
 
   const { error: updateJobStatusError } = await supabase
     .from("business_location_jobs")
-    .update({ status: "scheduled" })
+    .update({ job_status: "scheduled" })
     .eq("id", Number(fields.job_id));
 
   if (updateJobStatusError)

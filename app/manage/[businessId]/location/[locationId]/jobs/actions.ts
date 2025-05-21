@@ -14,7 +14,7 @@ export async function UpdateJob<T>(...args: ServerActionWithState<T>) {
     city: fields.city as string,
     state: fields.state as string,
     postal_code: fields.postal_code as string,
-    status: fields.status as Database["public"]["Enums"]["location_job_status"],
+    job_status: fields.job_status as Database["public"]["Enums"]["job_status"],
   };
 
   const { error } = await supabase

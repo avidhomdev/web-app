@@ -794,7 +794,7 @@ INSERT INTO
     state,
     postal_code,
     creator_id,
-    status,
+    job_status,
     lead_type,
     customer_id,
     bid_id
@@ -810,7 +810,7 @@ VALUES
     'UT',
     '84242',
     '7e15d5cf-952c-4416-85e1-465849358402',
-    'new',
+    'packet_pending',
     'self',
     1,
     NULL
@@ -840,7 +840,7 @@ VALUES
     'UT',
     '84242',
     '1480e0d8-a3ea-4e03-b370-fab96a6be4ef',
-    'new',
+    'packet_pending',
     'self',
     2,
     NULL
@@ -855,7 +855,7 @@ VALUES
     'UT',
     '84242',
     '7e15d5cf-952c-4416-85e1-465849358402',
-    'pending',
+    'packet_pending',
     'self',
     2,
     NULL
@@ -870,7 +870,7 @@ VALUES
     'UT',
     '84242',
     '7e15d5cf-952c-4416-85e1-465849358402',
-    'approved',
+    'packet_complete',
     'self',
     2,
     NULL
@@ -900,7 +900,7 @@ VALUES
     'UT',
     '84242',
     '7e15d5cf-952c-4416-85e1-465849358402',
-    'canceled',
+    'cancelled',
     'self',
     2,
     NULL
