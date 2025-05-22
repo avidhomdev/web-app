@@ -10,7 +10,7 @@ function JobCard({ job }: { job: ILocationJob }) {
   return (
     <Card
       draggable
-      className="cursor-move"
+      className="cursor-move shadow-sm"
       key={job.id}
       onDragStart={(e) => e.dataTransfer.setData("id", JSON.stringify(job))}
     >
@@ -32,7 +32,7 @@ function JobCard({ job }: { job: ILocationJob }) {
 
 export function JobsList({ jobs }: { jobs: ILocationJob[] }) {
   return (
-    <div className="hidden h-full flex-col gap-4 bg-gray-100 p-4 md:col-span-3 md:flex dark:bg-gray-700">
+    <div className="hidden h-full flex-col gap-4 bg-gray-100 p-4 md:col-span-3 md:flex lg:col-span-2 dark:bg-gray-700">
       <hgroup>
         <h2 className="text-xl font-semibold">Jobs</h2>
         <p className="text-xs text-gray-400">

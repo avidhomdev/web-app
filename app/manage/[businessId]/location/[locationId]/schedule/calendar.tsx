@@ -9,6 +9,8 @@ import { dayjsLocalDate } from "@/utils/dayjs-helpers";
 import { createClient } from "@/utils/supabase/client";
 import dayjs, { Dayjs } from "dayjs";
 import {
+  Avatar,
+  AvatarGroup,
   Button,
   Card,
   Checkbox,
@@ -25,6 +27,7 @@ import { useActionState, useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { AddJobToSchedule } from "./action";
 import { BusinessAppointment } from "./page";
+import getInitials from "@/utils/get-initials";
 
 type InstallerReturnType = Record<
   string,
@@ -284,9 +287,10 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
         root: {
           base: twMerge(
             theme.card.root.base,
-            isToday && "bg-yellow-50 border-yellow-200 hover:border-yellow-300",
+            isToday &&
+              "bg-primary-50 border-primary-200 hover:border-primary-300 dark:bg-gray-700 dark:border-primary-600",
             !isToday && isBeforeToday && "bg-gray-100",
-            "shadow-none rounded-none text-left hover:border-gray-200 dark:hover:border-gray-900",
+            "shadow-none rounded-none text-left hover:border-gray-200 dark:hover:border-gray-900 min-h-32",
           ),
           children: twMerge(
             theme.card.root.children,
@@ -300,24 +304,47 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
       </span>
       {appointments ? (
         <ul className="grid w-full list-none gap-1 px-2 pb-2">
-          {sortedAppointments.map((appointment, i) => (
-            <li
-              className="rounded-sm bg-gray-200 p-2 hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-800"
-              key={i}
-            >
-              <div>
-                <p className="text-xs">{`${dayjs(appointment.start_datetime).format("hh:mm a")} - ${dayjs(appointment.end_datetime).format("hh:mm a")}`}</p>
-                <p className="text-xs">{`JOB-${appointment.job.id}`}</p>
-                <ul>
-                  {appointment.profiles.map((profile) => (
-                    <li key={profile.profile_id}>
-                      {profile.profile.full_name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-          ))}
+          {sortedAppointments.map((appointment, i) => {
+            const dayIsAfterStartDay = day.isAfter(
+              dayjs(appointment.start_datetime),
+              "date",
+            );
+            const isEndDayAfterToday = dayjs(appointment.end_datetime).isAfter(
+              day,
+              "date",
+            );
+            return (
+              <li
+                className="rounded border border-blue-200 bg-blue-50 p-2 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-900 dark:hover:bg-blue-800"
+                key={i}
+              >
+                <div className="relative grid gap-1">
+                  <div>
+                    <p className="text-xs">
+                      {dayIsAfterStartDay && isEndDayAfterToday
+                        ? "All Day"
+                        : `${dayjs(appointment.start_datetime).format("hh:mm a")} - ${dayjs(appointment.end_datetime).format("hh:mm a")}`}
+                    </p>
+                    <p className="text-xs font-bold">{`JOB-${appointment.job.id}`}</p>
+                  </div>
+                  <AvatarGroup className="absolute top-0 right-0">
+                    {appointment.profiles.slice(0, 3).map((profile) => (
+                      <Avatar
+                        rounded
+                        stacked
+                        size="sm"
+                        placeholderInitials={getInitials(
+                          profile.profile.full_name!,
+                        )}
+                        key={profile.profile_id}
+                      />
+                    ))}
+                  </AvatarGroup>
+                  <ul></ul>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <span className="mb-2 self-center p-2 text-center text-xs">

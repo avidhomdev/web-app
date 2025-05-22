@@ -51,13 +51,14 @@ export default async function Page({
       `,
       )
       .eq("business_location_id", Number(locationId))
+      .in("job_status", ["packet_complete", "scheduled"])
       .overrideTypes<ILocationJob[]>(),
   ]);
 
   return (
-    <div className="relative grid grid-rows-2 items-start md:grid-cols-12 md:grid-rows-1">
+    <div className="relative grid w-full grid-rows-2 items-start md:grid-cols-12 md:grid-rows-1">
       <JobsList jobs={jobs ?? []} />
-      <div className="flex flex-col gap-4 p-4 md:sticky md:top-16 md:col-span-9 lg:gap-6 lg:p-6">
+      <div className="flex flex-col gap-4 p-4 md:sticky md:top-16 md:col-span-9 lg:col-span-10 lg:gap-6 lg:p-6">
         <PageHeaderWithActions
           title="Schedule"
           subtitle="Manage the job schedule for your employees"
