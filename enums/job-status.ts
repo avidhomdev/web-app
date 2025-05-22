@@ -17,7 +17,7 @@ export const JOB_STATUS_PROPERTIES: JobStatusRecord = {
   },
   packet_complete: {
     color: "cyan",
-    name: "Packing Complete",
+    name: "Packet Complete",
   },
   scheduled: {
     color: "blue",
