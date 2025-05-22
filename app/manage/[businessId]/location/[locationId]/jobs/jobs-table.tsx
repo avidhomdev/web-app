@@ -9,7 +9,6 @@ import { IJob } from "@/types/job";
 import { Tables } from "@/types/supabase";
 import { formatAsCompactNumber, formatAsCurrency } from "@/utils/formatter";
 import pluralize from "@/utils/pluralize";
-import dayjs from "dayjs";
 import {
   Alert,
   Avatar,
@@ -656,6 +655,18 @@ function Content() {
       sortableKey: "full_name",
     },
     {
+      cellClassNames: "w-0 text-nowrap hidden md:table-cell",
+      field: "job_status",
+      header: "Status",
+      render: (row) => (
+        <div className="flex">
+          <Badge color={JOB_STATUS_PROPERTIES[row.job_status].color}>
+            {JOB_STATUS_PROPERTIES[row.job_status].name}
+          </Badge>
+        </div>
+      ),
+    },
+    {
       cellClassNames: "w-0 text-nowrap hidden lg:table-cell",
       field: "products",
       header: "Products",
@@ -709,48 +720,6 @@ function Content() {
 
         return formatAsCurrency(Number(productsTotal));
       },
-    },
-    {
-      cellClassNames: "w-0 text-nowrap hidden md:table-cell",
-      field: "job_status",
-      header: "Status",
-      render: (row) => (
-        <div className="flex">
-          <Badge color={JOB_STATUS_PROPERTIES[row.job_status].color}>
-            {JOB_STATUS_PROPERTIES[row.job_status].name}
-          </Badge>
-        </div>
-      ),
-    },
-    {
-      cellClassNames: "hidden xl:table-cell w-0 text-nowrap",
-      field: "estimated_start_date",
-      header: "Start Date",
-      render: (row) => (
-        <div>
-          <p>
-            {row.estimated_start_date
-              ? dayjs(row.estimated_start_date).format("MMM DD, YYYY")
-              : "Unknown"}
-          </p>
-        </div>
-      ),
-      sortableKey: "estimated_start_date",
-    },
-    {
-      cellClassNames: "hidden xl:table-cell w-0 text-nowrap",
-      field: "estimated_end_date",
-      header: "End Date",
-      render: (row) => (
-        <div>
-          <p>
-            {row.estimated_end_date
-              ? dayjs(row.estimated_end_date).format("MMM DD, YYYY")
-              : "Unknown"}
-          </p>
-        </div>
-      ),
-      sortableKey: "estimated_end_date",
     },
     {
       cellClassNames: "w-0",
