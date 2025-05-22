@@ -83,7 +83,7 @@ const EmployeesCard = ({
               key={number.toString()}
               className="group relative grid gap-2 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900"
             >
-              <div className="absolute right-4 top-4 hidden group-hover:block">
+              <div className="absolute top-4 right-4 hidden group-hover:block">
                 <ConfirmModal
                   trigger={(toggle) => (
                     <Trash2Icon
@@ -493,38 +493,6 @@ const FormFields = ({
             leadType={leadType}
             products={products}
           />
-        </fieldset>
-      </Card>
-      <Card>
-        <h2 className="text-xl font-medium text-gray-400">
-          Estimated Timeline
-        </h2>
-        <fieldset
-          disabled={pending}
-          className="grid gap-2 pb-2 sm:grid-cols-2 md:gap-6 md:pb-6"
-        >
-          <div>
-            <Label htmlFor="estimated_start_date" className="mb-2 block">
-              Start date
-            </Label>
-            <TextInput
-              type="date"
-              defaultValue={data.estimated_start_date}
-              id="estimated_start_date"
-              name="estimated_start_date"
-            />
-          </div>
-          <div>
-            <Label htmlFor="estimated_end_date" className="mb-2 block">
-              End date
-            </Label>
-            <TextInput
-              type="date"
-              id="estimated_end_date"
-              name="estimated_end_date"
-              defaultValue={data.estimated_end_date}
-            />
-          </div>
         </fieldset>
       </Card>
       <HOAInformationFields data={data} />

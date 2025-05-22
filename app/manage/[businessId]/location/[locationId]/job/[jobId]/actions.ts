@@ -2,9 +2,35 @@
 
 import { formStateResponse } from "@/constants/initial-form-state";
 import { ServerActionWithState } from "@/types/server-actions";
-import { Database } from "@/types/supabase";
+import { Database, Tables } from "@/types/supabase";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
+
+type UpdateJobStatusParams = Pick<
+  Tables<"business_location_jobs">,
+  "id" | "job_status"
+>;
+export async function UpdateJobStatus({
+  id,
+  job_status,
+}: UpdateJobStatusParams) {
+  const supabase = await createSupabaseServerClient();
+  return supabase
+    .from("business_location_jobs")
+    .update({
+      job_status,
+    })
+    .eq("id", id)
+    .select("business_id,business_location_id")
+    .single()
+    .then(({ data, error }) => {
+      if (error) throw error;
+
+      revalidatePath(
+        `/manage/${data.business_id}/location/${data.business_location_id}/job/${id}`,
+      );
+    });
+}
 
 export async function CreateJobMessage<T>(...args: ServerActionWithState<T>) {
   const supabase = await createSupabaseServerClient();
