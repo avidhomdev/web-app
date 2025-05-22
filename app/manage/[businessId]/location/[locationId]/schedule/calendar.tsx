@@ -272,7 +272,7 @@ type CalendarDayProps = {
 
 function CalendarDay({ appointments, day }: CalendarDayProps) {
   const isToday = day.isSame(dayjs(), "day");
-  const isBeforeToday = day.isBefore(dayjs());
+  const isBeforeToday = day.isBefore(dayjs(), "date");
   const [selectedJob, setSelectedJob] = useState<ILocationJob | null>(null);
   const sortedAppointments = appointments.toSorted(
     (a, b) => dayjs(a.start_datetime).unix() - dayjs(b.start_datetime).unix(),
@@ -289,7 +289,7 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
             theme.card.root.base,
             isToday &&
               "bg-primary-50 border-primary-200 hover:border-primary-300 dark:bg-gray-700 dark:border-primary-600",
-            !isToday && isBeforeToday && "bg-gray-100",
+            !isToday && isBeforeToday && "bg-gray-50 dark:bg-gray-900",
             "shadow-none rounded-none text-left hover:border-gray-200 dark:hover:border-gray-900 min-h-32",
           ),
           children: twMerge(
@@ -299,7 +299,12 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
         },
       }}
     >
-      <span className="rounded-br-lg border-r border-b border-gray-100 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-900">
+      <span
+        className={twMerge(
+          "rounded-br-lg border-r border-b border-gray-100 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-900",
+          isBeforeToday && "text-gray-300",
+        )}
+      >
         {day.date()}
       </span>
       {appointments ? (
