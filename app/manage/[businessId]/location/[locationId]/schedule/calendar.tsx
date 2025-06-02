@@ -28,6 +28,7 @@ import { twMerge } from "tailwind-merge";
 import { AddJobToSchedule } from "./action";
 import { BusinessAppointment } from "./page";
 import getInitials from "@/utils/get-initials";
+import { DAYJS_DATETIME } from "@/enums/dayjs-formats";
 
 type InstallerReturnType = Record<
   string,
@@ -79,8 +80,8 @@ function CalendarDayModal({
   const {
     location: { profiles },
   } = useLocationContext();
-  const startOfDayMinString = day.startOf("day").format("YYYY-MM-DDTHH:mm");
-  const endOfDayMinString = day.endOf("day").format("YYYY-MM-DDTHH:mm");
+  const startOfDayMinString = day.startOf("day").format(DAYJS_DATETIME);
+  const endOfDayMinString = day.endOf("day").format(DAYJS_DATETIME);
   const [range, setRange] = useState({
     start: startOfDayMinString,
     end: endOfDayMinString,
@@ -94,8 +95,16 @@ function CalendarDayModal({
       customer_id: selectedJob.customer_id,
       location_id: selectedJob.business_location_id,
       job_id: selectedJob.id,
-      start_datetime: startOfDayMinString,
-      end_datetime: endOfDayMinString,
+      start_datetime: dayjs(day)
+        .set("h", 7)
+        .set("m", 0)
+        .set("s", 0)
+        .format(DAYJS_DATETIME),
+      end_datetime: dayjs(day)
+        .set("h", 17)
+        .set("m", 0)
+        .set("s", 0)
+        .format(DAYJS_DATETIME),
       profiles: {},
     },
   });
@@ -183,6 +192,7 @@ function CalendarDayModal({
                 <TextInput
                   defaultValue={state.data.start_datetime}
                   min={startOfDayMinString}
+                  max={endOfDayMinString}
                   name="start_datetime"
                   onChange={(e) =>
                     setRange((prevState) => ({
@@ -199,6 +209,7 @@ function CalendarDayModal({
                 <TextInput
                   defaultValue={state.data.end_datetime}
                   min={range.start}
+                  max={endOfDayMinString}
                   name="end_datetime"
                   onChange={(e) =>
                     setRange((prevState) => ({
