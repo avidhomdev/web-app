@@ -1,6 +1,13 @@
 "use client";
 
-import { Button, Label, Modal, ModalBody, ModalHeader, TextInput } from "flowbite-react";
+import {
+  Button,
+  Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  TextInput,
+} from "flowbite-react";
 import { useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
@@ -47,7 +54,7 @@ export function ConfirmModal({
                     ? matchStringConfirmation !== stringInputValue
                     : false
                 }
-                color="failure"
+                color="red"
                 onClick={() => {
                   onConfirmClick();
                   toggle();
