@@ -52,7 +52,7 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
             isToday &&
               "bg-primary-50 border-primary-200 hover:border-primary-300 dark:bg-gray-700 dark:border-primary-600",
             !isToday && isBeforeToday && "bg-gray-50 dark:bg-gray-900",
-            "shadow-none rounded-none text-left hover:border-gray-200 dark:hover:border-gray-900 min-h-32",
+            "shadow-none rounded-none text-left hover:border-gray-200 dark:hover:border-gray-900 min-h-32 ",
           ),
           children: twMerge(
             theme.card.root.children,
@@ -88,10 +88,17 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
 
             return (
               <li
-                className="drag rounded border border-blue-200 bg-blue-50 p-2 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-900 dark:hover:bg-blue-800"
+                className={twMerge(
+                  isBeforeToday
+                    ? "border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-800"
+                    : "cursor-pointer border-blue-200 bg-blue-50 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-900 dark:hover:bg-blue-800",
+                  "drag rounded border p-2",
+                )}
                 draggable
                 key={i}
-                onClick={() => setSelectedAppointment(appointment)}
+                onClick={() =>
+                  !isBeforeToday && setSelectedAppointment(appointment)
+                }
                 onDragStart={(e) =>
                   e.dataTransfer.setData(
                     "appointment",
@@ -105,24 +112,28 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
                     : `${dayjs(appointment.start_datetime).format("hh:mm a")} - ${dayjs(appointment.end_datetime).format("hh:mm a")}`}
                 </p>
                 <p className="text-xs font-bold">{`JOB-${appointment.job.id}`}</p>
-                <Popover
-                  content={
-                    <div className="grid gap-1 p-2">
-                      <b className="text-sm capitalize">{participantString}</b>
-                      <hr className="border-gray-200 dark:border-gray-700" />
-                      <ul className="text-xs">
-                        {appointment.profiles.map((profile) => (
-                          <li key={profile.profile.full_name}>
-                            {profile.profile.full_name}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  }
-                  trigger="hover"
-                >
-                  <div className="cursor-pointer text-sm underline">{`${appointment.profiles.length} ${participantString}`}</div>
-                </Popover>
+                {!isBeforeToday && (
+                  <Popover
+                    content={
+                      <div className="grid gap-1 p-2">
+                        <b className="text-sm capitalize">
+                          {participantString}
+                        </b>
+                        <hr className="border-gray-200 dark:border-gray-700" />
+                        <ul className="text-xs">
+                          {appointment.profiles.map((profile) => (
+                            <li key={profile.profile.full_name}>
+                              {profile.profile.full_name}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    }
+                    trigger="hover"
+                  >
+                    <div className="cursor-pointer text-sm underline">{`${appointment.profiles.length} ${participantString}`}</div>
+                  </Popover>
+                )}
               </li>
             );
           })}
