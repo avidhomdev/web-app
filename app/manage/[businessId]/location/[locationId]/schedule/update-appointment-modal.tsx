@@ -87,7 +87,7 @@ export function UpdateAppointmentModal({
     await DeleteAppointment(appointment.id);
     await router.refresh();
     close();
-  }, [appointment]);
+  }, [appointment.id, close, router]);
 
   return (
     <>
