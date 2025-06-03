@@ -12,7 +12,7 @@ function JobCard({ job }: { job: ILocationJob }) {
       draggable
       className="cursor-move shadow-sm"
       key={job.id}
-      onDragStart={(e) => e.dataTransfer.setData("id", JSON.stringify(job))}
+      onDragStart={(e) => e.dataTransfer.setData("job", JSON.stringify(job))}
     >
       <div className="grid gap-1">
         <div className="flex items-start">
@@ -21,9 +21,10 @@ function JobCard({ job }: { job: ILocationJob }) {
           </Badge>
         </div>
         <div>
-          <h3>{job.customer.full_name}</h3>
-          <p className="text-xs">{`${job.products.length} products`}</p>
+          <h3>{`JOB-${job.id}`}</h3>
+          <p className="text-xs">{job.customer?.full_name}</p>
           <p className="text-xs">{`${job.address}, ${job.city}`}</p>
+          <p className="text-xs">{`${job.products.length} products`}</p>
         </div>
       </div>
     </Card>

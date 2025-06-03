@@ -5,7 +5,8 @@ import { Calendar } from "./calendar";
 import { JobsList } from "./job-list";
 import { Tables } from "@/types/supabase";
 
-interface AppointmentProfile extends Tables<"business_appointment_profiles"> {
+export interface AppointmentProfile
+  extends Tables<"business_appointment_profiles"> {
   profile: Tables<"profiles">;
 }
 export interface BusinessAppointment extends Tables<"business_appointments"> {

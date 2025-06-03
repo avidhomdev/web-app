@@ -6,6 +6,69 @@ import { Database } from "@/types/supabase";
 import { formatArrayFormFieldsIntoDictionary } from "@/utils/format-array-form-fields-into-dictionary";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 
+export async function DeleteAppointment(id: number) {
+  const supabase = await createSupabaseServerClient();
+
+  return supabase.from("business_appointments").delete().eq("id", id);
+}
+
+export async function UpdateAppointment<T>(...args: ServerActionWithState<T>) {
+  const supabase = await createSupabaseServerClient();
+  const [state, formData] = args;
+  const fields = Object.fromEntries(formData);
+  const profilesDictionary = formatArrayFormFieldsIntoDictionary(
+    "profiles",
+    fields,
+  );
+
+  const update = {
+    start_datetime: fields.start_datetime as string,
+    end_datetime: fields.end_datetime as string,
+  };
+
+  const newState = {
+    ...state,
+    data: { ...fields, profiles: profilesDictionary },
+  };
+
+  if (Object.entries(profilesDictionary).length === 0) {
+    return formStateResponse({
+      ...newState,
+      error: "Please select at least 1 installer",
+    });
+  }
+
+  await supabase
+    .from("business_appointment_profiles")
+    .delete()
+    .match({ appointment_id: fields.id });
+
+  const { error: insertAppointmentProfileError } = await supabase
+    .from("business_appointment_profiles")
+    .insert(
+      Object.values(profilesDictionary).map((profile) => ({
+        business_id: fields.business_id as string,
+        appointment_id: Number(fields.id),
+        profile_id: profile.profile_id as string,
+      })),
+    );
+
+  if (insertAppointmentProfileError)
+    return formStateResponse({
+      ...newState,
+      error: insertAppointmentProfileError.message,
+    });
+
+  const { error } = await supabase
+    .from("business_appointments")
+    .update(update)
+    .eq("id", Number(fields.id));
+
+  if (error) return formStateResponse({ ...newState, error: error.message });
+
+  return formStateResponse({ ...newState, success: true, dismiss: true });
+}
+
 export async function AddJobToSchedule<T>(...args: ServerActionWithState<T>) {
   const supabase = await createSupabaseServerClient();
   const [state, formData] = args;
