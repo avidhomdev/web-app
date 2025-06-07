@@ -65,11 +65,13 @@ export default function JobHeader({ job }: { job: IJob }) {
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
           <hgroup>
-            <span className="text-3xl font-semibold">{job.full_name}</span>
-            <h1 className="flex items-center gap-1 text-sm text-gray-400">
-              <HardHatIcon className="size-5" />
-              {`Job #${jobId}${activePageTabTitle ? ` ${activePageTabTitle.title}` : ""}`}
+            <h1 className="text-3xl font-semibold">
+              {`JOB-${jobId}${activePageTabTitle ? ` ${activePageTabTitle.title}` : ""}`}
             </h1>
+            <div className="flex items-center gap-1 text-sm text-gray-400">
+              <HardHatIcon className="size-5" />
+              {job.full_name}
+            </div>
             <div className="mt-2 flex">
               <Badge color={jobStatusProperty.color}>
                 {jobStatusProperty.name}
@@ -89,7 +91,7 @@ export default function JobHeader({ job }: { job: IJob }) {
                 {isUpdatingJobStatus ? (
                   <Spinner size="sm" />
                 ) : (
-                  <CheckCircleIcon size="sm" />
+                  <CheckCircleIcon />
                 )}
               </div>
               Packet Complete

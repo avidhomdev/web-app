@@ -319,12 +319,6 @@ function Content() {
     },
     {
       cellClassNames: "w-0 text-nowrap hidden sm:table-cell",
-      field: "lead_source",
-      header: "Lead Source",
-      render: (row) => row.lead_source,
-    },
-    {
-      cellClassNames: "w-0 text-nowrap hidden sm:table-cell",
       field: "closer_id",
       header: "Closer",
       render: (row) => (row.closer_id ? "Closer Name" : "No Closer"),

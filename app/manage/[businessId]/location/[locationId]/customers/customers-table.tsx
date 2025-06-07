@@ -49,6 +49,7 @@ import {
   DISPOSITION_STATUS_KEYS,
   DISPOSITION_STATUSES,
 } from "@/constants/disposition-statuses";
+import Linky from "@/components/linky";
 
 const customersTableContext = createContext<{
   customers: ILocationCustomer[];
@@ -349,7 +350,13 @@ function Content() {
       header: "Name",
       render: (row) => (
         <div>
-          <p>{row.full_name}</p>
+          <p>
+            <Linky
+              href={`/manage/${row.business_id}/location/${row.location_id}/customer/${row.id}`}
+            >
+              {row.full_name}
+            </Linky>
+          </p>
           <p>{`${row.address ?? ""} ${row.city ?? ""} ${row.state ?? ""} ${row.postal_code ?? ""}`}</p>
         </div>
       ),
