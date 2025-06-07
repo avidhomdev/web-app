@@ -17,7 +17,7 @@ async function MediaList({
   const supabase = await createSupabaseServerClient();
 
   const { data, error } = await supabase.storage
-    .from("business")
+    .from("businesses")
     .createSignedUrls(mediaPaths, 3600);
 
   if (error) throw error;
@@ -41,7 +41,7 @@ async function MediaList({
         key={item.id}
         className="group/figure relative w-36 overflow-hidden rounded-sm bg-gray-100 p-2 pb-0 dark:bg-gray-700"
       >
-        <div className="absolute right-2 top-2 z-10 hidden items-center gap-1 group-hover/figure:flex">
+        <div className="absolute top-2 right-2 z-10 hidden items-center gap-1 group-hover/figure:flex">
           <EditMediaDrawer media={item} />
           <DeleteMediaModal id={item.id} />
         </div>
