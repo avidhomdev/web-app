@@ -8,7 +8,13 @@ import initialFormState, {
 } from "@/constants/initial-form-state";
 import { useUserContext } from "@/contexts/user";
 import { Tables } from "@/types/supabase";
-import { Drawer, DrawerHeader, DrawerItems, Label, TextInput } from "flowbite-react";
+import {
+  Drawer,
+  DrawerHeader,
+  DrawerItems,
+  Label,
+  TextInput,
+} from "flowbite-react";
 import { FileUpIcon, SettingsIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
@@ -43,7 +49,7 @@ function UpdateMediaDrawerFormFields({
         />
       </div>
       <SupabaseFileUploadDropzone
-        bucket="businesses"
+        bucket="business"
         defaultPath={media.path}
         filePath={`${businessId}/locations/${locationId}/jobs/${jobId}`}
         name="path"

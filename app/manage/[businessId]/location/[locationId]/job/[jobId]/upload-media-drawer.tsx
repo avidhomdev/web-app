@@ -5,7 +5,13 @@ import SubmitButton from "@/components/submit-button";
 import initialFormState, {
   TInitialFormState,
 } from "@/constants/initial-form-state";
-import { Drawer, DrawerHeader, DrawerItems, Label, TextInput } from "flowbite-react";
+import {
+  Drawer,
+  DrawerHeader,
+  DrawerItems,
+  Label,
+  TextInput,
+} from "flowbite-react";
 import { FileUpIcon, PlusIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
@@ -33,7 +39,7 @@ function AddMediaDrawerFormFields() {
         <TextInput autoComplete="off" id="name" name="name" required />
       </div>
       <SupabaseFileUploadDropzone
-        bucket="businesses"
+        bucket="business"
         filePath={`${businessId}/locations/${locationId}/jobs/${jobId}`}
         name="path"
         required
@@ -65,7 +71,7 @@ export default function UploadMediaDrawer() {
   return (
     <>
       <div
-        className="shrink-0 cursor-pointer rounded-full p-2 opacity-0 hover:bg-gray-100 group-hover:opacity-100 dark:hover:bg-gray-700"
+        className="shrink-0 cursor-pointer rounded-full p-2 opacity-0 group-hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-700"
         onClick={() => setIsOpen(true)}
       >
         <PlusIcon className="fill-gray-200" />

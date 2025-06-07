@@ -17,7 +17,7 @@ async function MediaList({
   const supabase = await createSupabaseServerClient();
 
   const { data, error } = await supabase.storage
-    .from("businesses")
+    .from("business")
     .createSignedUrls(mediaPaths, 3600);
 
   if (error) throw error;
