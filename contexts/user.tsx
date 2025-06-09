@@ -16,7 +16,7 @@ type TLocation = Partial<Tables<"business_locations">> &
 type TBusiness = Partial<Tables<"businesses">> &
   Partial<Tables<"business_profiles">>;
 
-interface User extends Tables<"profiles"> {
+export interface User extends Tables<"profiles"> {
   businesses?: Tables<"businesses">[];
   business_profiles?: Tables<"business_profiles">[];
   locations?: Tables<"business_locations">[];

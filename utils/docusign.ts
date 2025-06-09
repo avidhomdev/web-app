@@ -171,7 +171,7 @@ export async function createBusinessDocusignEnvelopeFromTemplate({
     baseUri,
     resource: `/accounts/${accountId}/envelopes`,
   });
-  console.log({ accessToken });
+
   return fetch(envelopesApiUrl, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -182,7 +182,6 @@ export async function createBusinessDocusignEnvelopeFromTemplate({
   })
     .then((response) => response.json())
     .then((res) => {
-      console.log("here", { res });
       return res;
     })
     .catch(console.log);

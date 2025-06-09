@@ -1,7 +1,17 @@
 "use client";
 
 import { IDocusignTemplate } from "@/utils/docusign";
-import { Button, Drawer, DrawerHeader, DrawerItems, Label, Select, theme } from "flowbite-react";
+import {
+  Button,
+  Drawer,
+  DrawerHeader,
+  DrawerItems,
+  HelperText,
+  Kbd,
+  Label,
+  Select,
+  theme,
+} from "flowbite-react";
 import { FileIcon } from "lucide-react";
 import Form from "next/form";
 import { useParams } from "next/navigation";
@@ -76,8 +86,25 @@ export default function AddDocumentDrawer({
               />
               <input
                 type="hidden"
-                name="customer_address"
-                value={job.customer?.address ?? ""}
+                name="customer_phone"
+                value={job.customer?.phone ?? ""}
+              />
+              <input
+                type="hidden"
+                name="job_address"
+                value={job.address ?? ""}
+              />
+              <input
+                type="hidden"
+                name="job_full_address"
+                value={`${job.address ?? ""}, ${job.city ?? ""}, ${job.state ?? ""}, ${job.postal_code ?? ""}`}
+              />
+              <input type="hidden" name="job_city" value={job.city ?? ""} />
+              <input type="hidden" name="job_state" value={job.state ?? ""} />
+              <input
+                type="hidden"
+                name="job_postal_code"
+                value={job.postal_code ?? ""}
               />
               <div className="grid gap-2">
                 <Label htmlFor="template_id">Template</Label>
@@ -98,6 +125,19 @@ export default function AddDocumentDrawer({
                     </option>
                   ))}
                 </Select>
+                <HelperText>
+                  The following labels can be applied to your docusign template.
+                </HelperText>
+                <div className="flex flex-wrap gap-1">
+                  <Kbd>CUSTOMER_EMAIL</Kbd>
+                  <Kbd>CUSTOMER_NAME</Kbd>
+                  <Kbd>CUSTOMER_JOB_ADDRESS</Kbd>
+                  <Kbd>CUSTOMER_JOB_CITY</Kbd>
+                  <Kbd>CUSTOMER_JOB_STATE</Kbd>
+                  <Kbd>CUSTOMER_JOB_POSTAL_CODE</Kbd>
+                  <Kbd>CREATOR_NAME</Kbd>
+                  <Kbd>CREATOR_EMAIL</Kbd>
+                </div>
               </div>
               <div className="mt-4">
                 <SubmitButton pendingText="Creating document...">
