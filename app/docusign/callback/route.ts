@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
@@ -27,6 +28,7 @@ export async function GET(request: NextRequest) {
   }).then((res) => res.json());
 
   if (!fetchAccessToken?.access_token) {
+    console.log("token error");
     return NextResponse.redirect(
       redirectUrl(`${redirectBasePath}?error=Failure to find access token`),
     );
@@ -47,10 +49,12 @@ export async function GET(request: NextRequest) {
 
   revalidatePath(redirectBasePath);
 
-  if (error)
+  if (error) {
+    console.log("error", error);
     return NextResponse.redirect(
       redirectUrl(`${redirectBasePath}?error=${error.message}`),
     );
+  }
 
   return NextResponse.redirect(
     redirectUrl(
