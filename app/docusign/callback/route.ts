@@ -35,7 +35,9 @@ export async function GET(request: NextRequest) {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     method: "POST",
-  }).then((res) => res.json());
+  })
+    .then((res) => res.json())
+    .catch(console.log);
 
   console.log({ fetchAccessToken });
   if (!fetchAccessToken?.access_token) {
