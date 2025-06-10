@@ -27,6 +27,8 @@ export async function GET(request: NextRequest) {
   const authString = `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`;
   const authStringBase64 = Buffer.from(authString).toString("base64");
 
+  console.log({ docusignTokenParams, docusignTokenUrl, authString });
+
   const fetchAccessToken = await fetch(docusignTokenUrl, {
     headers: {
       Authorization: `Basic ${authStringBase64}`,
@@ -35,6 +37,7 @@ export async function GET(request: NextRequest) {
     method: "POST",
   }).then((res) => res.json());
 
+  console.log({ fetchAccessToken });
   if (!fetchAccessToken?.access_token) {
     return NextResponse.redirect(
       redirectUrl(`${redirectBasePath}?error=Failure to find access token`),
