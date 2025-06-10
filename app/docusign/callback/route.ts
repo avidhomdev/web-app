@@ -26,14 +26,6 @@ export async function GET(request: NextRequest) {
   const authString = `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`;
   const authStringBase64 = Buffer.from(authString).toString("base64");
 
-  // eslint-disable-next-line no-console
-  console.log({
-    docusignTokenUrl,
-    authStringBase64,
-    docusignTokenParams,
-    authString,
-  });
-
   const fetchAccessToken = await fetch(docusignTokenUrl, {
     headers: {
       Authorization: `Basic ${authStringBase64}`,
@@ -46,7 +38,9 @@ export async function GET(request: NextRequest) {
 
   if (!fetchAccessToken?.access_token) {
     return NextResponse.redirect(
-      redirectUrl(`${redirectBasePath}?error=${fetchAccessToken.error}`),
+      redirectUrl(
+        `${redirectBasePath}?error=${fetchAccessToken.error?.error_description}`,
+      ),
     );
   }
 
