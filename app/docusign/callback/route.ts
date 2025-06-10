@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
+  const searchParams = request.nextUrl.searchParams;
   const code = searchParams.get("code") as string;
   const businessId = searchParams.get("state") as string;
 
@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
       redirectUrl(`${redirectBasePath}?error=Missing code or id`),
     );
   }
+
   const docusignTokenParams = new URLSearchParams({
     grant_type: "authorization_code",
     code,
@@ -35,7 +36,6 @@ export async function GET(request: NextRequest) {
   }).then((res) => res.json());
 
   if (!fetchAccessToken?.access_token) {
-    console.log("token error");
     return NextResponse.redirect(
       redirectUrl(`${redirectBasePath}?error=Failure to find access token`),
     );
@@ -57,7 +57,6 @@ export async function GET(request: NextRequest) {
   revalidatePath(redirectBasePath);
 
   if (error) {
-    console.log("error", error);
     return NextResponse.redirect(
       redirectUrl(`${redirectBasePath}?error=${error.message}`),
     );
