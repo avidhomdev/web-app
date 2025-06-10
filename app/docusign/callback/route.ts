@@ -8,8 +8,15 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code") as string;
   const businessId = searchParams.get("state") as string;
+
   const redirectUrl = (path: string) => new URL(path, request.url);
   const redirectBasePath = `/manage/${businessId}/settings/integrations`;
+
+  if (!code || !businessId) {
+    return NextResponse.redirect(
+      redirectUrl(`${redirectBasePath}?error=Missing code or id`),
+    );
+  }
   const docusignTokenParams = new URLSearchParams({
     grant_type: "authorization_code",
     code,
