@@ -37,9 +37,8 @@ export async function GET(request: NextRequest) {
     .catch((err) => ({ error: err }));
 
   if (!fetchAccessToken?.access_token) {
-    console.log({ fetchAccessToken });
     return NextResponse.redirect(
-      redirectUrl(`${redirectBasePath}?error=Failure to find access token`),
+      redirectUrl(`${redirectBasePath}?error=${fetchAccessToken.error}`),
     );
   }
 
