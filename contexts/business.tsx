@@ -1,5 +1,6 @@
 "use client";
 
+import { BusinessIntegration } from "@/types/business-integrations";
 import { Tables } from "@/types/supabase";
 import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 
@@ -8,7 +9,7 @@ interface IBusinessProfile extends Partial<Tables<"business_profiles">> {
 }
 
 export interface IBusiness extends Partial<Tables<"businesses">> {
-  integrations: Partial<Tables<"business_integrations">>[];
+  integrations: BusinessIntegration[];
   locations: Partial<Tables<"business_locations">>[];
   products: Tables<"business_products">[];
   profiles: IBusinessProfile[];

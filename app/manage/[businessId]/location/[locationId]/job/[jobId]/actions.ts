@@ -1,10 +1,13 @@
 "use server";
 
 import { formStateResponse } from "@/constants/initial-form-state";
+import { DOCUSIGN_TEXT_TABS } from "@/enums/docusign-text-tabs";
 import { ServerActionWithState } from "@/types/server-actions";
 import { Database, Tables } from "@/types/supabase";
+import { createBusinessDocusignEnvelopeFromTemplate } from "@/utils/docusign";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 type UpdateJobStatusParams = Pick<
   Tables<"business_location_jobs">,
@@ -478,4 +481,122 @@ export async function UpdateJobProducts<T>(...args: ServerActionWithState<T>) {
   );
 
   return formStateResponse({ ...state, success: true });
+}
+
+type SendJobDocusignTemplateProps = { jobId: number; templateId: string };
+
+export async function sendJobDocusignTemplate({
+  jobId,
+  templateId,
+}: SendJobDocusignTemplateProps) {
+  const supabase = await createSupabaseServerClient();
+  const { data: job } = await supabase
+    .from("business_location_jobs")
+    .select(
+      "id, business_id, business_location_id, creator: creator_id(full_name, email), customer: customer_id(full_name, email, phone), address, city, state, postal_code",
+    )
+    .eq("id", Number(jobId))
+    .limit(1)
+    .maybeSingle();
+
+  if (!job) return;
+  if (!job.creator.email || !job.creator.full_name) {
+    return redirect(
+      `/manage/${job.business_id}/location/${job.business_location_id}/job/${job.id}?error=Missing creator`,
+    );
+  }
+
+  const newEnvelopeFields = {
+    templateId,
+    templateRoles: [
+      {
+        email: job.creator.email,
+        name: job.creator.full_name,
+        roleName: "CREATOR",
+        tabs: {
+          textTabs: [
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.CUSTOMER_NAME,
+              value: job.customer.full_name,
+            },
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.CUSTOMER_EMAIL,
+              value: job.customer.email,
+            },
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.CUSTOMER_PHONE,
+              value: job.customer.phone,
+            },
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.JOB_FULL_ADDRESS,
+              value: `${job.address || ""}${job.city ? `, ${job.city}` : ``}${job.state ? `, ${job.state}` : ``}${job.postal_code ? `, ${job.postal_code}` : ``}`,
+            },
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.JOB_ADDRESS,
+              value: job.address,
+            },
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.JOB_CITY,
+              value: job.city,
+            },
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.JOB_STATE,
+              value: job.state,
+            },
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.JOB_POSTAL_CODE,
+              value: job.postal_code,
+            },
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.CREATOR_NAME,
+              value: job.creator.full_name,
+            },
+            {
+              tabLabel: DOCUSIGN_TEXT_TABS.CREATOR_EMAIL,
+              value: job.creator.email,
+            },
+          ],
+        },
+      },
+      {
+        email: job.customer.email,
+        name: job.customer.full_name,
+        roleName: "CUSTOMER",
+      },
+    ],
+    status: "sent",
+  };
+
+  const { envelopeId, message } =
+    await createBusinessDocusignEnvelopeFromTemplate({
+      businessId: job.business_id,
+      data: newEnvelopeFields,
+    });
+
+  if (!envelopeId) {
+    redirect(
+      `/manage/${job.business_id}/location/${job.business_location_id}/job/${job.id}?error=${message}`,
+    );
+  }
+
+  const { error } = await supabase
+    .from("business_location_job_docusign_envelopes")
+    .insert({
+      business_id: job.business_id,
+      location_id: job.business_location_id,
+      job_id: job.id,
+      envelope_id: envelopeId,
+    });
+
+  if (error) {
+    redirect(
+      `/manage/${job.business_id}/location/${job.business_location_id}/job/${job.id}?error=${error.message}`,
+    );
+  }
+  revalidatePath(
+    `/manage/${job.business_id}/location/${job.business_location_id}/job/${job.id}`,
+  );
+  return redirect(
+    `/manage/${job.business_id}/location/${job.business_location_id}/job/${job.id}?success=Contract successfully sent`,
+  );
 }

@@ -29,3 +29,19 @@ export async function updateDocusignIntegrationAccount(formData: FormData) {
       );
     });
 }
+
+export async function updateDocusignIntegrationMetadataJobContractTemplateId(
+  businessId: string,
+  jobContractTemplateId: string,
+) {
+  const supabase = await createSupabaseServerClient();
+  return supabase
+    .from("business_integrations")
+    .update({ metadata: { jobContractTemplateId } })
+    .match({ business_id: businessId, resource: "docusign" })
+    .then(({ error }) => {
+      if (error) return error.message;
+
+      revalidatePath(`/manage/${businessId}/settings/integrations`);
+    });
+}

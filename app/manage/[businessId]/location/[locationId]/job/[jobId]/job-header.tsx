@@ -8,33 +8,44 @@ import {
   Button,
   Spinner,
 } from "flowbite-react";
-import { CheckCircleIcon, ChevronLeftIcon, HardHatIcon } from "lucide-react";
+import {
+  Banknote,
+  CheckCircleIcon,
+  ChevronLeftIcon,
+  HardHatIcon,
+  Signature,
+} from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 
 import PageTabs from "@/components/page-tabs";
 import { useBusinessContext } from "@/contexts/business";
 import { getJobStatusProperties } from "@/enums/job-status";
 import { useTransition } from "react";
-import { UpdateJobStatus } from "./actions";
+import { sendJobDocusignTemplate, UpdateJobStatus } from "./actions";
 
 function handleUpdateJobStatusToPacketComplete(id: number) {
   return () => UpdateJobStatus({ id, job_status: "packet_complete" });
 }
 
 export default function JobHeader({ job }: { job: IJob }) {
-  const [isUpdatingJobStatus, startTransition] = useTransition();
+  const [isUpdatingJobStatus, startUpdatingJobStatus] = useTransition();
+  const [isSendingContract, startSendingContract] = useTransition();
   const pathname = usePathname();
   const { businessId, locationId, jobId } = useParams();
   const {
     business: { integrations },
   } = useBusinessContext();
 
+  const docusignIntegration = integrations.find(
+    (integration) => integration.resource === "docusign",
+  );
+
   const tabs = [
     {
       href: `/manage/${businessId}/location/${locationId}/job/${jobId}`,
       title: "Dashboard",
     },
-    ...(integrations.find((integration) => integration.resource === "docusign")
+    ...(job.documents?.length
       ? [
           {
             href: `/manage/${businessId}/location/${locationId}/job/${jobId}/documents`,
@@ -42,7 +53,6 @@ export default function JobHeader({ job }: { job: IJob }) {
           },
         ]
       : []),
-
     {
       href: `/manage/${businessId}/location/${locationId}/job/${jobId}/payments`,
       title: "Payments",
@@ -51,6 +61,9 @@ export default function JobHeader({ job }: { job: IJob }) {
 
   const activePageTabTitle = tabs.find((tab) => tab.href === pathname);
   const jobStatusProperty = getJobStatusProperties(job.job_status);
+
+  const hasJobContractTemplateId =
+    docusignIntegration?.metadata.jobContractTemplateId;
 
   return (
     <header className="space-y-4 text-gray-500 dark:text-gray-300">
@@ -77,22 +90,68 @@ export default function JobHeader({ job }: { job: IJob }) {
             </div>
           </hgroup>
         </div>
-        <div>
+        <div className="flex items-center gap-1">
           {job.job_status === "packet_pending" && (
             <Button
-              disabled={isUpdatingJobStatus}
+              disabled={
+                isUpdatingJobStatus ||
+                job.documents?.length === 0 ||
+                job.payments?.length === 0
+              }
               onClick={() =>
-                startTransition(handleUpdateJobStatusToPacketComplete(job.id))
+                startUpdatingJobStatus(
+                  handleUpdateJobStatusToPacketComplete(job.id),
+                )
               }
             >
               <div className="mr-2 size-5">
                 {isUpdatingJobStatus ? (
                   <Spinner size="sm" />
                 ) : (
-                  <CheckCircleIcon size="sm" />
+                  <CheckCircleIcon className="size-5" />
                 )}
               </div>
               Packet Complete
+            </Button>
+          )}
+          {hasJobContractTemplateId && job.documents?.length === 0 && (
+            <Button
+              color="alternative"
+              disabled={isSendingContract}
+              onClick={() =>
+                startSendingContract(() =>
+                  sendJobDocusignTemplate({
+                    jobId: job.id,
+                    templateId:
+                      docusignIntegration.metadata.jobContractTemplateId,
+                  }),
+                )
+              }
+            >
+              <div className="mr-2 size-5">
+                {isUpdatingJobStatus ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <Signature className="size-5" />
+                )}
+              </div>
+              Send Contract
+            </Button>
+          )}
+          {job.payments?.length === 0 && (
+            <Button
+              color="alternative"
+              disabled={isSendingContract}
+              onClick={() => {}}
+            >
+              <div className="mr-2 size-5">
+                {isUpdatingJobStatus ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <Banknote className="size-5" />
+                )}
+              </div>
+              Collect Deposit
             </Button>
           )}
         </div>

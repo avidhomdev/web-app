@@ -1,3 +1,4 @@
+import { BusinessIntegration } from "@/types/business-integrations";
 import { createSupabaseServerClient } from "./supabase/server";
 
 export interface IUserInfo {
@@ -83,8 +84,12 @@ async function getBusinessIntegrationData(businessId: string) {
   };
 }
 
-export async function refreshAccessToken(businessId: string) {
-  const { refresh_token } = await getBusinessIntegrationData(businessId);
+export async function refreshAccessToken(
+  businessId: string,
+  integration?: BusinessIntegration,
+) {
+  const { refresh_token } =
+    integration || (await getBusinessIntegrationData(businessId));
   if (!refresh_token) throw new Error("No refresh token found");
 
   const refreshTokenParams = new URLSearchParams({
@@ -102,7 +107,7 @@ export async function refreshAccessToken(businessId: string) {
   }).then((res) => res.json());
 
   const { access_token, refresh_token: newRefreshToken, expires_in } = response;
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient({ admin: true });
   await supabase.from("business_integrations").upsert({
     business_id: businessId,
     expires_at: Date.now() + expires_in * 1000,
@@ -114,14 +119,18 @@ export async function refreshAccessToken(businessId: string) {
   return access_token;
 }
 
-export async function getAccessToken(businessId: string) {
-  const { expires_at, token } = await getBusinessIntegrationData(businessId);
+export async function getAccessToken(
+  businessId: string,
+  integration?: BusinessIntegration,
+) {
+  const { expires_at, token } =
+    integration || (await getBusinessIntegrationData(businessId));
   if (!expires_at) return;
 
   // 5-minute buffer to refresh proactively
   if (expires_at > Date.now() + 300000) return token;
 
-  return await refreshAccessToken(businessId);
+  return await refreshAccessToken(businessId, integration);
 }
 
 export async function getBusinessDocusignTemplates(
@@ -157,7 +166,7 @@ export async function createBusinessDocusignEnvelopeFromTemplate({
       name: string;
       roleName: string;
       tabs?: {
-        textTabs: { tabLabel: string; value: string }[];
+        textTabs: { tabLabel: string; value: string | null }[];
       };
     }[];
     status: string;
@@ -172,17 +181,67 @@ export async function createBusinessDocusignEnvelopeFromTemplate({
     resource: `/accounts/${accountId}/envelopes`,
   });
 
-  return fetch(envelopesApiUrl, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .then((res) => {
-      return res;
+  return (
+    fetch(envelopesApiUrl, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(data),
     })
-    .catch(console.log);
+      .then((response) => response.json())
+      .then((res) => {
+        return res;
+      })
+      // eslint-disable-next-line no-console
+      .catch(console.log)
+  );
+}
+
+export async function sendEnvelopeTemplateWithIntegrationData({
+  integration,
+  data,
+}: {
+  integration: BusinessIntegration;
+  data: {
+    templateId: string;
+    templateRoles: {
+      email: string;
+      name: string;
+      roleName: string;
+      tabs?: {
+        textTabs: { tabLabel: string; value: string | null }[];
+      };
+    }[];
+    status: string;
+  };
+}) {
+  const accessToken = await getAccessToken(
+    integration.business_id,
+    integration,
+  );
+  const { account_id: accountId, base_uri: baseUri } = integration;
+
+  const envelopesApiUrl = generateDocusignRestApiUrl({
+    baseUri: baseUri as string,
+    resource: `/accounts/${accountId}/envelopes`,
+  });
+
+  return (
+    fetch(envelopesApiUrl, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        return res;
+      })
+      // eslint-disable-next-line no-console
+      .catch(console.log)
+  );
 }

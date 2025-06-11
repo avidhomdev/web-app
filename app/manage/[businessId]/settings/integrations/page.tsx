@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { Alert } from "flowbite-react";
 import DocusignIntegrationCard from "./docusign-integration/docusign-integration-card";
 import StripeIntegrationCard from "./stripe-integration/stripe-integration-card";
+import { BusinessIntegration } from "@/types/business-integrations";
 
 type TSearchParams = Promise<{
   error?: string;
@@ -26,8 +27,9 @@ export default async function Page({
   const supabase = await createSupabaseServerClient();
   const { data, error: fetchError } = await supabase
     .from("business_integrations")
-    .select()
-    .match({ business_id: businessId, status: "active" });
+    .select("*")
+    .match({ business_id: businessId, status: "active" })
+    .overrideTypes<BusinessIntegration[]>();
 
   if (fetchError) throw fetchError;
 

@@ -21,7 +21,9 @@ export default async function Layout(props: TLayout) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("business_location_jobs")
-    .select("*")
+    .select(
+      "*, documents: business_location_job_docusign_envelopes(*), payments: business_location_job_payments(*)",
+    )
     .eq("id", Number(jobId))
     .limit(1)
     .maybeSingle()
@@ -31,7 +33,7 @@ export default async function Layout(props: TLayout) {
   if (!data) notFound();
 
   return (
-    <div className="container relative flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+    <div className="relative container flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <JobHeader job={data} />
       {children}
     </div>

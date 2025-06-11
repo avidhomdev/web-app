@@ -1,4 +1,4 @@
-import { Tables } from "@/types/supabase";
+import { BusinessIntegration } from "@/types/business-integrations";
 import { getAccessToken, IUserInfo } from "@/utils/docusign";
 import { Button, Card } from "flowbite-react";
 import AccountDetails from "./account-details";
@@ -28,7 +28,7 @@ async function DocusignAccount({
   integration,
 }: {
   businessId: string;
-  integration: Tables<"business_integrations">;
+  integration: BusinessIntegration;
 }) {
   const res: IUserInfo = await getBusinessDocusignUserInfo(businessId);
   const { accounts } = res;
@@ -38,7 +38,9 @@ async function DocusignAccount({
   return (
     <>
       <AccountDetails accounts={accounts} integration={integration} />
-      {hasAccount && <TemplatesTable businessId={businessId} />}
+      {hasAccount && (
+        <TemplatesTable businessId={businessId} integration={integration} />
+      )}
     </>
   );
 }
@@ -48,7 +50,7 @@ export default async function DocusignIntegrationCard({
   integration,
 }: {
   businessId: string;
-  integration?: Tables<"business_integrations">;
+  integration?: BusinessIntegration;
 }) {
   return (
     <Card>

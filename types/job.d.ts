@@ -21,6 +21,7 @@ export interface IJob extends Tables<"business_location_jobs"> {
   closer?: Tables<"profiles">;
   creator?: Tables<"profiles">;
   customer?: Tables<"profiles">;
+  documents?: Tables<"business_location_job_docusign_envelopes">[];
   installer?: Tables<"profiles">;
   location?: Tables<"business_locations">;
   media?: Tables<"business_location_job_media">[];
