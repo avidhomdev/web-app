@@ -9,7 +9,6 @@ import {
   Spinner,
 } from "flowbite-react";
 import {
-  Banknote,
   CheckCircleIcon,
   ChevronLeftIcon,
   HardHatIcon,
@@ -141,16 +140,8 @@ export default function JobHeader({ job }: { job: IJob }) {
           {job.payments?.length === 0 && (
             <Button
               color="alternative"
-              disabled={isSendingContract}
-              onClick={() => {}}
+              href={`/manage/${job.business_id}/location/${job.business_location_id}/job/${job.id}/payments`}
             >
-              <div className="mr-2 size-5">
-                {isUpdatingJobStatus ? (
-                  <Spinner size="sm" />
-                ) : (
-                  <Banknote className="size-5" />
-                )}
-              </div>
               Collect Deposit
             </Button>
           )}
