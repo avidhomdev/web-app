@@ -7,7 +7,14 @@ import {
   TInitialFormState,
 } from "@/constants/initial-form-state";
 import { Tables } from "@/types/supabase";
-import { Button, Drawer, DrawerHeader, DrawerItems, Label, TextInput } from "flowbite-react";
+import {
+  Button,
+  Drawer,
+  DrawerHeader,
+  DrawerItems,
+  Label,
+  TextInput,
+} from "flowbite-react";
 import { BanknoteIcon } from "lucide-react";
 import Form from "next/form";
 import { useParams } from "next/navigation";
@@ -59,6 +66,11 @@ export default function AddCreditCardPaymentDrawer({
             <input type="hidden" name="business_id" value={businessId} />
             <input type="hidden" name="location_id" value={locationId} />
             <input type="hidden" name="job_id" value={jobId} />
+            <input
+              type="hidden"
+              name="full_name"
+              value={customer?.full_name ?? ""}
+            />
             <input type="hidden" name="email" value={customer?.email ?? ""} />
             <input type="hidden" name="id" value={customer?.id ?? ""} />
             <input

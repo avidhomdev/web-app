@@ -243,7 +243,7 @@ export async function sendCustomerInvoice<T>(
     to: [data.email as string],
     subject: "New Invoice",
     react: JobInvoiceEmailTemplate({
-      name: data.name as string,
+      name: data.full_name as string,
       invoice_url: stripeResponse.hosted_invoice_url,
     }),
   });
