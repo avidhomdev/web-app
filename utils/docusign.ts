@@ -63,7 +63,12 @@ export function generateDocusignRestApiUrl({
   baseUri: string;
   resource: string;
 }) {
-  return `${baseUri}/restapi/v2.1/${resource}`;
+  if (!baseUri || !resource) {
+    throw new Error("Base URI and resource are required to generate URL");
+  }
+  const endpoint = resource.startsWith("/") ? resource.slice(1) : resource;
+
+  return `${baseUri}/restapi/v2.1/${endpoint}`;
 }
 
 async function getBusinessIntegrationData(businessId: string) {
@@ -181,22 +186,18 @@ export async function createBusinessDocusignEnvelopeFromTemplate({
     resource: `/accounts/${accountId}/envelopes`,
   });
 
-  return (
-    fetch(envelopesApiUrl, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((res) => {
-        return res;
-      })
-      // eslint-disable-next-line no-console
-      .catch(console.log)
-  );
+  return fetch(envelopesApiUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      return res;
+    });
 }
 
 export async function sendEnvelopeTemplateWithIntegrationData({
@@ -228,20 +229,136 @@ export async function sendEnvelopeTemplateWithIntegrationData({
     resource: `/accounts/${accountId}/envelopes`,
   });
 
-  return (
-    fetch(envelopesApiUrl, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((res) => {
-        return res;
-      })
-      // eslint-disable-next-line no-console
-      .catch(console.log)
-  );
+  return fetch(envelopesApiUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      return res;
+    });
+}
+
+export async function getEnvelope({
+  businessId,
+  envelopeId,
+}: {
+  businessId: string;
+  envelopeId: string;
+}) {
+  const accessToken = await getAccessToken(businessId);
+  const { account_id: accountId, base_uri: baseUri } =
+    await getBusinessIntegrationData(businessId);
+
+  const envelopesApiUrl = generateDocusignRestApiUrl({
+    baseUri,
+    resource: `/accounts/${accountId}/envelopes/${envelopeId}`,
+  });
+
+  return fetch(envelopesApiUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    method: "GET",
+  }).then((response) => response.json());
+}
+
+export interface DocusignEnvelope {
+  purgeState: string;
+  allowComments: string;
+  allowMarkup: string;
+  allowReassign: string;
+  anySigner: string;
+  attachmentsUri: string;
+  autoNavigation: string;
+  burnDefaultTabData: string;
+  certificateUri: string;
+  createdDateTime: string;
+  customFieldsUri: string;
+  documentsCombinedUri: string;
+  documentsUri: string;
+  emailSubject: string;
+  enableWetSign: string;
+  envelopeId: string;
+  envelopeIdStamping: string;
+  envelopeLocation: string;
+  envelopeUri: string;
+  expireAfter: string;
+  expireDateTime: string;
+  expireEnabled: string;
+  initialSentDateTime: string;
+  isSignatureProviderEnvelope: string;
+  lastModifiedDateTime: string;
+  notificationUri: string;
+  recipientsUri: string;
+  sender: {
+    userName: string;
+    userId: string;
+    accountId: string;
+    email: string;
+    ipAddress: string;
+  };
+  sentDateTime: string;
+  signingLocation: string;
+  status: string;
+  statusChangedDateTime: string;
+  templatesUri: string;
+  uSigState: string;
+}
+
+export async function listDocusignEnvelopes({
+  businessId,
+  envelopeIds,
+}: {
+  businessId: string;
+  envelopeIds: string[];
+}): Promise<DocusignEnvelope[]> {
+  const accessToken = await getAccessToken(businessId);
+  const { account_id: accountId, base_uri: baseUri } =
+    await getBusinessIntegrationData(businessId);
+
+  const envelopesApiUrl = generateDocusignRestApiUrl({
+    baseUri,
+    resource: `/accounts/${accountId}/envelopes?envelope_ids=${envelopeIds.join(",")}&include=documents`,
+  });
+
+  return fetch(envelopesApiUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then(({ envelopes = [] }) => envelopes || []);
+}
+
+export async function dynamicDocusignFetch({
+  businessId,
+  uri,
+}: {
+  businessId: string;
+  uri: string;
+}): Promise<Response> {
+  const accessToken = await getAccessToken(businessId);
+  const { account_id: accountId, base_uri: baseUri } =
+    await getBusinessIntegrationData(businessId);
+
+  const dynamicResource = generateDocusignRestApiUrl({
+    baseUri,
+    resource: `/accounts/${accountId}${uri}`,
+  });
+
+  return fetch(dynamicResource, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    method: "GET",
+  });
 }
