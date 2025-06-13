@@ -1,6 +1,9 @@
 "use server";
 
-import { createBusinessDocusignEnvelopeFromTemplate } from "@/utils/docusign";
+import {
+  createBusinessDocusignEnvelopeFromTemplate,
+  dynamicDocusignFetch,
+} from "@/utils/docusign";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -131,4 +134,16 @@ export async function createJobDocusignEnvelope(formData: FormData) {
   return redirect(
     `/manage/${businessId}/location/${locationId}/job/${jobId}/documents?success=Document successfully added`,
   );
+}
+
+export async function getDocumentCertificateUri(
+  businessId: string,
+  envelopeId: string | null,
+) {
+  if (!envelopeId || !businessId) return;
+
+  return dynamicDocusignFetch({
+    businessId,
+    uri: `/envelopes/${envelopeId}/documents/combined`,
+  }).then((res) => res.blob());
 }
