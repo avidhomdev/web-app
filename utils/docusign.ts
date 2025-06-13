@@ -72,7 +72,7 @@ export function generateDocusignRestApiUrl({
 }
 
 async function getBusinessIntegrationData(businessId: string) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient({ admin: true });
   const { data, error } = await supabase
     .from("business_integrations")
     .select("*")

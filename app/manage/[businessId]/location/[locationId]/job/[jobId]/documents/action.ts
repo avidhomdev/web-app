@@ -136,14 +136,11 @@ export async function createJobDocusignEnvelope(formData: FormData) {
   );
 }
 
-export async function getDocumentCertificateUri(
-  businessId: string,
-  envelopeId: string | null,
-) {
-  if (!envelopeId || !businessId) return;
+export async function getCombinedDocumentBlob(businessId: string, uri: string) {
+  if (!uri || !businessId) return;
 
   return dynamicDocusignFetch({
     businessId,
-    uri: `/envelopes/${envelopeId}/documents/combined`,
+    uri,
   }).then((res) => res.blob());
 }

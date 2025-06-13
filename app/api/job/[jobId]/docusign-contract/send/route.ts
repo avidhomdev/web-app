@@ -34,9 +34,7 @@ export async function POST(
     );
   }
 
-  const supabaseAdmin = await createSupabaseServerClient({ admin: true });
-
-  const { data: job, error } = await supabaseAdmin
+  const { data: job, error } = await supabase
     .from("business_location_jobs")
     .select(
       "id, business_id, business_location_id, creator: creator_id(full_name, email), customer: customer_id(full_name, email, phone), address, city, state, postal_code",
@@ -60,7 +58,7 @@ export async function POST(
   }
 
   const { data: businessIntegration, error: businessIntegrationError } =
-    await supabaseAdmin
+    await supabase
       .from("business_integrations")
       .select("*")
       .match({ business_id: job?.business_id, resource: "docusign" })
@@ -170,15 +168,14 @@ export async function POST(
     );
   }
 
-  const { error: businessLocationJobDocusignEnvelopeError } =
-    await supabaseAdmin
-      .from("business_location_job_docusign_envelopes")
-      .insert({
-        business_id: job.business_id,
-        location_id: job.business_location_id,
-        job_id: job.id,
-        envelope_id: envelopeId,
-      });
+  const { error: businessLocationJobDocusignEnvelopeError } = await supabase
+    .from("business_location_job_docusign_envelopes")
+    .insert({
+      business_id: job.business_id,
+      location_id: job.business_location_id,
+      job_id: job.id,
+      envelope_id: envelopeId,
+    });
 
   if (businessLocationJobDocusignEnvelopeError) {
     return NextResponse.json(

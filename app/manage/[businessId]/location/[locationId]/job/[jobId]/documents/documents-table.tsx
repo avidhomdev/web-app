@@ -1,6 +1,6 @@
 "use client";
 
-import { DAYJS_COMPACT_DATE, DAYJS_DATETIME } from "@/enums/dayjs-formats";
+import { DAYJS_COMPACT_DATE } from "@/enums/dayjs-formats";
 import { Tables } from "@/types/supabase";
 import { DocusignEnvelope } from "@/utils/docusign";
 import dayjs from "dayjs";
@@ -20,7 +20,7 @@ import {
 import { DownloadIcon } from "lucide-react";
 import { useTransition } from "react";
 import { twMerge } from "tailwind-merge";
-import { getDocumentCertificateUri } from "./action";
+import { getCombinedDocumentBlob } from "./action";
 
 type DocumentsTableProps = {
   documents: Tables<"business_location_job_docusign_envelopes">[];
@@ -39,10 +39,10 @@ function getStatusBadgeColor(status: string) {
 }
 
 function DownloadButton({
-  envelopeId,
+  uri,
   businessId,
 }: {
-  envelopeId: string;
+  uri: string;
   businessId: string;
 }) {
   const [isGettingDownloadUrl, startGettingDownloadUrl] = useTransition();
@@ -53,20 +53,10 @@ function DownloadButton({
       color="alternative"
       onClick={() =>
         startGettingDownloadUrl(() =>
-          getDocumentCertificateUri(businessId, envelopeId).then((blob) => {
+          getCombinedDocumentBlob(businessId, uri).then((blob) => {
             if (!blob) throw new Error("Failed to fetch document");
             const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `document-${envelopeId}-${dayjs().format(
-              DAYJS_DATETIME,
-            )}.pdf`;
-            a.style.display = "none";
-            a.style.visibility = "hidden";
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-
+            window.open(url, "_blank");
             window.URL.revokeObjectURL(url);
           }),
         )
@@ -138,7 +128,7 @@ export default function DocumentsTable({
                   {envelope.status === "completed" && (
                     <DownloadButton
                       businessId={doc.business_id}
-                      envelopeId={doc.envelope_id}
+                      uri={envelope.documentsCombinedUri}
                     />
                   )}
                 </div>
