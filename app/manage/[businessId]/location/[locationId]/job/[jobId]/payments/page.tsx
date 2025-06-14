@@ -1,3 +1,5 @@
+import { DAYJS_COMPACT_DATE } from "@/enums/dayjs-formats";
+import { IJob } from "@/types/job";
 import { formatAsCurrency } from "@/utils/formatter";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import dayjs from "dayjs";
@@ -13,7 +15,7 @@ import {
 import { twMerge } from "tailwind-merge";
 import AddCreditCardPaymentDrawer from "./add-credit-card-payment-drawer";
 import AddManualPaymentDrawer from "./add-manual-payment-drawer";
-import { IJob } from "@/types/job";
+import UpdatePaymentDrawer from "./update-payment-drawer";
 
 export default async function Page(props: {
   params: Promise<{ jobId: string }>;
@@ -73,6 +75,8 @@ export default async function Page(props: {
               <TableHeadCell>Date</TableHeadCell>
               <TableHeadCell>Amount</TableHeadCell>
               <TableHeadCell>Type</TableHeadCell>
+              <TableHeadCell>Received</TableHeadCell>
+              <TableHeadCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -83,6 +87,14 @@ export default async function Page(props: {
                 </TableCell>
                 <TableCell>{formatAsCurrency(payment.amount)}</TableCell>
                 <TableCell>{payment.type}</TableCell>
+                <TableCell>
+                  {payment.received_on
+                    ? dayjs(payment.received_on).format(DAYJS_COMPACT_DATE)
+                    : "N/A"}
+                </TableCell>
+                <TableCell className="w-0">
+                  <UpdatePaymentDrawer payment={payment} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

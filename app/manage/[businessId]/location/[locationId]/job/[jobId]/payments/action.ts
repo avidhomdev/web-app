@@ -54,6 +54,45 @@ export async function collectManualPayment<T>(
   });
 }
 
+export async function updatePayment<T>(...args: ServerActionWithState<T>) {
+  const [prevState, formData] = args;
+  const supabase = await createSupabaseServerClient();
+  const data = Object.fromEntries(formData);
+
+  if (!data.id) {
+    return formStateResponse({
+      ...prevState,
+      data,
+      error: "Payment must be provided.",
+    });
+  }
+
+  const { data: updatedData, error } = await supabase
+    .from("business_location_job_payments")
+    .update({ received_on: data.received_on as string })
+    .eq("id", Number(data.id));
+
+  if (error) {
+    return formStateResponse({
+      ...prevState,
+      data,
+      success: false,
+      error: error.message,
+    });
+  }
+
+  revalidatePath(
+    `/manage/${data.business_id}/location/${data.location_id}/job/${data.job_id}/payments`,
+  );
+
+  return formStateResponse({
+    ...prevState,
+    data,
+    success: true,
+    dismiss: true,
+  });
+}
+
 async function findOrCreateStripeCustomer({
   customerId,
   email,
