@@ -2,7 +2,7 @@
 
 import {
   DISPOSITION_STATUS_KEYS,
-  DISPOSITION_STATUSES,
+  getDispositionStatus,
 } from "@/constants/disposition-statuses";
 import { ILocationCustomer } from "@/types/location";
 import {
@@ -283,10 +283,9 @@ function Content() {
       field: "disposition_status",
       header: "Status",
       render: (row) => {
-        const dispositionStatusItem =
-          DISPOSITION_STATUSES[
-            row.disposition_status as DISPOSITION_STATUS_KEYS
-          ];
+        const dispositionStatusItem = getDispositionStatus(
+          row.disposition_status as DISPOSITION_STATUS_KEYS,
+        );
 
         if (!dispositionStatusItem) return;
 

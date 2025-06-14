@@ -1,6 +1,10 @@
 "use client";
 
 import { ConfirmModal } from "@/components/confirm-modal";
+import {
+  DISPOSITION_STATUS_KEYS,
+  getDispositionStatus,
+} from "@/constants/disposition-statuses";
 import { ILocationCustomer } from "@/types/location";
 import {
   Alert,
@@ -45,10 +49,6 @@ import {
 import { twMerge } from "tailwind-merge";
 import { DeleteLocationCustomer } from "./actions";
 import ManageCustomerDrawer from "./manage-customer-drawer";
-import {
-  DISPOSITION_STATUS_KEYS,
-  DISPOSITION_STATUSES,
-} from "@/constants/disposition-statuses";
 
 const customersTableContext = createContext<{
   customers: ILocationCustomer[];
@@ -377,11 +377,8 @@ function Content() {
       field: "disposition_status",
       header: "Status",
       render: (row) =>
-        row.disposition_status
-          ? DISPOSITION_STATUSES[
-              row.disposition_status as DISPOSITION_STATUS_KEYS
-            ].label
-          : "",
+        getDispositionStatus(row.disposition_status as DISPOSITION_STATUS_KEYS)
+          .label,
     },
     {
       cellClassNames: "w-0 text-nowrap hidden sm:table-cell",

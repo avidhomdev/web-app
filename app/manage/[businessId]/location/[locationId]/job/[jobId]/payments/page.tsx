@@ -20,6 +20,7 @@ import UpdatePaymentDrawer from "./update-payment-drawer";
 async function generateSignedUrls(
   paths: string[],
 ): Promise<{ [k: string]: string }> {
+  if (!paths || !paths.length) return {};
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.storage
     .from("business")
@@ -28,6 +29,23 @@ async function generateSignedUrls(
 
   return data.reduce<{ [k: string]: string }>((acc, item) => {
     if (item.path) acc[item.path] = item.signedUrl;
+    return acc;
+  }, {});
+}
+
+async function getJobStripeInvoices(jobId: string) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_STRIPE_API_URL}/invoices/search?query=metadata['job_id']:'${jobId}'`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    },
+  ).then((res) => res.json());
+
+  return (response.data || []).reduce((acc: any[], invoice: any) => {
+    acc[invoice.id] = invoice;
     return acc;
   }, {});
 }
@@ -60,6 +78,8 @@ export default async function Page(props: {
   const photoPaths =
     data.payments?.flatMap((payment) => payment.photo ?? []) || [];
   const signedUrls = await generateSignedUrls(photoPaths || []);
+
+  const stripeInvoices = await getJobStripeInvoices(jobId);
 
   return (
     <div className="grid gap-4 md:gap-6">
@@ -100,37 +120,60 @@ export default async function Page(props: {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.payments?.map(async (payment) => (
-              <TableRow key={payment.id}>
-                <TableCell>
-                  {dayjs(payment.created_at).format("MM/DD/YYYY")}
-                </TableCell>
-                <TableCell>{formatAsCurrency(payment.amount)}</TableCell>
-                <TableCell>{payment.type}</TableCell>
-                <TableCell>
-                  {payment.received_on
-                    ? dayjs(payment.received_on).format(DAYJS_COMPACT_DATE)
-                    : "N/A"}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-x-2">
-                    {payment.photo && signedUrls[payment.photo] && (
-                      <a
-                        href={signedUrls[payment.photo]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        View Receipt
-                      </a>
+            {data.payments?.map(async (payment) => {
+              const stripeInvoiceDetails =
+                payment.stripe_invoice_id &&
+                stripeInvoices[payment.stripe_invoice_id];
+
+              const paymentReceivedOn = stripeInvoiceDetails
+                ? stripeInvoiceDetails.status_transitions.paid_at * 1000
+                : payment.received_on;
+
+              return (
+                <TableRow key={payment.id}>
+                  <TableCell>
+                    {dayjs(payment.created_at).format("MM/DD/YYYY")}
+                  </TableCell>
+                  <TableCell>{formatAsCurrency(payment.amount)}</TableCell>
+                  <TableCell>{payment.type}</TableCell>
+                  <TableCell>
+                    {paymentReceivedOn
+                      ? dayjs(paymentReceivedOn).format(DAYJS_COMPACT_DATE)
+                      : "N/A"}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-x-2">
+                      {payment.photo && signedUrls[payment.photo] && (
+                        <a
+                          href={signedUrls[payment.photo]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary-600 hover:underline"
+                        >
+                          {stripeInvoiceDetails ? "Invoice" : "Receipt"}
+                        </a>
+                      )}
+                      {stripeInvoiceDetails && (
+                        <a
+                          href={stripeInvoiceDetails.hosted_invoice_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary-600 hover:underline"
+                        >
+                          {stripeInvoiceDetails.status}
+                        </a>
+                      )}
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="w-0">
+                    {payment.type !== "invoice" && (
+                      <UpdatePaymentDrawer payment={payment} />
                     )}
-                  </div>
-                </TableCell>
-                <TableCell className="w-0">
-                  <UpdatePaymentDrawer payment={payment} />
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>
