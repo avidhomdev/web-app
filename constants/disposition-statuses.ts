@@ -43,3 +43,9 @@ export const DISPOSITION_STATUSES = {
     label: "Pitched Follow Up",
   },
 };
+
+export function getDispositionStatus(
+  key: DISPOSITION_STATUS_KEYS,
+): (typeof DISPOSITION_STATUSES)[DISPOSITION_STATUS_KEYS] {
+  return DISPOSITION_STATUSES[key] || DISPOSITION_STATUSES.NEW;
+}
