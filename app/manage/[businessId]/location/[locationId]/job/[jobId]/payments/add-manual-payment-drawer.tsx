@@ -1,10 +1,18 @@
 "use client";
 
 import SubmitButton from "@/components/submit-button";
-import { Button, Drawer, DrawerHeader, DrawerItems, Label, Select, TextInput } from "flowbite-react";
+import {
+  Button,
+  Drawer,
+  DrawerHeader,
+  DrawerItems,
+  Label,
+  Select,
+  TextInput,
+} from "flowbite-react";
 import { BanknoteIcon } from "lucide-react";
 import Form from "next/form";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { collectManualPayment } from "./action";
 import {
@@ -12,8 +20,10 @@ import {
   TInitialFormState,
 } from "@/constants/initial-form-state";
 import ErrorAlert from "@/components/error-alert";
+import SupabaseFileUploadDropzone from "@/components/supabase-file-upload-dropzone";
 
 export default function AddManualPaymentDrawer() {
+  const router = useRouter();
   const { businessId, locationId, jobId } = useParams();
   const [state, action] = useActionState(
     collectManualPayment<TInitialFormState>,
@@ -29,8 +39,11 @@ export default function AddManualPaymentDrawer() {
 
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
-    if (state.success && state.dismiss) setIsOpen(() => false);
-  }, [state.success, state.dismiss, setIsOpen]);
+    if (state.success && state.dismiss) {
+      setIsOpen(() => false);
+      router.refresh();
+    }
+  }, [state.success, state.dismiss, setIsOpen, router]);
 
   return (
     <>
@@ -89,9 +102,13 @@ export default function AddManualPaymentDrawer() {
                 required
               />
             </div>
-            <SubmitButton pendingText="Starting checkout...">
-              Checkout
-            </SubmitButton>
+            <SupabaseFileUploadDropzone
+              bucket="business"
+              defaultPath={state.data.photo}
+              filePath={`${businessId}/locations/${locationId}/jobs/${jobId}/payments`}
+              name="photo"
+            />
+            <SubmitButton pendingText="Saving payment...">Save</SubmitButton>
           </Form>
         </DrawerItems>
       </Drawer>

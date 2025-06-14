@@ -17,6 +17,21 @@ import AddCreditCardPaymentDrawer from "./add-credit-card-payment-drawer";
 import AddManualPaymentDrawer from "./add-manual-payment-drawer";
 import UpdatePaymentDrawer from "./update-payment-drawer";
 
+async function generateSignedUrls(
+  paths: string[],
+): Promise<{ [k: string]: string }> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.storage
+    .from("business")
+    .createSignedUrls(paths, 3600);
+  if (error) throw error;
+
+  return data.reduce<{ [k: string]: string }>((acc, item) => {
+    if (item.path) acc[item.path] = item.signedUrl;
+    return acc;
+  }, {});
+}
+
 export default async function Page(props: {
   params: Promise<{ jobId: string }>;
 }) {
@@ -41,6 +56,10 @@ export default async function Page(props: {
 
   if (error) throw error;
   if (!data) throw new Error("No job found.");
+
+  const photoPaths =
+    data.payments?.flatMap((payment) => payment.photo ?? []) || [];
+  const signedUrls = await generateSignedUrls(photoPaths || []);
 
   return (
     <div className="grid gap-4 md:gap-6">
@@ -76,11 +95,12 @@ export default async function Page(props: {
               <TableHeadCell>Amount</TableHeadCell>
               <TableHeadCell>Type</TableHeadCell>
               <TableHeadCell>Received</TableHeadCell>
+              <TableHeadCell>Receipt</TableHeadCell>
               <TableHeadCell />
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.payments?.map((payment) => (
+            {data.payments?.map(async (payment) => (
               <TableRow key={payment.id}>
                 <TableCell>
                   {dayjs(payment.created_at).format("MM/DD/YYYY")}
@@ -91,6 +111,20 @@ export default async function Page(props: {
                   {payment.received_on
                     ? dayjs(payment.received_on).format(DAYJS_COMPACT_DATE)
                     : "N/A"}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-x-2">
+                    {payment.photo && signedUrls[payment.photo] && (
+                      <a
+                        href={signedUrls[payment.photo]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        View Receipt
+                      </a>
+                    )}
+                  </div>
                 </TableCell>
                 <TableCell className="w-0">
                   <UpdatePaymentDrawer payment={payment} />

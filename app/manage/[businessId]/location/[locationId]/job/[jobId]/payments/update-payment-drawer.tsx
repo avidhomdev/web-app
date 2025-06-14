@@ -20,6 +20,7 @@ import Form from "next/form";
 import { useParams } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { updatePayment } from "./action";
+import SupabaseFileUploadDropzone from "@/components/supabase-file-upload-dropzone";
 
 export default function UpdatePaymentDrawer({
   payment,
@@ -31,6 +32,7 @@ export default function UpdatePaymentDrawer({
     ...initialFormState,
     data: {
       received_on: payment?.received_on,
+      photo: payment?.photo,
     },
   });
 
@@ -49,41 +51,47 @@ export default function UpdatePaymentDrawer({
       >
         <SettingsIcon />
       </Button>
-      <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
-        <DrawerHeader
-          title="Collect Manual Payment"
-          titleIcon={() => <BanknoteIcon className="mr-2" />}
-        />
-        <DrawerItems>
-          {state.error && (
-            <div className="my-4">
-              <ErrorAlert message={state.error} />
-            </div>
-          )}
-          <Form action={action} className="grid gap-4">
-            <input type="hidden" name="business_id" value={businessId} />
-            <input type="hidden" name="location_id" value={locationId} />
-            <input type="hidden" name="job_id" value={jobId} />
-            <input type="hidden" name="id" value={payment.id} />
-            <div>
-              <Label htmlFor="received_on" className="mb-2 block">
-                Date Received
-              </Label>
-              <TextInput
-                id="received_on"
-                name="received_on"
-                type="date"
-                required
-                defaultValue={state.data.received_on}
-                className="w-full"
-                placeholder="Select date"
+      {isOpen && (
+        <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
+          <DrawerHeader
+            title="Collect Manual Payment"
+            titleIcon={() => <BanknoteIcon className="mr-2" />}
+          />
+          <DrawerItems>
+            {state.error && (
+              <div className="my-4">
+                <ErrorAlert message={state.error} />
+              </div>
+            )}
+            <Form action={action} className="grid gap-4">
+              <input type="hidden" name="business_id" value={businessId} />
+              <input type="hidden" name="location_id" value={locationId} />
+              <input type="hidden" name="job_id" value={jobId} />
+              <input type="hidden" name="id" value={payment.id} />
+              <div>
+                <Label htmlFor="received_on" className="mb-2 block">
+                  Date Received
+                </Label>
+                <TextInput
+                  id="received_on"
+                  name="received_on"
+                  type="date"
+                  defaultValue={state.data.received_on}
+                  className="w-full"
+                  placeholder="Select date"
+                />
+              </div>
+              <SupabaseFileUploadDropzone
+                bucket="business"
+                defaultPath={state.data.photo}
+                filePath={`${businessId}/locations/${locationId}/jobs/${jobId}/payments`}
+                name="photo"
               />
-            </div>
-
-            <SubmitButton pendingText="Saving...">Save</SubmitButton>
-          </Form>
-        </DrawerItems>
-      </Drawer>
+              <SubmitButton pendingText="Saving...">Save</SubmitButton>
+            </Form>
+          </DrawerItems>
+        </Drawer>
+      )}
     </>
   );
 }

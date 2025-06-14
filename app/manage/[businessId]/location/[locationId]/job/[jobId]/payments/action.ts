@@ -31,6 +31,8 @@ export async function collectManualPayment<T>(
     name: data.name as string,
     type: data.type as string,
     amount: Number(data.amount),
+    photo: data.photo as string,
+    received_on: data.received_on as string,
   };
 
   const { error } = await supabase
@@ -67,9 +69,12 @@ export async function updatePayment<T>(...args: ServerActionWithState<T>) {
     });
   }
 
-  const { data: updatedData, error } = await supabase
+  const { error } = await supabase
     .from("business_location_job_payments")
-    .update({ received_on: data.received_on as string })
+    .update({
+      ...(data.received_on && { received_on: data.received_on as string }),
+      ...(data.photo && { photo: data.photo as string }),
+    })
     .eq("id", Number(data.id));
 
   if (error) {
