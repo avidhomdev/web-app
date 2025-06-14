@@ -54,7 +54,7 @@ export default function UpdatePaymentDrawer({
       {isOpen && (
         <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="right">
           <DrawerHeader
-            title="Collect Manual Payment"
+            title="Update Payment"
             titleIcon={() => <BanknoteIcon className="mr-2" />}
           />
           <DrawerItems>
@@ -81,12 +81,17 @@ export default function UpdatePaymentDrawer({
                   placeholder="Select date"
                 />
               </div>
-              <SupabaseFileUploadDropzone
-                bucket="business"
-                defaultPath={state.data.photo}
-                filePath={`${businessId}/locations/${locationId}/jobs/${jobId}/payments`}
-                name="photo"
-              />
+              <div>
+                <Label htmlFor="note" className="mb-2 block">
+                  Receipt
+                </Label>
+                <SupabaseFileUploadDropzone
+                  bucket="business"
+                  defaultPath={state.data.photo}
+                  filePath={`${businessId}/locations/${locationId}/jobs/${jobId}/payments`}
+                  name="photo"
+                />
+              </div>
               <SubmitButton pendingText="Saving...">Save</SubmitButton>
             </Form>
           </DrawerItems>
