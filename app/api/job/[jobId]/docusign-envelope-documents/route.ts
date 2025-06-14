@@ -35,7 +35,8 @@ export async function GET(
   const { data: documents, error } = await supabase
     .from("business_location_job_docusign_envelopes")
     .select("*")
-    .eq("job_id", Number(jobId));
+    .eq("job_id", Number(jobId))
+    .order("created_at", { ascending: false });
 
   if (error) {
     return NextResponse.json(
