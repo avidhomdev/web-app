@@ -19,7 +19,7 @@ import UpdatePaymentDrawer from "./update-payment-drawer";
 
 async function generateSignedUrls(
   paths: string[],
-): Promise<{ [k: string]: string }> {
+): Promise<Record<string, string>> {
   if (!paths || !paths.length) return {};
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.storage
@@ -27,14 +27,23 @@ async function generateSignedUrls(
     .createSignedUrls(paths, 3600);
   if (error) throw error;
 
-  return data.reduce<{ [k: string]: string }>((acc, item) => {
+  return data.reduce<Record<string, string>>((acc, item) => {
     if (item.path) acc[item.path] = item.signedUrl;
     return acc;
   }, {});
 }
 
+interface StripeInvoice {
+  hosted_invoice_url?: string;
+  id: string;
+  status: string;
+  status_transitions: {
+    paid_at: number;
+  };
+}
+
 async function getJobStripeInvoices(jobId: string) {
-  const response = await fetch(
+  const { data = [] }: { data: StripeInvoice[] } = await fetch(
     `${process.env.NEXT_PUBLIC_STRIPE_API_URL}/invoices/search?query=metadata['job_id']:'${jobId}'`,
     {
       headers: {
@@ -44,10 +53,15 @@ async function getJobStripeInvoices(jobId: string) {
     },
   ).then((res) => res.json());
 
-  return (response.data || []).reduce((acc: any[], invoice: any) => {
-    acc[invoice.id] = invoice;
-    return acc;
-  }, {});
+  const dictionary = data.reduce<Record<string, StripeInvoice>>(
+    (acc, invoice) => {
+      acc[invoice.id] = invoice;
+      return acc;
+    },
+    {},
+  );
+
+  return dictionary;
 }
 
 export default async function Page(props: {
@@ -121,9 +135,9 @@ export default async function Page(props: {
           </TableHead>
           <TableBody>
             {data.payments?.map(async (payment) => {
-              const stripeInvoiceDetails =
-                payment.stripe_invoice_id &&
-                stripeInvoices[payment.stripe_invoice_id];
+              const stripeInvoiceDetails = payment.stripe_invoice_id
+                ? stripeInvoices[payment.stripe_invoice_id]
+                : null;
 
               const paymentReceivedOn = stripeInvoiceDetails
                 ? stripeInvoiceDetails.status_transitions.paid_at * 1000
@@ -153,7 +167,7 @@ export default async function Page(props: {
                           {stripeInvoiceDetails ? "Invoice" : "Receipt"}
                         </a>
                       )}
-                      {stripeInvoiceDetails && (
+                      {stripeInvoiceDetails?.hosted_invoice_url && (
                         <a
                           href={stripeInvoiceDetails.hosted_invoice_url}
                           target="_blank"
