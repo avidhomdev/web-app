@@ -46,25 +46,13 @@ export async function GET(
     );
   }
 
-  const pdfResponse = await dynamicDocusignFetch({
+  const pdfBlobResponse = await dynamicDocusignFetch({
     businessId: document.business_id,
     uri: `/envelopes/${document.envelope_id}/documents/combined`,
   });
 
-  if (!pdfResponse.ok) {
-    return NextResponse.json(
-      { success: false, error: "Failed to fetch PDF" },
-      { status: 500 },
-    );
-  }
-
-  const pdfBuffer = Buffer.from(await pdfResponse.arrayBuffer());
-
-  return new NextResponse(pdfBuffer, {
-    status: 200,
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="document.pdf"`,
-    },
-  });
+  return NextResponse.json(
+    { success: true, data: pdfBlobResponse },
+    { status: 200 },
+  );
 }
