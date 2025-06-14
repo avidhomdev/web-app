@@ -1037,6 +1037,7 @@ export type Database = {
           job_id: number
           location_id: number
           name: string
+          photo: string | null
           received_on: string | null
           stripe_checkout_session_id: string | null
           stripe_invoice_id: string | null
@@ -1050,6 +1051,7 @@ export type Database = {
           job_id: number
           location_id: number
           name: string
+          photo?: string | null
           received_on?: string | null
           stripe_checkout_session_id?: string | null
           stripe_invoice_id?: string | null
@@ -1063,6 +1065,7 @@ export type Database = {
           job_id?: number
           location_id?: number
           name?: string
+          photo?: string | null
           received_on?: string | null
           stripe_checkout_session_id?: string | null
           stripe_invoice_id?: string | null
