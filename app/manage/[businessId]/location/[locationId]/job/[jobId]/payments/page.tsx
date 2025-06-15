@@ -4,6 +4,8 @@ import { formatAsCurrency } from "@/utils/formatter";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import dayjs from "dayjs";
 import {
+  Badge,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +18,7 @@ import { twMerge } from "tailwind-merge";
 import AddCreditCardPaymentDrawer from "./add-credit-card-payment-drawer";
 import AddManualPaymentDrawer from "./add-manual-payment-drawer";
 import UpdatePaymentDrawer from "./update-payment-drawer";
+import { ReceiptIcon } from "lucide-react";
 
 async function generateSignedUrls(
   paths: string[],
@@ -126,10 +129,9 @@ export default async function Page(props: {
           <TableHead>
             <TableRow>
               <TableHeadCell>Date</TableHeadCell>
+              <TableHeadCell>Name</TableHeadCell>
               <TableHeadCell>Amount</TableHeadCell>
-              <TableHeadCell>Type</TableHeadCell>
               <TableHeadCell>Received</TableHeadCell>
-              <TableHeadCell>Receipt</TableHeadCell>
               <TableHeadCell />
             </TableRow>
           </TableHead>
@@ -143,47 +145,47 @@ export default async function Page(props: {
                 ? stripeInvoiceDetails.status_transitions.paid_at * 1000
                 : payment.received_on;
 
+              const signedUrl = payment.photo
+                ? signedUrls[payment.photo]
+                : null;
+              const receiptUrl = stripeInvoiceDetails
+                ? stripeInvoiceDetails.hosted_invoice_url
+                : signedUrl;
+
               return (
                 <TableRow key={payment.id}>
                   <TableCell>
                     {dayjs(payment.created_at).format("MM/DD/YYYY")}
                   </TableCell>
+                  <TableCell>{payment.name}</TableCell>
                   <TableCell>{formatAsCurrency(payment.amount)}</TableCell>
-                  <TableCell>{payment.type}</TableCell>
+
                   <TableCell>
-                    {paymentReceivedOn
-                      ? dayjs(paymentReceivedOn).format(DAYJS_COMPACT_DATE)
-                      : "N/A"}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-x-2">
-                      {payment.photo && signedUrls[payment.photo] && (
-                        <a
-                          href={signedUrls[payment.photo]}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary-600 hover:underline"
-                        >
-                          {stripeInvoiceDetails ? "Invoice" : "Receipt"}
-                        </a>
-                      )}
-                      {stripeInvoiceDetails?.hosted_invoice_url && (
-                        <a
-                          href={stripeInvoiceDetails.hosted_invoice_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary-600 hover:underline"
-                        >
-                          {stripeInvoiceDetails.status}
-                        </a>
-                      )}
+                    <div className="flex flex-col items-start gap-1">
+                      <Badge size="xs">{payment.type}</Badge>
+                      <span className="text-xs">
+                        {paymentReceivedOn
+                          ? dayjs(paymentReceivedOn).format(DAYJS_COMPACT_DATE)
+                          : "Not Received"}
+                      </span>
                     </div>
                   </TableCell>
 
                   <TableCell className="w-0">
-                    {payment.type !== "invoice" && (
-                      <UpdatePaymentDrawer payment={payment} />
-                    )}
+                    <div className="flex items-center justify-end gap-1">
+                      <Button
+                        color="alternative"
+                        disabled={!receiptUrl}
+                        href={receiptUrl ?? "#"}
+                        size="sm"
+                        title="View Receipt"
+                      >
+                        <ReceiptIcon />
+                      </Button>
+                      {payment.type !== "invoice" && (
+                        <UpdatePaymentDrawer payment={payment} />
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               );
