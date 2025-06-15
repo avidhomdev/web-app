@@ -182,9 +182,7 @@ export default async function Page(props: {
                       >
                         <ReceiptIcon />
                       </Button>
-                      {payment.type !== "invoice" && (
-                        <UpdatePaymentDrawer payment={payment} />
-                      )}
+                      <UpdatePaymentDrawer payment={payment} />
                     </div>
                   </TableCell>
                 </TableRow>

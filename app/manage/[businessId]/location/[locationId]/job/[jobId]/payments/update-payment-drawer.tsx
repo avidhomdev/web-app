@@ -45,6 +45,7 @@ export default function UpdatePaymentDrawer({
     <>
       <Button
         className="cursor-pointer"
+        disabled={payment.type === "invoice"}
         color="alternative"
         onClick={() => setIsOpen(true)}
         size="sm"
