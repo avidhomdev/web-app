@@ -48,6 +48,7 @@ export default function UpdatePaymentDrawer({
         color="alternative"
         onClick={() => setIsOpen(true)}
         size="sm"
+        title="Update Payment"
       >
         <SettingsIcon />
       </Button>
