@@ -38,7 +38,7 @@ async function getJobStripeInvoices(
   return dictionary;
 }
 
-export const GET = routeHandlerWithJwtSupabaseAuth(async (request, context) => {
+export const GET = routeHandlerWithJwtSupabaseAuth(async (_, context) => {
   const { params, supabase } = context;
   const { jobId } = await params;
 
