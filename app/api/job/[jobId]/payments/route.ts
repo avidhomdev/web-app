@@ -21,7 +21,11 @@ async function getJobStripeInvoices(
         "Content-Type": "application/x-www-form-urlencoded",
       },
     },
-  ).then((res) => res.json());
+  )
+    .then((res) => res.json())
+    .catch(() => {
+      return [];
+    });
 
   const dictionary = data.reduce<Record<string, StripeInvoice>>(
     (acc, invoice) => {
