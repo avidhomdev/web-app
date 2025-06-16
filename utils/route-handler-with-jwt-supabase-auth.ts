@@ -4,7 +4,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/types/supabase";
 
 type RequestContext = {
-  params: Record<string, string>;
+  params: Promise<Record<string, string>>;
   supabase: SupabaseClient<Database>;
 };
 
