@@ -90,7 +90,7 @@ export default function useManageMenuItems() {
   }
 
   const generateLocationLink = (segment: string = "") =>
-    generateBusinessLink(`/location/${locationId}/${segment}`);
+    generateBusinessLink(`location/${locationId}/${segment}`);
 
   return [
     {
