@@ -91,12 +91,13 @@ export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
     }
   } else if (fields.inviting_new) {
     const supabaseAdmin = await createSupabaseServerClient({ admin: true });
-    const origin = (await headers()).get("origin");
 
     const { data, error: inviteError } =
-      await supabaseAdmin.auth.admin.inviteUserByEmail(fields.email as string, {
-        data: { full_name: fields.full_name as string },
-        redirectTo: `${origin}/auth/callback`,
+      await supabaseAdmin.auth.admin.createUser({
+        email: fields.email as string,
+        password: "Avidturf123!",
+        user_metadata: { full_name: fields.full_name as string },
+        email_confirm: true,
       });
 
     if (inviteError) {
