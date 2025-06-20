@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
     "update-local-types": "npx --yes supabase gen types --lang=typescript --local > types/supabase.d.ts",
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@react-email/components": "^0.0.36",
+    "@sentry/nextjs": "^9.30.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "ag-charts-community": "^10.1.0",

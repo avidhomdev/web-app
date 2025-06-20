@@ -37,3 +37,16 @@ const nextConfig = {
 };
 
 module.exports = withFlowbiteReact(nextConfig);
+
+// Injected content via Sentry wizard below
+
+const { withSentryConfig } = require("@sentry/nextjs");
+
+module.exports = withSentryConfig(module.exports, {
+  org: "hom-pu",
+  project: "javascript-nextjs",
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  disableLogger: true,
+  automaticVercelMonitors: true,
+});
