@@ -29,7 +29,7 @@ export default async function Page({
           <p>
             <b>{appointment.customer?.full_name}</b>
             <br />
-            {`${appointment.customer?.address}, ${appointment.customer?.city}`}
+            {`${appointment.customer?.address || "No address."}, ${appointment.customer?.city || "No city."}`}
           </p>
           <ul>
             <li>{`Start: ${dayjs(appointment.start_datetime).format(SHORT_FRIENDLY_DATE_TIME_FORMAT)}`}</li>
