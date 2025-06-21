@@ -13,7 +13,9 @@ export default async function Page({
   const { locationId } = await params;
   const { data, error } = await supabase
     .from("business_appointments")
-    .select("*, customer: customer_id(*)")
+    .select(
+      "*, customer: customer_id(*), profiles: business_appointment_profiles!inner(*, profile: profile_id(*))",
+    )
     .eq("location_id", Number(locationId));
 
   if (error) throw new Error(error.message);
@@ -34,6 +36,7 @@ export default async function Page({
           <ul>
             <li>{`Start: ${dayjs(appointment.start_datetime).format(SHORT_FRIENDLY_DATE_TIME_FORMAT)}`}</li>
             <li>{`End: ${dayjs(appointment.end_datetime).format(SHORT_FRIENDLY_DATE_TIME_FORMAT)}`}</li>
+            <li>{`Attendees: ${appointment.profiles.map((p) => p.profile.full_name).join(", ")} `}</li>
           </ul>
         </Card>
       ))}
