@@ -4,7 +4,6 @@ import { formStateResponse } from "@/constants/initial-form-state";
 import { ServerActionWithState } from "@/types/server-actions";
 import { Database } from "@/types/supabase";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
-import { headers } from "next/headers";
 
 export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
   const supabase = await createSupabaseServerClient();

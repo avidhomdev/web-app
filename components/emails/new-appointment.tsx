@@ -1,4 +1,3 @@
-import { Tables } from "@/types/supabase";
 import {
   Body,
   Button,
@@ -14,11 +13,52 @@ import {
 } from "@react-email/components";
 import dayjs from "dayjs";
 
+type NewAppointmentEmailTemplateProps = {
+  start_datetime: string;
+  end_datetime: string;
+  name: string;
+  emails: string;
+};
+
+const DISPLAY_DAYJS_FORMAT = "MMMM D, YYYY h:mm A";
+const GOOGLE_CAL_DAY_FORMAT = "YYYYMMDDThhmmss";
+
+function formatDate(date: string, format: string) {
+  return dayjs(date).format(format);
+}
+
+function GoogleCalendarButton({
+  name,
+  start_datetime,
+  end_datetime,
+  emails,
+}: NewAppointmentEmailTemplateProps) {
+  const BASE_URL = `https://calendar.google.com/calendar/render`;
+  const params = new URLSearchParams({
+    action: encodeURIComponent("TEMPLATE"),
+    text: name,
+    dates: `${formatDate(start_datetime, GOOGLE_CAL_DAY_FORMAT)}/${formatDate(end_datetime, GOOGLE_CAL_DAY_FORMAT)}`,
+    add: emails,
+  });
+
+  const href = `${BASE_URL}?${params.toString()}`;
+
+  return (
+    <Button
+      className="bg-brand rounded-lg px-[18px] py-3 text-white"
+      href={href}
+    >
+      Add to Google Calendar
+    </Button>
+  );
+}
+
 export function NewAppointmentEmailTemplate({
-  appointment,
-}: {
-  appointment: Tables<"business_appointments">;
-}) {
+  start_datetime,
+  end_datetime,
+  name,
+  emails,
+}: NewAppointmentEmailTemplateProps) {
   return (
     <Html>
       <Head />
@@ -41,7 +81,7 @@ export function NewAppointmentEmailTemplate({
       >
         <Preview>New Appointment to Schedule</Preview>
         <Body className="bg-offwhite font-sans text-base">
-          <Container className="p-45 bg-white">
+          <Container className="bg-white p-45">
             <Heading className="my-0 text-center leading-8">
               New appointment
             </Heading>
@@ -50,42 +90,29 @@ export function NewAppointmentEmailTemplate({
                 <Text className="text-base">
                   We have a new appointment on your schedule.
                 </Text>
-                <Text className="text-base">
-                  Here&apos;s how to get started:
-                </Text>
               </Row>
               <Row className="items-center justify-center text-center">
-                <Button
-                  className="bg-brand rounded-lg px-[18px] py-3 text-white"
-                  href="#"
-                >
-                  Add to Google Calendar
-                </Button>
-                <Button
-                  className="bg-brand rounded-lg px-[18px] py-3 text-white"
-                  href="#"
-                >
-                  Add to Apple Calendar
-                </Button>
+                <td align="center" className="w-1/2 pr-[16px]" colSpan={1}>
+                  <GoogleCalendarButton
+                    emails={emails}
+                    end_datetime={end_datetime}
+                    name={name}
+                    start_datetime={start_datetime}
+                  />
+                </td>
               </Row>
             </Section>
             <Section>
-              <Heading as="h3" className="text-center">
-                Appointment
-              </Heading>
               <Row>
                 <ul>
+                  <b>{name}</b>
                   <li>
                     <b>Start:</b>{" "}
-                    {dayjs(appointment.start_datetime).format(
-                      "MMMM D, YYYY h:mm A",
-                    )}
+                    {dayjs(start_datetime).format(DISPLAY_DAYJS_FORMAT)}
                   </li>
                   <li>
                     <b>End:</b>{" "}
-                    {dayjs(appointment.end_datetime).format(
-                      "MMMM D, YYYY h:mm A",
-                    )}
+                    {dayjs(end_datetime).format(DISPLAY_DAYJS_FORMAT)}
                   </li>
                 </ul>
               </Row>

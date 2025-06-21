@@ -99,11 +99,14 @@ export async function POST(
 
   await resend.emails.send({
     from: "no-reply <no-reply@avid-hom.com>",
-    to: [...toEmails, customer.email],
+    to: toEmails,
     bcc: ["devavidhom@gmail.com"],
     subject: "New Appointment",
     react: NewAppointmentEmailTemplate({
-      appointment,
+      start_datetime: appointment.start_datetime,
+      end_datetime: appointment.end_datetime,
+      name: appointment.name || "New Appointment",
+      emails: toEmails.join(","),
     }),
   });
 

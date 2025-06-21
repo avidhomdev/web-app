@@ -4,7 +4,6 @@ import { formStateResponse } from "@/constants/initial-form-state";
 import { ServerActionWithState } from "@/types/server-actions";
 import { Database } from "@/types/supabase";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
-import { headers } from "next/headers";
 
 export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
   const supabase = await createSupabaseServerClient();
@@ -48,7 +47,6 @@ export async function SearchOrInviteUser<T>(...args: ServerActionWithState<T>) {
     }
   } else if (fields.inviting_new) {
     const supabaseAdmin = await createSupabaseServerClient({ admin: true });
-    const origin = (await headers()).get("origin");
 
     const { data, error: inviteError } =
       await supabaseAdmin.auth.admin.createUser({
