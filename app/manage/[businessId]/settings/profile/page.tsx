@@ -1,52 +1,93 @@
 "use client";
 
+import SubmitButton from "@/components/submit-button";
+import SupabaseFileUploadDropzone from "@/components/supabase-file-upload-dropzone";
+import initialFormState, {
+  TInitialFormState,
+} from "@/constants/initial-form-state";
 import { US_STATES } from "@/constants/us-states";
 import { useUserContext } from "@/contexts/user";
 import { Button, Card, Label, Select, TextInput } from "flowbite-react";
+import { useParams } from "next/navigation";
+import { useActionState } from "react";
+import { UpdateProfile } from "./action";
+
+function UpdateProfileInformation() {
+  const { businessId } = useParams();
+  const { user } = useUserContext();
+  const [state, action] = useActionState(UpdateProfile<TInitialFormState>, {
+    ...initialFormState,
+    data: {
+      business_id: businessId,
+      avatar_url: user.avatar_url,
+      full_name: user.full_name,
+      username: user.username,
+      profile_id: user.id,
+    },
+  });
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-12">
+      <hgroup className="sm:col-span-3 md:col-span-4">
+        <h2 className="font-semibold">Public Information</h2>
+        <p className="text-sm text-gray-400">Update your public information</p>
+      </hgroup>
+      <form action={action} className="grid gap-6 sm:col-span-9 md:col-span-8">
+        <input type="hidden" name="profile_id" value={state.data.profile_id} />
+        <input
+          type="hidden"
+          name="business_id"
+          value={state.data.business_id}
+        />
+        <Card>
+          <div>
+            <Label htmlFor="avatar_url" className="mb-2 block">
+              Avatar
+            </Label>
+            <SupabaseFileUploadDropzone
+              bucket="business"
+              defaultPath={state.data.avatar_url || undefined}
+              filePath={`${businessId}/profiles/${user.id}/avatars`}
+              name="avatar_url"
+            />
+          </div>
+          <div>
+            <Label htmlFor="full_name" className="mb-2 block">
+              Name
+            </Label>
+            <TextInput
+              autoComplete="off"
+              defaultValue={state.data.full_name ?? ""}
+              id="full_name"
+              name="full_name"
+              type="text"
+            />
+          </div>
+          <div>
+            <Label htmlFor="username" className="mb-2 block">
+              Username
+            </Label>
+            <TextInput
+              autoComplete="off"
+              defaultValue={state.data.username ?? ""}
+              id="username"
+              name="username"
+              type="text"
+            />
+          </div>
+          <div className="flex flex-row justify-end">
+            <SubmitButton pendingText="Updating...">Update</SubmitButton>
+          </div>
+        </Card>
+      </form>
+    </div>
+  );
+}
 
 export default function Page() {
-  const { user } = useUserContext();
   return (
     <div className="grid gap-6">
-      <div className="grid grid-cols-1 sm:grid-cols-12">
-        <hgroup className="sm:col-span-3 md:col-span-4">
-          <h2 className="font-semibold">Public Information</h2>
-          <p className="text-sm text-gray-400">
-            Update your public information
-          </p>
-        </hgroup>
-        <div className="grid gap-6 sm:col-span-9 md:col-span-8">
-          <Card>
-            <div>
-              <Label htmlFor="full_name" className="mb-2 block">
-                Name
-              </Label>
-              <TextInput
-                autoComplete="off"
-                defaultValue={user.full_name ?? ""}
-                id="full_name"
-                name="full_name"
-                type="text"
-              />
-            </div>
-            <div>
-              <Label htmlFor="username" className="mb-2 block">
-                Username
-              </Label>
-              <TextInput
-                autoComplete="off"
-                defaultValue={user.username ?? ""}
-                id="username"
-                name="username"
-                type="text"
-              />
-            </div>
-            <div className="flex flex-row justify-end">
-              <Button>Update</Button>
-            </div>
-          </Card>
-        </div>
-      </div>
+      <UpdateProfileInformation />
       <div className="grid grid-cols-1 sm:grid-cols-12">
         <hgroup className="sm:col-span-3 md:col-span-4">
           <h2 className="font-semibold">Contact Information</h2>

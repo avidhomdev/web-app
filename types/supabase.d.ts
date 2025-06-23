@@ -92,6 +92,7 @@ export type Database = {
           location_id: number | null
           name: string | null
           start_datetime: string
+          type: string
         }
         Insert: {
           business_id: string
@@ -104,6 +105,7 @@ export type Database = {
           location_id?: number | null
           name?: string | null
           start_datetime: string
+          type?: string
         }
         Update: {
           business_id?: string
@@ -116,6 +118,7 @@ export type Database = {
           location_id?: number | null
           name?: string | null
           start_datetime?: string
+          type?: string
         }
         Relationships: [
           {
@@ -1492,6 +1495,61 @@ export type Database = {
             columns: ["business_location_id"]
             isOneToOne: false
             referencedRelation: "business_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      business_location_profile_availability: {
+        Row: {
+          business_id: string
+          created_at: string
+          day_of_week: string
+          end_time: string
+          id: number
+          location_id: number
+          profile_id: string
+          start_time: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          day_of_week: string
+          end_time: string
+          id?: number
+          location_id: number
+          profile_id: string
+          start_time: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          day_of_week?: string
+          end_time?: string
+          id?: number
+          location_id?: number
+          profile_id?: string
+          start_time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_location_profile_availability_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_profile_availability_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "business_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_location_profile_availability_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

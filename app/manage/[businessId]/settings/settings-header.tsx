@@ -29,6 +29,16 @@ export function SettingsHeader() {
       href: `/manage/${businessId}/settings/profile`,
       title: "Profile",
     },
+    {
+      active: segment === "time-off",
+      href: `/manage/${businessId}/settings/time-off`,
+      title: "Time Off",
+    },
+    {
+      active: segment === "availability",
+      href: `/manage/${businessId}/settings/availability`,
+      title: "Availability",
+    },
   ];
 
   return (

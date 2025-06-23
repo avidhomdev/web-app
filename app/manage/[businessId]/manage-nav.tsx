@@ -118,6 +118,12 @@ export default function ManageNav() {
           <DropdownItem href={`/manage/${businessId}/settings/profile`}>
             Profile
           </DropdownItem>
+          <DropdownItem href={`/manage/${businessId}/settings/time-off`}>
+            Time Off
+          </DropdownItem>
+          <DropdownItem href={`/manage/${businessId}/settings/availability`}>
+            Availability
+          </DropdownItem>
           <DropdownDivider />
           <DropdownItem href="/auth/signout">Sign out</DropdownItem>
         </Dropdown>
