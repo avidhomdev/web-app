@@ -1,36 +1,39 @@
-import dayjs from "dayjs";
-import { Button } from "flowbite-react";
+import { createSupabaseServerClient } from "@/utils/supabase/server";
+import AvailabilitySelector from "./availability-selector";
+import { notFound, redirect } from "next/navigation";
 
-function DayOfWeekColumn({ day }: { day: string }) {
-  return (
-    <div className="flex grow flex-col items-center justify-center gap-2">
-      <div>{day}</div>
-      {Array.from({ length: 15 }, (_, num) => {
-        const time = dayjs()
-          .startOf("day")
-          .set("hour", 6)
-          .add(num * 1, "hour");
+export type AvailabilityObjectType = Record<string, Record<number, boolean>>;
 
-        return (
-          <div key={time.toString()}>
-            <Button color="alternative">{time.format("hh:mm a")}</Button>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+type BusinessProfileResponseType = {
+  availability: AvailabilityObjectType;
+};
 
-const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-export default function Page() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ businessId: string }>;
+}) {
+  const { businessId } = await params;
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error) throw new Error(error.message);
+  if (!user) return redirect(`/sign-in`);
+
+  const { data, error: businessProfileError } = await supabase
+    .from("business_profiles")
+    .select("availability")
+    .match({ profile_id: user.id, business_id: businessId })
+    .limit(1)
+    .maybeSingle()
+    .overrideTypes<BusinessProfileResponseType>();
+
+  if (businessProfileError) throw new Error(businessProfileError.message);
+  if (!data) return notFound();
+
   return (
     <div className="grid gap-6">
       <div className="grid grid-cols-1 sm:grid-cols-12">
@@ -41,10 +44,8 @@ export default function Page() {
           </p>
         </hgroup>
       </div>
-      <div className="flex gap-2">
-        {days.map((day) => (
-          <DayOfWeekColumn key={day} day={day} />
-        ))}
+      <div className="flex justify-center">
+        <AvailabilitySelector availability={data.availability} />
       </div>
     </div>
   );
