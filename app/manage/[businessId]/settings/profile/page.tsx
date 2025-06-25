@@ -45,7 +45,7 @@ function UpdateProfileInformationForm() {
               Avatar
             </Label>
             <SupabaseFileUploadDropzone
-              bucket="business"
+              bucket="avatars"
               defaultPath={state.data.avatar_url || undefined}
               filePath={`${businessId}/profiles/${user.id}/avatars`}
               name="avatar_url"

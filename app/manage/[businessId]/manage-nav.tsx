@@ -1,10 +1,10 @@
 "use client";
 
+import SupabaseAvatar from "@/components/supabase-avatar";
 import { useBusinessContext } from "@/contexts/business";
 import { useSidebarContext } from "@/contexts/sidebar";
 import { useUserContext } from "@/contexts/user";
 import {
-  Avatar,
   createTheme,
   DarkThemeToggle,
   Dropdown,
@@ -30,7 +30,7 @@ import useManageMenuItems from "./use-manage-menu-items";
 export default function ManageNav() {
   const menuItems = useManageMenuItems();
   const {
-    user: { full_name, businesses },
+    user: { avatar_url, full_name, businesses },
   } = useUserContext();
 
   const { business } = useBusinessContext();
@@ -101,13 +101,7 @@ export default function ManageNav() {
         <Dropdown
           arrowIcon={false}
           inline
-          label={
-            <Avatar
-              alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-              rounded
-            />
-          }
+          label={<SupabaseAvatar path={avatar_url} full_name={full_name} />}
           theme={createTheme({
             content: twMerge(theme.dropdown.content, "z-50"),
           })}
