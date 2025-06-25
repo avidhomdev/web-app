@@ -11,7 +11,7 @@ import {
 
 import { useUserContext } from "@/contexts/user";
 import dayjs from "dayjs";
-import { Button, Card } from "flowbite-react";
+import { Button, ButtonGroup, Card } from "flowbite-react";
 import { useParams } from "next/navigation";
 import { UpdateBusinessProfileAvailability } from "./action";
 import { AvailabilityObjectType } from "./page";
@@ -23,6 +23,8 @@ type ToggleSlotTimeProps = {
 
 const AvailabilityContext = createContext<{
   availability: AvailabilityObjectType | null;
+  cancelEditing: () => void;
+  isEditing: boolean;
   isSaving: boolean;
   save: () => void;
   slots: AvailabilityObjectType;
@@ -55,6 +57,7 @@ const AvailabilityProvider = ({
 }: PropsWithChildren<{
   availability: AvailabilityObjectType | null;
 }>) => {
+  const [isEditing, setIsEditing] = useState(false);
   const { businessId } = useParams();
   const { user } = useUserContext();
   const [isSaving, startSaving] = useTransition();
@@ -62,8 +65,9 @@ const AvailabilityProvider = ({
   const [slots, setSlots] = useState<AvailabilityObjectType>(defaultSlots);
 
   const handleToggleSlotTime = useCallback(
-    ({ day, timeKey }: ToggleSlotTimeProps) =>
-      setSlots((prevState) => {
+    ({ day, timeKey }: ToggleSlotTimeProps) => {
+      setIsEditing(true);
+      return setSlots((prevState) => {
         const dayKey = day as keyof typeof slots;
 
         return {
@@ -73,7 +77,8 @@ const AvailabilityProvider = ({
             [timeKey]: !prevState[dayKey][timeKey],
           },
         };
-      }),
+      });
+    },
     [],
   );
 
@@ -84,19 +89,34 @@ const AvailabilityProvider = ({
           availability: slots,
           businessId: businessId as string,
           profileId: user.id,
-        });
+        }).finally(() => setIsEditing(false));
     });
   }, [businessId, slots, user.id]);
+
+  const cancelEditing = useCallback(() => {
+    setIsEditing(false);
+    setSlots(defaultSlots);
+  }, [defaultSlots]);
 
   const value = useMemo(
     () => ({
       availability,
+      cancelEditing,
+      isEditing,
       isSaving,
       toggleSlotTime: handleToggleSlotTime,
       save: handleSave,
       slots,
     }),
-    [availability, handleSave, isSaving, handleToggleSlotTime, slots],
+    [
+      availability,
+      cancelEditing,
+      isEditing,
+      isSaving,
+      handleToggleSlotTime,
+      handleSave,
+      slots,
+    ],
   );
 
   return (
@@ -140,7 +160,8 @@ function DayOfWeekColumn({ day }: { day: string }) {
 }
 
 function Selector() {
-  const { save, isSaving } = use(AvailabilityContext) || {};
+  const { cancelEditing, isEditing, save, isSaving } =
+    use(AvailabilityContext) || {};
   const days = [
     "Sunday",
     "Monday",
@@ -154,10 +175,18 @@ function Selector() {
   return (
     <>
       <div className="self-end">
-        <Button disabled={isSaving} onClick={save}>
-          {isSaving ? "Saving..." : "Save"}
-        </Button>
+        <ButtonGroup>
+          {isEditing && (
+            <Button color="alternative" onClick={cancelEditing}>
+              Cancel
+            </Button>
+          )}
+          <Button disabled={isSaving || !isEditing} onClick={save}>
+            {isSaving ? "Saving..." : "Save"}
+          </Button>
+        </ButtonGroup>
       </div>
+
       <div className="flex gap-2">
         {days.map((day) => (
           <DayOfWeekColumn key={day} day={day} />
