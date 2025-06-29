@@ -1,10 +1,11 @@
 "use client";
 
-import SupabaseAvatar from "@/components/supabase-avatar";
 import { useBusinessContext } from "@/contexts/business";
 import { useSidebarContext } from "@/contexts/sidebar";
 import { useUserContext } from "@/contexts/user";
+import getInitials from "@/utils/get-initials";
 import {
+  Avatar,
   createTheme,
   DarkThemeToggle,
   Dropdown,
@@ -101,7 +102,15 @@ export default function ManageNav() {
         <Dropdown
           arrowIcon={false}
           inline
-          label={<SupabaseAvatar path={avatar_url} full_name={full_name} />}
+          label={
+            <Avatar
+              alt="User settings"
+              img={avatar_url || undefined}
+              placeholderInitials={getInitials(full_name ?? "")}
+              rounded
+              size="sm"
+            />
+          }
           theme={createTheme({
             content: twMerge(theme.dropdown.content, "z-50"),
           })}

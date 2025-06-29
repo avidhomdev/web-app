@@ -9,12 +9,10 @@ import initialFormState, {
 import { US_STATES } from "@/constants/us-states";
 import { useUserContext } from "@/contexts/user";
 import { Card, Label, Select, TextInput } from "flowbite-react";
-import { useParams } from "next/navigation";
 import { useActionState } from "react";
 import { UpdateContact, UpdateProfile, UpdateUserPassword } from "./action";
 
 function UpdateProfileInformationForm() {
-  const { businessId } = useParams();
   const { user } = useUserContext();
   const [state, action] = useActionState(UpdateProfile<TInitialFormState>, {
     ...initialFormState,
@@ -47,8 +45,9 @@ function UpdateProfileInformationForm() {
             <SupabaseFileUploadDropzone
               bucket="avatars"
               defaultPath={state.data.avatar_url || undefined}
-              filePath={`${businessId}/profiles/${user.id}/avatars`}
+              filePath={user.id}
               name="avatar_url"
+              passPublicUrlToPath
             />
           </div>
           <div>

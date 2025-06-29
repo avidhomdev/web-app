@@ -13,6 +13,7 @@ type TSupabaseFileUploadDropzone = {
   allowedFilesText?: string;
   name: string;
   required?: boolean;
+  passPublicUrlToPath?: boolean;
 };
 
 export default function SupabaseFileUploadDropzone({
@@ -22,6 +23,7 @@ export default function SupabaseFileUploadDropzone({
   name = "file_url",
   required = false,
   defaultPath = "",
+  passPublicUrlToPath = false,
 }: TSupabaseFileUploadDropzone) {
   const [path, setPath] = useState<string>(defaultPath);
   const [error, setError] = useState<string>();
@@ -46,9 +48,22 @@ export default function SupabaseFileUploadDropzone({
 
       if (error) return setError(error.message);
       if (!data?.path) return setError("No path found.");
+      if (passPublicUrlToPath) {
+        const { data: d } = await supabase.storage
+          .from("avatars")
+          .getPublicUrl(data.path, {
+            transform: {
+              width: 100,
+              height: 100,
+              resize: "fill",
+              quality: 100,
+            },
+          });
+        return setPath(d.publicUrl);
+      }
       return setPath(data.path);
     },
-    [bucket, filePath, reset],
+    [bucket, filePath, passPublicUrlToPath, reset],
   );
 
   return (
