@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 import AddTimeOffDrawer from "./add-time-off-drawer";
 import TimeOffTable from "./time-off-table";
+import { notFound } from "next/navigation";
 
 const TIME_OFF_TYPES = ["vacation", "sick", "other"];
 
@@ -10,10 +11,16 @@ export const metadata = {
 
 export default async function Page() {
   const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return notFound();
   const { data, error } = await supabase
     .from("business_appointments")
-    .select("*")
-    .in("type", TIME_OFF_TYPES);
+    .select("*, profiles: business_appointment_profiles!inner(*)")
+    .eq("business_appointment_profiles.profile_id", user.id)
+    .in("type", TIME_OFF_TYPES)
+    .order("start_datetime", { ascending: false });
   if (error) {
     throw new Error(error.message);
   }
