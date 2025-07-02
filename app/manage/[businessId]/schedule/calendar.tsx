@@ -24,7 +24,7 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
         },
       }}
     >
-      <span className="rounded-br-lg border-b border-r border-gray-100 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-900">
+      <span className="rounded-br-lg border-r border-b border-gray-100 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-900">
         {day.date()}
       </span>
       {appointments ? (
@@ -35,7 +35,7 @@ function CalendarDay({ appointments, day }: CalendarDayProps) {
               key={i}
             >
               <div>
-                <p className="text-xs">{appointment.location.name}</p>
+                <p className="text-xs">{appointment.location?.name}</p>
                 <p className="text-xs">{`${dayjs(appointment.start_datetime).format("hh:mm a")} - ${dayjs(appointment.end_datetime).format("hh:mm a")}`}</p>
                 <p className="text-xs">
                   {appointment.job
