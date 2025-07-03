@@ -1,10 +1,15 @@
+import { DAYS_OF_WEEK } from "@/enums/days-of-week";
+import { Tables } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/client";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
 export function useLocationInstallers({
+  businessId,
   locationId,
   range,
 }: {
+  businessId: string;
   locationId: number;
   range: { start: string; end: string };
 }) {
@@ -22,11 +27,68 @@ export function useLocationInstallers({
           end_timestamp: range.end,
         })
         .then(({ data }) => {
-          if (data) setInstallers(data);
-        });
+          const installerProfileIds = (data ?? []).map(
+            (installer) => installer.profile_id,
+          );
+
+          return supabase
+            .from("business_profiles")
+            .select("*")
+            .eq("business_id", businessId)
+            .in("profile_id", installerProfileIds)
+            .then(({ data: installerProfiles }) => {
+              const installerProfileDictionary = (
+                installerProfiles ?? []
+              ).reduce<Record<string, Tables<"business_profiles">>>(
+                (agg, cur) => {
+                  agg[cur.profile_id] = cur;
+                  return agg;
+                },
+                {},
+              );
+
+              return data?.filter((installer) => {
+                const businessProfile =
+                  installerProfileDictionary[installer.profile_id];
+                const availability = businessProfile.availability as Record<
+                  string,
+                  {
+                    [key: number]: boolean;
+                  }
+                >;
+
+                const selectedDayOfWeek =
+                  Object.values(DAYS_OF_WEEK)[dayjs(range.start).get("day")];
+                if (!availability) return;
+
+                const daySlots = availability[selectedDayOfWeek];
+
+                const hourDiff = dayjs(range.end).diff(
+                  dayjs(range.start),
+                  "hour",
+                );
+
+                const availabilityCheck = Array.from(
+                  { length: hourDiff },
+                  (_, i) => {
+                    const checkHour = dayjs(range.start)
+                      .add(i, "hour")
+                      .get("hour");
+
+                    return daySlots[checkHour];
+                  },
+                );
+
+                const hasUnavailableSlots = availabilityCheck.filter((a) => !a);
+
+                return hasUnavailableSlots.length === 0;
+              });
+            });
+        })
+        .then((i) => setInstallers(i ?? []));
 
     if (locationId && range.start && range.end) fetchRpc();
-  }, [supabase, locationId, range.start, range.end]);
+  }, [supabase, locationId, range.start, range.end, businessId]);
 
   return installers.reduce<InstallerReturnType>((dictionary, installer) => {
     dictionary[installer.profile_id] = installer;

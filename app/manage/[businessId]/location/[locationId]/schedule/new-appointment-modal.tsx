@@ -40,8 +40,12 @@ export function NewAppointmentModal({
   const startOfDayMinString = day.startOf("day").format(DAYJS_DATETIME);
   const endOfDayMinString = day.endOf("day").format(DAYJS_DATETIME);
   const [range, setRange] = useState({
-    start: startOfDayMinString,
-    end: endOfDayMinString,
+    start: dayjs(day)
+      .set("h", 9)
+      .set("m", 0)
+      .set("s", 0)
+      .format(DAYJS_DATETIME),
+    end: dayjs(day).set("h", 17).set("m", 0).set("s", 0).format(DAYJS_DATETIME),
   });
   const router = useRouter();
 
@@ -52,21 +56,14 @@ export function NewAppointmentModal({
       customer_id: selectedJob.customer_id,
       location_id: selectedJob.business_location_id,
       job_id: selectedJob.id,
-      start_datetime: dayjs(day)
-        .set("h", 7)
-        .set("m", 0)
-        .set("s", 0)
-        .format(DAYJS_DATETIME),
-      end_datetime: dayjs(day)
-        .set("h", 17)
-        .set("m", 0)
-        .set("s", 0)
-        .format(DAYJS_DATETIME),
+      start_datetime: range.start,
+      end_datetime: range.end,
       profiles: {},
     },
   });
 
   const installers = useLocationInstallers({
+    businessId: selectedJob.business_id,
     locationId: Number(selectedJob.business_location_id),
     range,
   });
