@@ -72,6 +72,7 @@ export function UpdateAppointmentModal({
   });
 
   const installers = useLocationInstallers({
+    businessId: appointment.business_id,
     locationId: Number(appointment.location_id),
     range,
   });

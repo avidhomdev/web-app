@@ -68,20 +68,31 @@ export function useLocationInstallers({
                   "hour",
                 );
 
+                const isStartHourAvailable = Boolean(
+                  daySlots[dayjs(range.start).get("hour")],
+                );
+                const isEndHourAvailable = Boolean(
+                  daySlots[dayjs(range.end).get("hour")],
+                );
+
                 const availabilityCheck = Array.from(
                   { length: hourDiff },
                   (_, i) => {
-                    const checkHour = dayjs(range.start)
+                    const checkStartHour = dayjs(range.start)
                       .add(i, "hour")
                       .get("hour");
-
-                    return daySlots[checkHour];
+                    const checkEndHour = dayjs(range.end)
+                      .add(i, "hour")
+                      .get("hour");
+                    return daySlots[checkStartHour] && daySlots[checkEndHour];
                   },
                 );
 
                 const hasUnavailableSlots = availabilityCheck.filter((a) => !a);
-
-                return hasUnavailableSlots.length === 0;
+                return (
+                  (isStartHourAvailable && isEndHourAvailable) ||
+                  hasUnavailableSlots.length === 0
+                );
               });
             });
         })
